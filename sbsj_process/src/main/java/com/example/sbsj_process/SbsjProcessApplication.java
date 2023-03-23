@@ -1,13 +1,14 @@
-package com.example.sbsj;
+package com.example.sbsj_process;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SbsjApplication {
+public class SbsjProcessApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SbsjApplication.class, args);
+		System.out.println("3팀 화이팅~");
+		SpringApplication.run(SbsjProcessApplication.class, args);
 	}
 
 }
