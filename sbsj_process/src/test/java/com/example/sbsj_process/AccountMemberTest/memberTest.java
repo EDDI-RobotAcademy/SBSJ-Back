@@ -7,11 +7,12 @@ import com.example.sbsj_process.member.repository.AuthenticationRepository;
 import com.example.sbsj_process.member.repository.MemberRepository;
 import com.example.sbsj_process.member.service.MemberService;
 import com.example.sbsj_process.member.service.request.MemberLoginRequest;
+import com.example.sbsj_process.member.service.request.MemberRegisterRequest;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class memberTest {
@@ -37,4 +38,10 @@ public class memberTest {
         assertThrows(RuntimeException.class, () -> memberService.signIn(new MemberLoginRequest("aa", "bbb")));
     }
 
+    @Test
+    public void 멤버_회원가입_테스트() {
+        MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("남건호", "ab5265", "1234", "ab5265@naver.com", "19920824","01062643016");
+        assertTrue(memberService.signUp(memberRegisterRequest));
+        assertThrows(RuntimeException.class, () -> memberService.signUp(memberRegisterRequest));
+    }
 }
