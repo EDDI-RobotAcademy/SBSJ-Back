@@ -8,4 +8,13 @@ public interface MemberService {
     String signIn(MemberLoginRequest toMemberLoginRequest);
 
     Boolean signUp(MemberRegisterRequest memberRegisterRequest);
+
+    void delete(Long memberNo);
+
+    Boolean idValidation(String id);
+
+    Boolean emailValidation(String email);
+
+    Boolean phoneNumberValidation(String phoneNumber);
+
 }
