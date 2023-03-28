@@ -1,7 +1,8 @@
-package com.example.sbsj_process.member.entity;
+package com.example.sbsj_process.account.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Optional;
@@ -13,19 +14,19 @@ public class Member {
 
     @Id
     @Getter
+    @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long memberNo;
 
-    @Getter
-    @Column(nullable = false)
-    private String memberId;
+    @Column(length = 16,unique = true, nullable = false)
+    private String id;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Set<Authentication> authentications = new HashSet<>();
-
-    public Member(String memberId) {
-        this.memberId = memberId;
+    public Member(String id) {
+        this.id = id;
     }
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Authentication> authentications = new HashSet<>();
 
     public boolean isRightPassword(String plainToCheck) {
         final Optional<Authentication> maybeBasicAuth = findBasicAuthentication();
@@ -44,4 +45,5 @@ public class Member {
                 .filter(authentication -> authentication instanceof BasicAuthentication)
                 .findFirst();
     }
+
 }

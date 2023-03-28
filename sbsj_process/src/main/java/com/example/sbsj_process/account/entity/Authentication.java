@@ -1,4 +1,4 @@
-package com.example.sbsj_process.member.entity;
+package com.example.sbsj_process.account.entity;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,7 +19,7 @@ public abstract class Authentication {
     private Long id = null;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_no")
     private Member member;
 
     @Column(name = "authentication_type", nullable = false, insertable = false, updatable = false)

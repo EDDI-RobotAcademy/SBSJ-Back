@@ -1,12 +1,15 @@
-package com.example.sbsj_process.member.entity;
+package com.example.sbsj_process.account.entity;
 
-import com.example.demo.domain.utility.encrypt.EncryptionUtil;
-import com.example.demo.domain.utility.password.PasswordHashConverter;
+import com.example.sbsj_process.utility.encrypt.EncryptionUtil;
+import com.example.sbsj_process.utility.password.PasswordHashConverter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 @Entity
 @ToString(callSuper = true)
@@ -27,4 +30,5 @@ public class BasicAuthentication extends Authentication {
     public boolean isRightPassword(String plainToCheck) {
         return EncryptionUtil.checkValidation(plainToCheck, password);
     }
+
 }
