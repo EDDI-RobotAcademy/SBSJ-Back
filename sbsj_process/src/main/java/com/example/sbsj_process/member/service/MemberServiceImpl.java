@@ -27,26 +27,6 @@ public class MemberServiceImpl implements MemberService {
 
 
 
-    @Override
-    public String signIn(MemberLoginRequest memberLoginRequest) {
-        Optional<Member> maybeMember =
-                memberRepository.findByMemberId(memberLoginRequest.getMemberId());
-
-        if (maybeMember.isPresent()) {
-            Member member = maybeMember.get();
-
-            if (!member.isRightPassword(memberLoginRequest.getPassword())) {
-                throw new RuntimeException("이메일 및 비밀번호 입력이 잘못되었습니다!");
-            }
-
-            UUID userToken = UUID.randomUUID();
-
-            // redis 처리 필요
-            redisService.deleteByKey(userToken.toString());
-            redisService.setKeyAndValue(userToken.toString(), member.getId());
-            
-            return userToken.toString();
-        }
         
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }

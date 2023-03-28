@@ -19,3 +19,25 @@
         authenticationRepository.save(authentication);
         return true;
     }
+        if(maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+
+            if(!member.isRightPassword(memberLoginRequest.getPassword())) {
+                return "틀림";
+            }
+
+            UUID userToken = UUID.randomUUID();
+
+            // redis 처리 필요
+            redisService.deleteByKey(userToken.toString());
+            redisService.setKeyAndValue(userToken.toString(), member.getMemberNo());
+
+            return userToken.toString();
+        }
+
+        return "없음";
+    }
+
+    @Override
+    public void delete(Long memberNo) {
+        System.out.println("서비스에서 보는 delete memberNo: "+ memberNo);

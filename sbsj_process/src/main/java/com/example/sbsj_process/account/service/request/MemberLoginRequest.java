@@ -1,4 +1,4 @@
-package com.example.sbsj_process.member.service.request;
+package com.example.sbsj_process.account.service.request;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +9,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class MemberLoginRequest {
 
-    private final String memberId;
+    private final String id;
     private final String password;
+
 }

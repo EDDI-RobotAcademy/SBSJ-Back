@@ -1,6 +1,6 @@
-package com.example.sbsj_process.member.controller.form;
+package com.example.sbsj_process.account.controller.form;
 
-import com.example.sbsj_process.member.service.request.MemberLoginRequest;
+import com.example.sbsj_process.account.service.request.MemberLoginRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +12,10 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MemberLoginForm {
 
-    private String memberId;
+    private String id;
     private String password;
 
     public MemberLoginRequest toMemberLoginRequest () {
-        return new MemberLoginRequest(memberId, password);
+        return new MemberLoginRequest(id, password);
     }
 }

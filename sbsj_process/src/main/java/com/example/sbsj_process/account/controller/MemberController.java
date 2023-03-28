@@ -1,4 +1,25 @@
+package com.example.sbsj_process.account.controller;
+
+import com.example.sbsj_process.account.controller.form.MemberLoginForm;
+import com.example.sbsj_process.account.controller.form.MemberRegisterForm;
+import com.example.sbsj_process.account.service.MemberService;
+import com.example.sbsj_process.security.service.RedisService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import javax.transaction.Transactional;
+
+
+@Slf4j
+@RestController
+@RequestMapping("/member")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+public class MemberController {
+
     final private MemberService memberService;
+    final private RedisService redisService;
+
     @PostMapping("/sign-up")
     public Boolean signUp(@RequestBody MemberRegisterForm form) {
         log.info("signUp(): " + form);
@@ -28,11 +49,10 @@
     }
 
     @PostMapping("/sign-in")
-    public String signIn(@RequestBody MemberLoginForm form, HttpServletRequest request) {
+    public String signIn(@RequestBody MemberLoginForm form) {
         log.info("signIn(): " + form);
-        System.out.println("컨트롤러 signIn 에서 보는: "+ request);
 
-        return memberService.signIn(form.toMemberLoginRequest(), request);
+        return memberService.signIn(form.toMemberLoginRequest());
     }
 
     @PostMapping("/logout")
