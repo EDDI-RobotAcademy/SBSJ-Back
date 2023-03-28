@@ -2,6 +2,7 @@ package com.example.sbsj_process.member.controller;
 
 
 import com.example.sbsj_process.member.controller.form.MemberLoginForm;
+import com.example.sbsj_process.member.controller.form.MemberRegisterForm;
 import com.example.sbsj_process.member.service.MemberService;
 import com.example.sbsj_process.security.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,12 @@ public class MemberController {
         log.info("signIn(): " + form);
 
         return memberService.signIn(form.toMemberLoginRequest());
+    }
+
+    @PostMapping("/sign-up")
+    public Boolean signUp(@RequestBody MemberRegisterForm form) {
+        log.info("sign-up: " + form);
+
+        return memberService.signUp(form.toMemberRegisterRequest());
     }
 }
