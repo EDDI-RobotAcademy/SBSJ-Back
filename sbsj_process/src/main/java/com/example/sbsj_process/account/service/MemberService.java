@@ -1,0 +1,1 @@
+    Boolean signUp(MemberRegisterRequest memberRegisterRequest);
