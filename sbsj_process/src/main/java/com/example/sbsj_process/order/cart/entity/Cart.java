@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class Cart {
     // 회원의 장바구니 등록 건수
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CartItem cartItem;
+    private List<CartItem> cartItemList;
 
 
 
