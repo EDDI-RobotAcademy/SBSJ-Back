@@ -1,6 +1,6 @@
-package com.example.demo.domain.utility.password;
+package com.example.sbsj_process.utility.password;
 
-import com.example.demo.domain.utility.encrypt.EncryptionUtil;
+import com.example.sbsj_process.utility.encrypt.EncryptionUtil;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
