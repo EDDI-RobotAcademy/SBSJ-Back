@@ -1,4 +1,4 @@
-package com.example.demo.domain.utility.encrypt.exception;
+package com.example.sbsj_process.utility.encrypt.exception;
 
 public class UnableToGenerateHash extends RuntimeException {
 
