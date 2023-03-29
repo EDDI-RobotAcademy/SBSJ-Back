@@ -2,11 +2,13 @@ package com.example.sbsj_process.product.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
+@ToString
 public class Product {
 
     @Id

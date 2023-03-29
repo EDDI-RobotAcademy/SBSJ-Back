@@ -18,7 +18,7 @@ public class Review {
     private Long reviewId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "member_no")
     private Member member;
 
     @Column(length = 16, nullable = false)

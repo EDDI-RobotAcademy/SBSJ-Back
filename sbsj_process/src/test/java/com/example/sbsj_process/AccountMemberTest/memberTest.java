@@ -1,13 +1,13 @@
 package com.example.sbsj_process.AccountMemberTest;
 
-import com.example.sbsj_process.member.entity.Authentication;
-import com.example.sbsj_process.member.entity.BasicAuthentication;
-import com.example.sbsj_process.member.entity.Member;
-import com.example.sbsj_process.member.repository.AuthenticationRepository;
-import com.example.sbsj_process.member.repository.MemberRepository;
-import com.example.sbsj_process.member.service.MemberService;
-import com.example.sbsj_process.member.service.request.MemberLoginRequest;
-import com.example.sbsj_process.member.service.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.entity.Authentication;
+import com.example.sbsj_process.account.entity.BasicAuthentication;
+import com.example.sbsj_process.account.entity.Member;
+import com.example.sbsj_process.account.repository.AuthenticationRepository;
+import com.example.sbsj_process.account.repository.MemberRepository;
+import com.example.sbsj_process.account.service.MemberService;
+import com.example.sbsj_process.account.service.request.MemberLoginRequest;
+import com.example.sbsj_process.account.service.request.MemberRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +26,7 @@ public class memberTest {
     @Test
     public void 멤버_로그인_테스트() {
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest("aaa", "bbb");
-        Member member = new Member(memberLoginRequest.getMemberId());
+        Member member = new Member(memberLoginRequest.getId());
         memberRepository.save(member);
         authenticationRepository.save(new BasicAuthentication(member, Authentication.BASIC_AUTH, memberLoginRequest.getPassword()));
 
