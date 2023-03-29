@@ -1,6 +1,6 @@
-package com.example.demo.domain.utility.encrypt;
+package com.example.sbsj_process.utility.encrypt;
 
-import com.example.demo.domain.utility.encrypt.exception.UnableToGenerateHash;
+import com.example.sbsj_process.utility.encrypt.exception.UnableToGenerateHash;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
