@@ -1,6 +1,6 @@
 package com.example.sbsj_process.product.controller;
 
-import com.example.sbsj_process.product.controller.form.ProductDefaultResponseForm;
+import com.example.sbsj_process.product.controller.form.ProductListResponse;
 import com.example.sbsj_process.product.controller.form.ProductRegisterForm;
 import com.example.sbsj_process.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/product")
@@ -21,7 +20,7 @@ public class ProductController {
 
 
     @GetMapping("/default")
-    public List<ProductDefaultResponseForm> productDefaultList() {
+    public List<ProductListResponse> productDefaultList() {
         log.info("productDefaultList()");
         return productService.getDefaultList();
     }

@@ -1,6 +1,6 @@
 package com.example.sbsj_process.product.service;
 
-import com.example.sbsj_process.product.controller.form.ProductDefaultResponseForm;
+import com.example.sbsj_process.product.controller.form.ProductListResponse;
 import com.example.sbsj_process.product.entity.Image;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.entity.ProductInfo;
@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService{
     private final ProductInfoRepository productInfoRepository;
     private final ImageRepository imageRepository;
 
-    public List<ProductDefaultResponseForm> getDefaultList() {
-        List<ProductDefaultResponseForm> productDefaultResponseForms = new ArrayList<>();
+    public List<ProductListResponse> getDefaultList() {
+        List<ProductListResponse> productListResponses = new ArrayList<>();
         List<Product> products = productRepository.findAll();
         String title, thumbnail; Long productId, price, wish;
 
@@ -39,10 +39,10 @@ public class ProductServiceImpl implements ProductService{
             price = productInfoRepository.findByProductId(productId).getPrice();
             wish = productInfoRepository.findByProductId(productId).getWish();
 
-            ProductDefaultResponseForm productDefaultResponseForm = new ProductDefaultResponseForm(title, thumbnail, price, productId, wish);
-            productDefaultResponseForms.add(productDefaultResponseForm);
+            ProductListResponse productListResponse = new ProductListResponse(title, thumbnail, price, productId, wish);
+            productListResponses.add(productListResponse);
         }
-        return productDefaultResponseForms;
+        return productListResponses;
     }
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
 
