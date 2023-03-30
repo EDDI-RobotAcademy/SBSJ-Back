@@ -1,5 +1,6 @@
 package com.example.sbsj_process.product.service;
 
+import com.example.sbsj_process.product.controller.form.ProductDefaultResponseForm;
 import com.example.sbsj_process.product.entity.Image;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.entity.ProductInfo;
@@ -25,6 +26,24 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;
     private final ImageRepository imageRepository;
+
+    public List<ProductDefaultResponseForm> getDefaultList() {
+        List<ProductDefaultResponseForm> productDefaultResponseForms = new ArrayList<>();
+        List<Product> products = productRepository.findAll();
+        String title, thumbnail; Long productId, price, wish;
+
+        for(int i = 0; i < products.size(); i++) {
+            title = products.get(i).getProductName();
+            productId = products.get(i).getProductId();
+            thumbnail = imageRepository.findByProductId(productId).getThumbnail();
+            price = productInfoRepository.findByProductId(productId).getPrice();
+            wish = productInfoRepository.findByProductId(productId).getWish();
+
+            ProductDefaultResponseForm productDefaultResponseForm = new ProductDefaultResponseForm(title, thumbnail, price, productId, wish);
+            productDefaultResponseForms.add(productDefaultResponseForm);
+        }
+        return productDefaultResponseForms;
+    }
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
 
         Product product = productRegisterRequest.toProduct(); // Create Product
