@@ -1,7 +1,7 @@
 package com.example.sbsj_process.ProductTest;
 
 
-import com.example.sbsj_process.product.controller.form.ProductDefaultResponseForm;
+import com.example.sbsj_process.product.controller.form.ProductListResponse;
 import com.example.sbsj_process.product.controller.form.ProductRegisterForm;
 import com.example.sbsj_process.product.entity.Image;
 import com.example.sbsj_process.product.entity.Product;
@@ -42,10 +42,10 @@ public class productTest {
     @Test
     public void 기본_상품리스트_가져오기_테스트() throws Exception {
         상품_등록_테스트();
-        List<ProductDefaultResponseForm> productDefaultResponseForms = productService.getDefaultList();
-        for(int i = 0; i < productDefaultResponseForms.size(); i++) {
+        List<ProductListResponse> productListResponses = productService.getDefaultList();
+        for(int i = 0; i < productListResponses.size(); i++) {
             System.out.println("##################################");
-            System.out.println(productDefaultResponseForms.get(i));
+            System.out.println(productListResponses.get(i));
             System.out.println("##################################");
         }
     }
