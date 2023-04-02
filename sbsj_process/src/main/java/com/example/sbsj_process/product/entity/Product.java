@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @ToString
+@Getter
 public class Product {
 
     @Id
-    @Getter
     @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
