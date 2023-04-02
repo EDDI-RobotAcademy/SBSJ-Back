@@ -35,7 +35,7 @@ jobs:
         character set server: 'utf8' 
         mysql database: 'sbsj_project' 
         mysql user: 'eddi'
-        mysql password: ${{ secrets.MYSQL_PASSWORD }}
+        mysql password: ${{ secrets.MYSQL }}
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
