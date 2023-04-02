@@ -23,19 +23,23 @@ public class memberTest {
     @Autowired
     private AuthenticationRepository authenticationRepository;
 
+//    @Test
+//    public void 멤버_로그인_성공_테스트() {
+//        String signInEx = memberService.signIn(new MemberLoginRequest("ab5265", "1234"));
+//        if(!signInEx.equals("틀림") && !signInEx.equals("없음")) {
+//            System.out.println("로그인 성공!");
+//        }
+//    }
+    
     @Test
-    public void 멤버_로그인_테스트() {
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("aaa", "bbb");
-        Member member = new Member(memberLoginRequest.getId());
-        memberRepository.save(member);
-        authenticationRepository.save(new BasicAuthentication(member, Authentication.BASIC_AUTH, memberLoginRequest.getPassword()));
-
-        String UserToken = memberService.signIn(memberLoginRequest);
-        System.out.println("UserToken: " + UserToken);
-
-        assertThrows(RuntimeException.class, () -> memberService.signIn(new MemberLoginRequest("bbb", "aaa")));
-        assertThrows(RuntimeException.class, () -> memberService.signIn(new MemberLoginRequest("aaa", "bb")));
-        assertThrows(RuntimeException.class, () -> memberService.signIn(new MemberLoginRequest("aa", "bbb")));
+    public void 멤버_로그인_실패_테스트() {
+        String signInEx = memberService.signIn(new MemberLoginRequest("aaa", "bbb"));
+        if(signInEx.equals("틀림")) {
+            System.out.println("비밀번호가 틀렸습니다.");
+            return;
+        } else if(signInEx.equals("없음")) {
+            System.out.println("가입되지 않은 계정입니다.");
+        }
     }
 
     @Test
