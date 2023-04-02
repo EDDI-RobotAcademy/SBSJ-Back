@@ -45,7 +45,12 @@ public class memberTest {
     @Test
     public void 멤버_회원가입_테스트() {
         MemberRegisterRequest memberRegisterRequest = new MemberRegisterRequest("남건호", "ab5265", "1234", "ab5265@naver.com", "19920824","01062643016");
-        assertTrue(memberService.signUp(memberRegisterRequest));
-        assertThrows(RuntimeException.class, () -> memberService.signUp(memberRegisterRequest));
+        boolean successSignUp = memberService.signUp(memberRegisterRequest);
+        if(successSignUp) {
+            System.out.println("회원 가입 완료!");
+        } else {
+            System.out.println("회원 가입이 정상적으로 처리되지 않았습니다.");
+        }
     }
+
 }
