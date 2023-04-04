@@ -9,6 +9,7 @@ import com.example.sbsj_process.account.repository.MemberProfileRepository;
 import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.account.request.MemberLoginRequest;
 import com.example.sbsj_process.account.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.response.MemberLoginResponse;
 import com.example.sbsj_process.security.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -82,14 +83,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String signIn(MemberLoginRequest memberLoginRequest) {
+    public MemberLoginResponse signIn(MemberLoginRequest memberLoginRequest) {
         Optional<Member> maybeMember = memberRepository.findById(memberLoginRequest.getId());
+
+        MemberLoginResponse memberLoginResponse = new MemberLoginResponse();
 
         if(maybeMember.isPresent()) {
             Member member = maybeMember.get();
+            memberLoginResponse.setMemberNo(member.getMemberNo());
 
             if(!member.isRightPassword(memberLoginRequest.getPassword())) {
-                return "틀림";
+                memberLoginResponse.setToken("incorrect");
+                return memberLoginResponse;
             }
 
             UUID userToken = UUID.randomUUID();
@@ -98,10 +103,12 @@ public class MemberServiceImpl implements MemberService {
             redisService.deleteByKey(userToken.toString());
             redisService.setKeyAndValue(userToken.toString(), member.getMemberNo());
 
-            return userToken.toString();
+            memberLoginResponse.setToken(userToken.toString());
+            return memberLoginResponse;
         }
 
-        return "없음";
+        memberLoginResponse.setToken("no");
+        return memberLoginResponse;
     }
 
     @Override

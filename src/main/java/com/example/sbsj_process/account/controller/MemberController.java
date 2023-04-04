@@ -2,11 +2,13 @@ package com.example.sbsj_process.account.controller;
 
 import com.example.sbsj_process.account.controller.form.MemberLoginForm;
 import com.example.sbsj_process.account.controller.form.MemberRegisterForm;
+import com.example.sbsj_process.account.response.MemberLoginResponse;
 import com.example.sbsj_process.account.service.MemberService;
 import com.example.sbsj_process.security.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 
 
@@ -48,7 +50,7 @@ public class MemberController {
     }
 
     @PostMapping("/sign-in")
-    public String signIn(@RequestBody MemberLoginForm form) {
+    public MemberLoginResponse signIn(@RequestBody MemberLoginForm form) {
         log.info("signIn(): " + form);
 
         return memberService.signIn(form.toMemberLoginRequest());

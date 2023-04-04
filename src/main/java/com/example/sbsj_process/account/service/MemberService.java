@@ -10,7 +10,7 @@ import com.example.sbsj_process.account.response.MemberLoginResponse;
 
 public interface MemberService {
 
-    String signIn(MemberLoginRequest toMemberLoginRequest);
+    MemberLoginResponse signIn(MemberLoginRequest toMemberLoginRequest);
 
     Boolean signUp(MemberRegisterRequest memberRegisterRequest);
 
