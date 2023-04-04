@@ -1,4 +1,4 @@
-package com.example.sbsj_process.order.cart.dto.request;
+package com.example.sbsj_process.order.request;
 
 import lombok.*;
 

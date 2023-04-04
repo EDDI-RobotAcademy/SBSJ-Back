@@ -1,9 +1,9 @@
-package com.example.sbsj_process.order.cart.service;
+package com.example.sbsj_process.order.service;
 
-import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
-import com.example.sbsj_process.order.cart.dto.request.ChangeCartItemCountRequest;
-import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.entity.CartItem;
+import com.example.sbsj_process.order.request.AddCartRequest;
+import com.example.sbsj_process.order.request.ChangeCartItemCountRequest;
+import com.example.sbsj_process.order.request.SelectCartItemRequest;
+import com.example.sbsj_process.order.entity.CartItem;
 
 import java.util.List;
 

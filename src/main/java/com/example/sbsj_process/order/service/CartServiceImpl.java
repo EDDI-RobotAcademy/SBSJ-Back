@@ -1,14 +1,14 @@
-package com.example.sbsj_process.order.cart.service;
+package com.example.sbsj_process.order.service;
 
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.repository.MemberRepository;
-import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
-import com.example.sbsj_process.order.cart.dto.request.ChangeCartItemCountRequest;
-import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.entity.Cart;
-import com.example.sbsj_process.order.cart.entity.CartItem;
-import com.example.sbsj_process.order.cart.repository.CartItemRepository;
-import com.example.sbsj_process.order.cart.repository.CartRepository;
+import com.example.sbsj_process.order.request.AddCartRequest;
+import com.example.sbsj_process.order.request.ChangeCartItemCountRequest;
+import com.example.sbsj_process.order.request.SelectCartItemRequest;
+import com.example.sbsj_process.order.entity.Cart;
+import com.example.sbsj_process.order.entity.CartItem;
+import com.example.sbsj_process.order.repository.CartItemRepository;
+import com.example.sbsj_process.order.repository.CartRepository;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.repository.ProductRepository;
 import com.example.sbsj_process.security.service.RedisService;

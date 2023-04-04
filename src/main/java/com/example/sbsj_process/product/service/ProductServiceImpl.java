@@ -6,7 +6,7 @@ import com.example.sbsj_process.product.entity.ProductInfo;
 import com.example.sbsj_process.product.repository.ImageRepository;
 import com.example.sbsj_process.product.repository.ProductInfoRepository;
 import com.example.sbsj_process.product.repository.ProductRepository;
-import com.example.sbsj_process.product.dto.request.ProductRegisterRequest;
+import com.example.sbsj_process.product.request.ProductRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
