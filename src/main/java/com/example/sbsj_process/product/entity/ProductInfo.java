@@ -1,19 +1,14 @@
 package com.example.sbsj_process.product.entity;
 
 import com.example.sbsj_process.account.entity.Member;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @ToString
-@Getter
-@Setter
 public class ProductInfo {
 
     @Id
@@ -24,11 +19,10 @@ public class ProductInfo {
     @Column(length = 16, nullable = false)
     private Long price;
 
-    @Column(length = 16, nullable = false)
-    private Long wish;
+    @Column(length = 16, nullable = true)
+    private String wish;
 
     public ProductInfo(Long price) {
-        this.wish = 0L;
         this.price = price;
     }
 
