@@ -9,13 +9,12 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Getter
 @Entity
-@ToString
 @NoArgsConstructor
 public class Member {
 
     @Id
-    @Getter
     @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberNo;

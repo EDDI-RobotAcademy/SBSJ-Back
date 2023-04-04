@@ -18,4 +18,5 @@ public class MemberLoginForm {
     public MemberLoginRequest toMemberLoginRequest () {
         return new MemberLoginRequest(id, password);
     }
+
 }
