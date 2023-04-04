@@ -24,11 +24,11 @@ public class DeliveryController {
         return deliveryService.register(deliveryRegisterRequest);
     }
 
-    @GetMapping("/list/{memberNo}")
-    public List<DeliveryListResponse> deliveryList(@PathVariable("memberNo") Long memberNo) {
-        log.info("deliveryList(): "+ memberNo);
+    @GetMapping("/list/{memberId}")
+    public List<DeliveryListResponse> deliveryList(@PathVariable("memberId") Long memberId) {
+        log.info("deliveryList(): "+ memberId);
 
-        return deliveryService.list(memberNo);
+        return deliveryService.list(memberId);
     }
 
 }

@@ -9,6 +9,6 @@ public interface DeliveryService {
 
     Boolean register(DeliveryRegisterRequest deliveryRegisterRequest);
 
-    List<DeliveryListResponse> list(Long memberNo);
+    List<DeliveryListResponse> list(Long memberId);
 
 }

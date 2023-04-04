@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> {
-    @Query("Select i from ProductInfo i join fetch i.product p where p.productId = :id")
-    ProductInfo findByProductId(Long id);
+    @Query("Select i from ProductInfo i join fetch i.product p where p.productId = :productId")
+    ProductInfo findByProductId(Long productId);
 }

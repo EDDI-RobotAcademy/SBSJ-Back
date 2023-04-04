@@ -24,10 +24,10 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public Boolean register(DeliveryRegisterRequest deliveryRegisterRequest) {
-        Optional<Member> maybeMember = memberRepository.findByMemberNo(deliveryRegisterRequest.getMemberNo());
+        Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryRegisterRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
-            System.out.println("memberNo 에 해당하는 회원이 없습니다.");
+            System.out.println("memberId 에 해당하는 회원이 없습니다.");
             return false;
         }
 
@@ -39,14 +39,14 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public List<DeliveryListResponse> list(Long memberNo) {
-        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
+    public List<DeliveryListResponse> list(Long memberId) {
+        Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
         if(maybeMember.isEmpty()) {
             System.out.println("memberNo 에 해당하는 회원이 없습니다.");
             return null;
         }
 
-        List<Delivery> deliveryList = deliveryRepository.findAllByMember_MemberNo(memberNo);
+        List<Delivery> deliveryList = deliveryRepository.findAllByMember_MemberId(memberId);
         List<DeliveryListResponse> deliveryListResponseList = new ArrayList<>();
 
         for(Delivery delivery: deliveryList) {

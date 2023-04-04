@@ -31,16 +31,16 @@ public class MemberController {
         return memberService.signUp(form.toMemberRegisterRequest());
     }
 
-    @PostMapping("/sign-up/check-id/{id}")
-    public Boolean idValidation(@PathVariable("id") String id) {
-        log.info("idValidation(): " + id);
+    @PostMapping("/sign-up/check-userId/{userId}")
+    public Boolean userIdValidation(@PathVariable("userId") String userId) {
+        log.info("userIdValidation(): " + userId);
 
-        return memberService.idValidation(id);
+        return memberService.userIdValidation(userId);
     }
 
 
-    @PostMapping("/sign-up/check-email")
-    public Boolean emailValidation(@RequestBody String email) {
+    @PostMapping("/sign-up/check-email/{email}")
+    public Boolean emailValidation(@PathVariable String email) {
         log.info("emailValidation(): " + email);
 
         return memberService.emailValidation(email);
@@ -74,32 +74,32 @@ public class MemberController {
         token = token.substring(1, token.length() - 1);
         log.info("resign(): "+ token);
 
-        Long memberNo = redisService.getValueByKey(token);
+        Long memberId = redisService.getValueByKey(token);
 
-        memberService.delete(memberNo);
+        memberService.delete(memberId);
         redisService.deleteByKey(token);
     }
 
     @PostMapping("/mypage/check-password")
     public Boolean passwordValidation(@RequestBody MemberCheckPasswordRequest memberRequest) {
-        log.info("passwordValidataion(): "+ memberRequest);
+        log.info("passwordValidation(): "+ memberRequest);
 
         return memberService.passwordValidation(memberRequest);
     }
 
-    @PostMapping("/mypage/memberInfo/{memberNo}")
-    public MemberInfoResponse getMemberInfo(@PathVariable("memberNo") Long memberNo) {
-        log.info("getMemberInfo(): "+ memberNo);
+    @PostMapping("/mypage/memberInfo/{memberId}")
+    public MemberInfoResponse getMemberInfo(@PathVariable("memberId") Long memberId) {
+        log.info("getMemberInfo(): "+ memberId);
 
-        return memberService.getMemberInfo(memberNo);
+        return memberService.getMemberInfo(memberId);
     }
 
-    @PostMapping("/mypage/memberInfo/update/{memberNo}")
-    public Boolean updateMemberInfo(@PathVariable("memberNo") Long memberNo,
+    @PostMapping("/mypage/memberInfo/update/{memberId}")
+    public Boolean updateMemberInfo(@PathVariable("memberId") Long memberId,
                                     @RequestBody MyPageUpdateRequest myPageUpdateRequest) {
-        log.info("updateMemberInfo(): "+ memberNo +", "+ myPageUpdateRequest);
+        log.info("updateMemberInfo(): "+ memberId +", "+ myPageUpdateRequest);
 
-        return memberService.updateMemberInfo(memberNo, myPageUpdateRequest);
+        return memberService.updateMemberInfo(memberId, myPageUpdateRequest);
     }
 
 }

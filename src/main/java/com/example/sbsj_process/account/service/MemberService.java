@@ -14,9 +14,9 @@ public interface MemberService {
 
     Boolean signUp(MemberRegisterRequest memberRegisterRequest);
 
-    void delete(Long memberNo);
+    void delete(Long memberId);
 
-    Boolean idValidation(String id);
+    Boolean userIdValidation(String userId);
 
     Boolean emailValidation(String email);
 
@@ -24,8 +24,8 @@ public interface MemberService {
 
     Boolean passwordValidation(MemberCheckPasswordRequest memberRequest);
 
-    MemberInfoResponse getMemberInfo(Long memberNo);
+    MemberInfoResponse getMemberInfo(Long memberId);
 
-    Boolean updateMemberInfo(Long memberNo, MyPageUpdateRequest myPageUpdateRequest);
+    Boolean updateMemberInfo(Long memberId, MyPageUpdateRequest myPageUpdateRequest);
 
 }

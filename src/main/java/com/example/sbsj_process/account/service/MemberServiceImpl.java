@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.save(member);
             memberProfileRepository.save(memberProfile);
         } catch(Exception e) {
-            memberRepository.deleteByMemberNo(member.getMemberNo());
+            memberRepository.deleteByMemberId(member.getMemberId());
             return false;
         }
 
@@ -54,8 +54,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean idValidation(String id) {
-        Optional<Member> maybeMember = memberRepository.findById(id);
+    public Boolean userIdValidation(String userId) {
+        Optional<Member> maybeMember = memberRepository.findByUserId(userId);
 
         if (maybeMember.isPresent()) {
             return true;
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Boolean emailValidation(String email) {
-        email = email.substring(1, email.length() - 1);
+//        email = email.substring(1, email.length() - 1);
 
         Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByEmail(email);
         if (maybeMemberProfile.isPresent()) {
@@ -88,13 +88,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberLoginResponse signIn(MemberLoginRequest memberLoginRequest) {
-        Optional<Member> maybeMember = memberRepository.findById(memberLoginRequest.getId());
+        Optional<Member> maybeMember = memberRepository.findByUserId(memberLoginRequest.getUserId());
 
         MemberLoginResponse memberLoginResponse = new MemberLoginResponse();
 
         if(maybeMember.isPresent()) {
             Member member = maybeMember.get();
-            memberLoginResponse.setMemberNo(member.getMemberNo());
+            memberLoginResponse.setMemberId(member.getMemberId());
 
             if(!member.isRightPassword(memberLoginRequest.getPassword())) {
                 memberLoginResponse.setToken("incorrect");
@@ -105,7 +105,7 @@ public class MemberServiceImpl implements MemberService {
 
             // redis 처리 필요
             redisService.deleteByKey(userToken.toString());
-            redisService.setKeyAndValue(userToken.toString(), member.getMemberNo());
+            redisService.setKeyAndValue(userToken.toString(), member.getMemberId());
 
             memberLoginResponse.setToken(userToken.toString());
             return memberLoginResponse;
@@ -116,9 +116,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void delete(Long memberNo) {
-        System.out.println("서비스에서 보는 delete memberNo: "+ memberNo);
-        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
+    public void delete(Long memberId) {
+        System.out.println("서비스에서 보는 delete memberNo: "+ memberId);
+        Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
 
         if(maybeMember.isEmpty()) {
 //            System.out.println("서비스에서 보는 delete: "+ maybeMember.get());
@@ -129,7 +129,7 @@ public class MemberServiceImpl implements MemberService {
         if(maybeMember.isPresent()) {
             Member member = maybeMember.get();
             memberProfileRepository.deleteByMember(member);
-            memberRepository.deleteByMemberNo(memberNo);
+            memberRepository.deleteByMemberId(memberId);
         }
 
     }
@@ -137,10 +137,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public Boolean passwordValidation(MemberCheckPasswordRequest memberRequest) {
-        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberRequest.getMemberNo());
+        Optional<Member> maybeMember = memberRepository.findByMemberId(memberRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
-            System.out.println("memberNo 에 해당하는 계정이 없습니다.");
+            System.out.println("memberId 에 해당하는 계정이 없습니다.");
             return null;
         }
 
@@ -153,9 +153,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberInfoResponse getMemberInfo(Long memberNo) {
-        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
-        Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberNo(memberNo);
+    public MemberInfoResponse getMemberInfo(Long memberId) {
+        Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
+        Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberId(memberId);
 
         if(maybeMember.isEmpty()) {
             return null;
@@ -166,10 +166,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean updateMemberInfo(Long memberNo, MyPageUpdateRequest myPageUpdateRequest) {
-        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
-        Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberNo(memberNo);
-        Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_MemberNo(memberNo);
+    public Boolean updateMemberInfo(Long memberId, MyPageUpdateRequest myPageUpdateRequest) {
+        Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
+        Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberId(memberId);
+        Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_MemberId(memberId);
 
         if(maybeMember.isEmpty()) {
             return false;
@@ -179,7 +179,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         MemberProfile memberProfile = myPageUpdateRequest.toMemberProfile(member);
-        memberProfile.setProfileId(maybeMemberProfile.get().getProfileId());
+        memberProfile.setMemberProfileId(maybeMemberProfile.get().getMemberProfileId());
         memberProfileRepository.save(memberProfile);
 
         if(!myPageUpdateRequest.getNewPassword().equals("")) {
@@ -189,7 +189,7 @@ public class MemberServiceImpl implements MemberService {
                     myPageUpdateRequest.getNewPassword()
             );
 
-            authentication.setId(maybeAuthentication.get().getId());
+            authentication.setAuthenticationId(maybeAuthentication.get().getAuthenticationId());
             authenticationRepository.save(authentication);
         }
 

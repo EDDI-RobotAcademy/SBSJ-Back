@@ -12,11 +12,11 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MemberLoginForm {
 
-    private String id;
+    private String userId;
     private String password;
 
     public MemberLoginRequest toMemberLoginRequest () {
-        return new MemberLoginRequest(id, password);
+        return new MemberLoginRequest(userId, password);
     }
 
 }

@@ -11,7 +11,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class MemberLoginResponse {
 
-    private Long memberNo;
+    private Long memberId;
     private String token;
 
 }

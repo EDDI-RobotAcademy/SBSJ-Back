@@ -9,11 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 public class AddCartRequest {
 
-    private Long memberNo;
+    private Long memberId;
     private Long productId;
     private Long count;
 
     public AddCartRequest toAddCartRequest() {
-        return new AddCartRequest(memberNo, productId, count);
+        return new AddCartRequest(memberId, productId, count);
     }
 }

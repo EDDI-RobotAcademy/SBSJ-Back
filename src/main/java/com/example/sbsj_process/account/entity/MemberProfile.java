@@ -17,10 +17,10 @@ public class MemberProfile {
     @Setter
     @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long profileId;
+    private Long memberProfileId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_no")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(length = 16, nullable = false)

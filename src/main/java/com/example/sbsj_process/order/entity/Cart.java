@@ -22,7 +22,7 @@ public class Cart {
     private Long cartId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "member_no")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(length = 16)
@@ -32,12 +32,5 @@ public class Cart {
     @Builder.Default
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CartItem> cartItemList = new ArrayList<>();
-
-
-
-
-
-
-
 
 }
