@@ -3,7 +3,6 @@ package com.example.sbsj_process.order.cart.controller;
 import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
 import com.example.sbsj_process.order.cart.dto.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.dto.response.CartItemReadResponse;
 import com.example.sbsj_process.order.cart.entity.CartItem;
 import com.example.sbsj_process.order.cart.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -44,24 +43,6 @@ public class CartController {
         cartService.changeCartItemCount(changeCartItemCountRequest);
         return "1";
     }
-
-
-    @GetMapping("/{cartItemId}")
-    public CartItemReadResponse cartItemRead(@PathVariable("cartItemId") Long cartItemId) {
-        log.info("cartItemRead()");
-
-        return cartService.read(cartItemId);
-
-    }
-
-
-
-
-
-
-
-
-
 
 
 
