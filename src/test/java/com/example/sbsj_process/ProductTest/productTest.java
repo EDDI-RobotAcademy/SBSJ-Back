@@ -1,7 +1,6 @@
 package com.example.sbsj_process.ProductTest;
 
 
-import com.example.sbsj_process.product.controller.form.ProductListResponse;
 import com.example.sbsj_process.product.controller.form.ProductRegisterForm;
 import com.example.sbsj_process.product.entity.Image;
 import com.example.sbsj_process.product.entity.Product;
@@ -40,21 +39,10 @@ public class productTest {
     private ProductService productService;
 
     @Test
-    public void 기본_상품리스트_가져오기_테스트() throws Exception {
-        상품_등록_테스트();
-        List<ProductListResponse> productListResponses = productService.getDefaultList();
-        for(int i = 0; i < productListResponses.size(); i++) {
-            System.out.println("##################################");
-            System.out.println(productListResponses.get(i));
-            System.out.println("##################################");
-        }
-    }
-
-    @Test
     public void 상품_등록_테스트() throws Exception {
         File[] files = new File[2];
-        files[0] = new File("/Users/namgunho/git/sbsj/SBSJ-Back/sbsj_process/src/test/java/com/example/sbsj_process/ProductTest/testImage/PERNIT.jpg");
-        files[1] = new File("/Users/namgunho/git/sbsj/SBSJ-Back/sbsj_process/src/test/java/com/example/sbsj_process/ProductTest/testImage/PERNIT_Detail.jpg");
+        files[0] = new File("/Users/yeng/sbsj_img/nowfood.jpg");
+        files[1] = new File("/Users/yeng/sbsj_img/nowfood_detail.jpg");
         List<MultipartFile> multipartFiles = new ArrayList<>();
         System.out.println(files.length);
         try {
@@ -71,8 +59,8 @@ public class productTest {
         }
         System.out.println("multipartFiles.get(0).toString(): " + multipartFiles.get(0).toString());
         System.out.println("multipartFiles.get(1).toString(): " + multipartFiles.get(1).toString());
-        String productName = "someProductName";
-        Long productPrice = 1000000L;
+        String productName = "좋은약";
+        Long productPrice = 10000L;
 
         ProductRegisterForm productRegisterForm = new ProductRegisterForm(productName, productPrice);
         productService.register(multipartFiles, productRegisterForm.toProductRegisterRequest());
