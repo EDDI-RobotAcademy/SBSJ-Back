@@ -10,4 +10,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
     Optional<Delivery> findByMember_MemberNo(Long memberNo);
 
+    List<Delivery> findAllByMember_MemberNo(Long memberNo);
+
 }
