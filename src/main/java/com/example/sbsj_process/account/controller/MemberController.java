@@ -36,8 +36,9 @@ public class MemberController {
         return memberService.idValidation(id);
     }
 
-    @PostMapping("/sign-up/check-email/{email}")
-    public Boolean emailValidation(@PathVariable("email") String email) {
+
+    @PostMapping("/sign-up/check-email")
+    public Boolean emailValidation(@RequestBody String email) {
         log.info("emailValidation(): " + email);
 
         return memberService.emailValidation(email);
