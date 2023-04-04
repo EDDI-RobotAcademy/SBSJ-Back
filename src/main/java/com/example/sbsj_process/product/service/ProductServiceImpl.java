@@ -23,13 +23,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductServiceImpl implements ProductService{
+
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;
     private final ImageRepository imageRepository;
+
     public List<ProductListResponse> getDefaultList() {
         List<ProductListResponse> productListResponses = new ArrayList<>();
         List<Product> products = productRepository.findAll();
-        String title, thumbnail; Long productId, price, wish;
+        String title, thumbnail;
+        Long productId, price, wish;
 
         for(int i = 0; i < products.size(); i++) {
             title = products.get(i).getProductName();
@@ -44,7 +47,6 @@ public class ProductServiceImpl implements ProductService{
         return productListResponses;
     }
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
-
         Product product = productRegisterRequest.toProduct(); // Create Product
 
         ProductInfo productInfo = productRegisterRequest.toProductInfo(); // Create ProductInfo
@@ -55,13 +57,13 @@ public class ProductServiceImpl implements ProductService{
         Image image = new Image(thumbnail, detail); // Create Image
         image.setProduct(product);
 
-
         // Deep Copy to Frontend Server File System
         final String fixedStringPath = "../../SBSJ-Front/sbsj_web/src/assets/productImgs/";
         try {
             log.info("requestFileUploadWithText() - Filename: " + thumbnail);
             FileOutputStream writer = new FileOutputStream(fixedStringPath + thumbnail);
             writer.write(imageFileList.get(0).getBytes()); // save thumbnail image
+
             log.info("requestFileUploadWithText() - Filename: " + detail);
             writer = new FileOutputStream(fixedStringPath + detail);
             writer.write(imageFileList.get(1).getBytes()); // save detail image

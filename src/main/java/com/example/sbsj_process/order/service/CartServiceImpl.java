@@ -49,16 +49,16 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void addCartItem(AddCartRequest addCartRequest) {
 
-        Long memberNo = addCartRequest.getMemberNo();
+        Long memberId = addCartRequest.getMemberId();
         Long productId = addCartRequest.getProductId();
         Long count = addCartRequest.getCount();
 
-        Optional<Cart> maybeCart = cartRepository.findByMember_MemberNo(memberNo);
+        Optional<Cart> maybeCart = cartRepository.findByMember_MemberId(memberId);
 
 
         // 카트가 생성되어 있지 않다면
         if(maybeCart.isEmpty()){
-            Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
+            Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
             Member member = new Member();
 
             if(maybeMember.isPresent()) {
@@ -76,7 +76,7 @@ public class CartServiceImpl implements CartService {
         }
 
         // 카트에 아이템 추가할 때
-        maybeCart = cartRepository.findByMember_MemberNo(memberNo);
+        maybeCart = cartRepository.findByMember_MemberId(memberId);
         Cart cart = new Cart();
 
         if(maybeCart.isPresent()) {
@@ -119,9 +119,9 @@ public class CartServiceImpl implements CartService {
 
     public List<CartItem> returnCartItemList(String userToken){
         String returnToken = validationToken.validationToken(userToken);
-        Long memberNo = redisService.getValueByKey(returnToken);
+        Long memberId = redisService.getValueByKey(returnToken);
 
-        return cartItemRepository.findCartListByMemberNo(memberNo);
+        return cartItemRepository.findCartListByMemberId(memberId);
     }
 
     @Override

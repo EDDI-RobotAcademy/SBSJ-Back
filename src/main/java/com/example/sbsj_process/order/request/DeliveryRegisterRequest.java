@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class DeliveryRegisterRequest {
 
-    private Long memberNo;
+    private Long memberId;
     private String addressName;
     private String defaultAddress;
     private String addressType;

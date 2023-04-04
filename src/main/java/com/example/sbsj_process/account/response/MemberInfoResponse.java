@@ -11,14 +11,14 @@ import lombok.ToString;
 @AllArgsConstructor
 public class MemberInfoResponse {
 
-    private String id;
+    private String userId;
     private String name;
     private String email;
     private String phoneNumber;
     private String birthday;
 
     public MemberInfoResponse(Member member, MemberProfile memberProfile) {
-        this.id = member.getId();
+        this.userId = member.getUserId();
         this.name = memberProfile.getName();
         this.email = memberProfile.getEmail();
         this.phoneNumber = memberProfile.getPhoneNumber();

@@ -12,14 +12,14 @@ import lombok.ToString;
 public class MemberRegisterRequest {
 
     final private String name;
-    final private String id;
+    final private String userId;
     final private String password;
     final private String email;
     final private String birthday;
     final private String phoneNumber;
 
     public Member toMember () {
-        return new Member(id);
+        return new Member(userId);
     }
 
     public MemberProfile toMemberProfile(Member member) {

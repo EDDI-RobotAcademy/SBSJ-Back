@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("select m from Member m join fetch m.authentications where m.id = :id")
-    Optional<Member> findById(@Param("id") String id);
+    @Query("select m from Member m join fetch m.authentications where m.userId = :userId")
+    Optional<Member> findByUserId(@Param("userId") String userId);
 
-    Optional<Member> findByMemberNo(Long memberNo);
+    Optional<Member> findByMemberId(Long memberId);
 
-    void deleteByMemberNo(Long memberNo);
+    void deleteByMemberId(Long memberId);
 
 }

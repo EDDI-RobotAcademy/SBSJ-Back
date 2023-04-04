@@ -42,7 +42,7 @@ public class cartTest {
 
     @Test
     public void 장바구니_아이템_조회_테스트 () {
-        List<CartItem> cartItemList = cartItemRepository.findCartListByMemberNo(1L);
+        List<CartItem> cartItemList = cartItemRepository.findCartListByMemberId(1L);
         System.out.println("장바구니 아이템 조회 테스트: "+ cartItemList.toString());
     }
 }

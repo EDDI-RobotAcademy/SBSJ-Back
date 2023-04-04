@@ -17,13 +17,13 @@ public class Member {
     @Id
     @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberNo;
+    private Long memberId;
 
     @Column(length = 16,unique = true, nullable = false)
-    private String id;
+    private String userId;
 
-    public Member(String id) {
-        this.id = id;
+    public Member(String userId) {
+        this.userId = userId;
     }
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

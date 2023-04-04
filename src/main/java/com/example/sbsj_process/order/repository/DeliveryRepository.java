@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
-    Optional<Delivery> findByMember_MemberNo(Long memberNo);
+    Optional<Delivery> findByMember_MemberId(Long memberId);
 
-    List<Delivery> findAllByMember_MemberNo(Long memberNo);
+    List<Delivery> findAllByMember_MemberId(Long memberId);
 
 }

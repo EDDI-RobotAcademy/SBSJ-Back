@@ -9,7 +9,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class MemberLoginRequest {
 
-    private final String id;
+    private final String userId;
     private final String password;
 
 }

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    @Query("Select i from Image i join fetch i.product p where p.productId = :id")
-    Image findByProductId(Long id);
+    @Query("Select i from Image i join fetch i.product p where p.productId = :productId")
+    Image findByProductId(Long productId);
 }

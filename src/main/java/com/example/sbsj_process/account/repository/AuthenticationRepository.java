@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface AuthenticationRepository extends JpaRepository<Authentication, Long> {
 
-    Optional<Authentication> findByMember_MemberNo(Long memberNo);
+    Optional<Authentication> findByMember_MemberId(Long memberId);
 
 }
