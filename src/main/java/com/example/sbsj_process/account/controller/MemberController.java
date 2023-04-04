@@ -91,4 +91,12 @@ public class MemberController {
         return memberService.getMemberInfo(memberNo);
     }
 
+    @PostMapping("/mypage/memberInfo/update/{memberNo}")
+    public Boolean updateMemberInfo(@PathVariable("memberNo") Long memberNo,
+                                    @RequestBody MyPageUpdateRequest myPageUpdateRequest) {
+        log.info("updateMemberInfo(): "+ memberNo +", "+ myPageUpdateRequest);
+
+        return memberService.updateMemberInfo(memberNo, myPageUpdateRequest);
+    }
+
 }

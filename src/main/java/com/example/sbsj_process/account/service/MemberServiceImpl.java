@@ -10,6 +10,7 @@ import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.account.request.MemberCheckPasswordRequest;
 import com.example.sbsj_process.account.request.MemberLoginRequest;
 import com.example.sbsj_process.account.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.request.MyPageUpdateRequest;
 import com.example.sbsj_process.account.response.MemberInfoResponse;
 import com.example.sbsj_process.account.response.MemberLoginResponse;
 import com.example.sbsj_process.security.service.RedisService;
@@ -57,21 +58,21 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> maybeMember = memberRepository.findById(id);
 
         if (maybeMember.isPresent()) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
     public Boolean emailValidation(String email) {
+        email = email.substring(1, email.length() - 1);
+
         Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByEmail(email);
-
         if (maybeMemberProfile.isPresent()) {
-            return false;
+            return true;
         }
-
-        return true;
+        return false;
     }
 
     @Override
@@ -79,10 +80,10 @@ public class MemberServiceImpl implements MemberService {
         Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByPhoneNumber(phoneNumber);
 
         if (maybeMemberProfile.isPresent()) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -164,6 +165,36 @@ public class MemberServiceImpl implements MemberService {
         return memberInfoResponse;
     }
 
+    @Override
+    public Boolean updateMemberInfo(Long memberNo, MyPageUpdateRequest myPageUpdateRequest) {
+        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
+        Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberNo(memberNo);
+        Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_MemberNo(memberNo);
+
+        if(maybeMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = maybeMember.get();
+        memberRepository.save(member);
+
+        MemberProfile memberProfile = myPageUpdateRequest.toMemberProfile(member);
+        memberProfile.setProfileId(maybeMemberProfile.get().getProfileId());
+        memberProfileRepository.save(memberProfile);
+
+        if(!myPageUpdateRequest.getNewPassword().equals("")) {
+            final BasicAuthentication authentication = new BasicAuthentication(
+                    member,
+                    Authentication.BASIC_AUTH,
+                    myPageUpdateRequest.getNewPassword()
+            );
+
+            authentication.setId(maybeAuthentication.get().getId());
+            authenticationRepository.save(authentication);
+        }
+
+        return true;
+    }
 
 
 }

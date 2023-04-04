@@ -26,4 +26,6 @@ public interface MemberService {
 
     MemberInfoResponse getMemberInfo(Long memberNo);
 
+    Boolean updateMemberInfo(Long memberNo, MyPageUpdateRequest myPageUpdateRequest);
+
 }
