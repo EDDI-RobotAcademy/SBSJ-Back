@@ -1,10 +1,11 @@
-package com.example.sbsj_process.AccountMemberTest;
+package com.example.sbsj_process.AccountTest;
 
 import com.example.sbsj_process.account.repository.AuthenticationRepository;
 import com.example.sbsj_process.account.repository.MemberRepository;
-import com.example.sbsj_process.account.service.MemberService;
 import com.example.sbsj_process.account.request.MemberLoginRequest;
 import com.example.sbsj_process.account.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.response.MemberLoginResponse;
+import com.example.sbsj_process.account.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +29,13 @@ public class memberTest {
     
     @Test
     public void 멤버_로그인_실패_테스트() {
-        String signInEx = memberService.signIn(new MemberLoginRequest("aaa", "bbb"));
-        if(signInEx.equals("틀림")) {
+        MemberLoginResponse memberLoginResponse = memberService.signIn(new MemberLoginRequest("aaa", "bbb"));
+        String token = memberLoginResponse.getToken();
+
+        if(token.equals("틀림")) {
             System.out.println("비밀번호가 틀렸습니다.");
             return;
-        } else if(signInEx.equals("없음")) {
+        } else if(token.equals("없음")) {
             System.out.println("가입되지 않은 계정입니다.");
         }
     }

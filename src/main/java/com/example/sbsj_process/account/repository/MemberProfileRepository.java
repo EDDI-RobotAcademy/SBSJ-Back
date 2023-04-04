@@ -18,4 +18,6 @@ public interface MemberProfileRepository extends JpaRepository<MemberProfile, Lo
 
     Optional<MemberProfile> findByPhoneNumber(String phoneNumber);
 
+    Optional<MemberProfile> findByMember_MemberNo(Long memberNo);
+
 }
