@@ -76,4 +76,18 @@ public class MemberController {
         redisService.deleteByKey(token);
     }
 
+    @PostMapping("/mypage/check-password")
+    public Boolean passwordValidation(@RequestBody MemberCheckPasswordRequest memberRequest) {
+        log.info("passwordValidataion(): "+ memberRequest);
+
+        return memberService.passwordValidation(memberRequest);
+    }
+
+    @PostMapping("/mypage/memberInfo/{memberNo}")
+    public MemberInfoResponse getMemberInfo(@PathVariable("memberNo") Long memberNo) {
+        log.info("getMemberInfo(): "+ memberNo);
+
+        return memberService.getMemberInfo(memberNo);
+    }
+
 }

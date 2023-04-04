@@ -22,4 +22,6 @@ public interface MemberService {
 
     Boolean phoneNumberValidation(String phoneNumber);
 
+    Boolean passwordValidation(MemberCheckPasswordRequest memberRequest);
+
 }

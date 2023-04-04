@@ -7,6 +7,7 @@ import com.example.sbsj_process.account.entity.MemberProfile;
 import com.example.sbsj_process.account.repository.AuthenticationRepository;
 import com.example.sbsj_process.account.repository.MemberProfileRepository;
 import com.example.sbsj_process.account.repository.MemberRepository;
+import com.example.sbsj_process.account.request.MemberCheckPasswordRequest;
 import com.example.sbsj_process.account.request.MemberLoginRequest;
 import com.example.sbsj_process.account.request.MemberRegisterRequest;
 import com.example.sbsj_process.account.response.MemberLoginResponse;
@@ -14,6 +15,7 @@ import com.example.sbsj_process.security.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -128,6 +130,24 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.deleteByMemberNo(memberNo);
         }
 
+    }
+
+    @Override
+    @Transactional
+    public Boolean passwordValidation(MemberCheckPasswordRequest memberRequest) {
+        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberRequest.getMemberNo());
+
+        if(maybeMember.isEmpty()) {
+            System.out.println("memberNo 에 해당하는 계정이 없습니다.");
+            return null;
+        }
+
+        Member member = maybeMember.get();
+        if(member.isRightPassword(memberRequest.getPassword())) {
+            return true;
+        }
+
+        return false;
     }
 
 
