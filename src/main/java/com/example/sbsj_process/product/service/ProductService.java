@@ -1,6 +1,6 @@
 package com.example.sbsj_process.product.service;
 
-import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
+import com.example.sbsj_process.product.dto.request.ProductRegisterRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

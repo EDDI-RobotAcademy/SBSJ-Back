@@ -1,4 +1,4 @@
-package com.example.sbsj_process.account.service.request;
+package com.example.sbsj_process.account.dto.request;
 
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.entity.MemberProfile;

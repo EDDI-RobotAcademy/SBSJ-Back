@@ -1,18 +1,13 @@
 package com.example.sbsj_process.AccountMemberTest;
 
-import com.example.sbsj_process.account.entity.Authentication;
-import com.example.sbsj_process.account.entity.BasicAuthentication;
-import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.repository.AuthenticationRepository;
 import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.account.service.MemberService;
-import com.example.sbsj_process.account.service.request.MemberLoginRequest;
-import com.example.sbsj_process.account.service.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.dto.request.MemberLoginRequest;
+import com.example.sbsj_process.account.dto.request.MemberRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class memberTest {
