@@ -1,7 +1,5 @@
-package com.example.sbsj_process.order.cart.dto.request;
+package com.example.sbsj_process.order.request;
 
-import com.example.sbsj_process.order.cart.entity.Cart;
-import com.example.sbsj_process.order.cart.entity.CartItem;
 import lombok.*;
 
 import java.util.List;

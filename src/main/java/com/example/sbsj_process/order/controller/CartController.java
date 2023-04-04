@@ -1,10 +1,10 @@
-package com.example.sbsj_process.order.cart.controller;
+package com.example.sbsj_process.order.controller;
 
-import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
-import com.example.sbsj_process.order.cart.dto.request.ChangeCartItemCountRequest;
-import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.entity.CartItem;
-import com.example.sbsj_process.order.cart.service.CartService;
+import com.example.sbsj_process.order.request.AddCartRequest;
+import com.example.sbsj_process.order.request.ChangeCartItemCountRequest;
+import com.example.sbsj_process.order.request.SelectCartItemRequest;
+import com.example.sbsj_process.order.entity.CartItem;
+import com.example.sbsj_process.order.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

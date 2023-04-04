@@ -1,15 +1,14 @@
 package com.example.sbsj_process.OrderTest;
 
-import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
-import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.entity.CartItem;
-import com.example.sbsj_process.order.cart.repository.CartItemRepository;
-import com.example.sbsj_process.order.cart.service.CartService;
+import com.example.sbsj_process.order.request.AddCartRequest;
+import com.example.sbsj_process.order.request.SelectCartItemRequest;
+import com.example.sbsj_process.order.entity.CartItem;
+import com.example.sbsj_process.order.repository.CartItemRepository;
+import com.example.sbsj_process.order.service.CartService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 

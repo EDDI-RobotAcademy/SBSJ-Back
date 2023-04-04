@@ -1,4 +1,4 @@
-package com.example.sbsj_process.order.cart.entity;
+package com.example.sbsj_process.order.entity;
 
 import com.example.sbsj_process.account.entity.Member;
 import lombok.*;

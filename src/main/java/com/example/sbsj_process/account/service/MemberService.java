@@ -1,7 +1,7 @@
 package com.example.sbsj_process.account.service;
 
-import com.example.sbsj_process.account.dto.request.MemberLoginRequest;
-import com.example.sbsj_process.account.dto.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.request.MemberLoginRequest;
+import com.example.sbsj_process.account.request.MemberRegisterRequest;
 
 public interface MemberService {
 

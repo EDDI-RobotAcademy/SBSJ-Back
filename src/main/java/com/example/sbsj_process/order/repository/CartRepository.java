@@ -1,6 +1,6 @@
-package com.example.sbsj_process.order.cart.repository;
+package com.example.sbsj_process.order.repository;
 
-import com.example.sbsj_process.order.cart.entity.Cart;
+import com.example.sbsj_process.order.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
