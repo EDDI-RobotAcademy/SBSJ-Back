@@ -1,6 +1,7 @@
 package com.example.sbsj_process.product.entity;
 
 import com.example.sbsj_process.account.entity.Member;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @ToString
+@Getter
 public class Image {
 
     @Id
