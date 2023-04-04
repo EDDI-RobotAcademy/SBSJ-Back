@@ -10,6 +10,7 @@ import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.account.request.MemberCheckPasswordRequest;
 import com.example.sbsj_process.account.request.MemberLoginRequest;
 import com.example.sbsj_process.account.request.MemberRegisterRequest;
+import com.example.sbsj_process.account.response.MemberInfoResponse;
 import com.example.sbsj_process.account.response.MemberLoginResponse;
 import com.example.sbsj_process.security.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -148,6 +149,19 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return false;
+    }
+
+    @Override
+    public MemberInfoResponse getMemberInfo(Long memberNo) {
+        Optional<Member> maybeMember = memberRepository.findByMemberNo(memberNo);
+        Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberNo(memberNo);
+
+        if(maybeMember.isEmpty()) {
+            return null;
+        }
+
+        MemberInfoResponse memberInfoResponse = new MemberInfoResponse(maybeMember.get(), maybeMemberProfile.get());
+        return memberInfoResponse;
     }
 
 

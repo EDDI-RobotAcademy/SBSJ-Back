@@ -24,4 +24,6 @@ public interface MemberService {
 
     Boolean passwordValidation(MemberCheckPasswordRequest memberRequest);
 
+    MemberInfoResponse getMemberInfo(Long memberNo);
+
 }
