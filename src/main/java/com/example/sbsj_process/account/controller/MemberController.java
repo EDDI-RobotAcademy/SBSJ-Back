@@ -60,7 +60,7 @@ public class MemberController {
 
     @PostMapping("/logout")
     public void logout(@RequestBody String token) {
-        token = token.substring(0, token.length() - 1);
+        token = token.substring(1, token.length() - 1);
         log.info("logout(): " + token);
 
         redisService.deleteByKey(token);
@@ -69,7 +69,7 @@ public class MemberController {
     @Transactional
     @PostMapping("/resign")
     public void resign(@RequestBody String token) {
-        token = token.substring(0, token.length() - 1);
+        token = token.substring(1, token.length() - 1);
         log.info("resign(): "+ token);
 
         Long memberNo = redisService.getValueByKey(token);
