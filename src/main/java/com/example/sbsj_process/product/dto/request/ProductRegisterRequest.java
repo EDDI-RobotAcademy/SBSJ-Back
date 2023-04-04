@@ -1,4 +1,4 @@
-package com.example.sbsj_process.product.service.request;
+package com.example.sbsj_process.product.dto.request;
 
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.entity.ProductInfo;
