@@ -5,7 +5,6 @@ import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
 import com.example.sbsj_process.order.cart.dto.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.dto.response.CartItemReadResponse;
 import com.example.sbsj_process.order.cart.entity.Cart;
 import com.example.sbsj_process.order.cart.entity.CartItem;
 import com.example.sbsj_process.order.cart.repository.CartItemRepository;
@@ -115,30 +114,6 @@ public class CartServiceImpl implements CartService {
             cartItemRepository.deleteById(deleteCartItemId.get(i));
             cart.setTotalCount(cart.getTotalCount() - 1);
         }
-
-    }
-
-    @Override
-    public CartItemReadResponse read(Long cartItemId) {
-        // 매개변수로 받은 cartItemId를 조건으로 DB에서 데이터를 불러와 maybeCartItem에 저장
-        Optional<CartItem> maybeCartItem = cartItemRepository.findById(cartItemId);
-
-        // maybeCartItem 값이 비어있다면 null을 리턴
-        if (maybeCartItem.isEmpty()) {
-            log.info("읽을 수가 없음");
-            return null;
-        }
-
-        // maybeCartItem 값이 있다면 cartItem 객체에 저장
-        CartItem cartItem = maybeCartItem.get();
-
-        // response 객체에 그 정보들을 담음
-        CartItemReadResponse cartItemReadResponse = new CartItemReadResponse(
-                cartItem.getCartItemId(), cartItem.getProduct(), cartItem.getCount(), cartItem.getCart()
-        );
-
-        // 응답
-        return cartItemReadResponse;
 
     }
 

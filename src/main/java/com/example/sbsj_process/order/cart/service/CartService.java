@@ -3,7 +3,6 @@ package com.example.sbsj_process.order.cart.service;
 import com.example.sbsj_process.order.cart.dto.request.AddCartRequest;
 import com.example.sbsj_process.order.cart.dto.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.order.cart.dto.request.SelectCartItemRequest;
-import com.example.sbsj_process.order.cart.dto.response.CartItemReadResponse;
 import com.example.sbsj_process.order.cart.entity.CartItem;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public interface CartService {
     String changeCartItemCount (ChangeCartItemCountRequest changeCartItemCountRequest);
 
 
-    public CartItemReadResponse read(Long cartItemId);
 
 
 
