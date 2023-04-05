@@ -70,14 +70,11 @@ public class MemberController {
 
     @Transactional
     @PostMapping("/resign")
-    public void resign(@RequestBody String token) {
-        token = token.substring(1, token.length() - 1);
-        log.info("resign(): "+ token);
+    public void resign(@RequestBody UserInfoRequest userInfoRequest) {
+        log.info("resign(): "+ userInfoRequest);
 
-        Long memberId = redisService.getValueByKey(token);
-
-        memberService.delete(memberId);
-        redisService.deleteByKey(token);
+        memberService.resign(userInfoRequest.getMemberId());
+        redisService.deleteByKey(userInfoRequest.getToken());
     }
 
     @PostMapping("/mypage/check-password")
