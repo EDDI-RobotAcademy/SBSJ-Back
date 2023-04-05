@@ -8,6 +8,7 @@ import com.example.sbsj_process.account.response.MemberInfoResponse;
 import com.example.sbsj_process.account.response.MemberLoginResponse;
 import com.example.sbsj_process.account.service.MemberService;
 import com.example.sbsj_process.security.service.RedisService;
+import com.example.sbsj_process.utility.request.UserInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -61,11 +62,10 @@ public class MemberController {
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestBody String token) {
-        token = token.substring(1, token.length() - 1);
-        log.info("logout(): " + token);
+    public void logout(@RequestBody UserInfoRequest userInfoRequest) {
+        log.info("logout(): " + userInfoRequest);
 
-        redisService.deleteByKey(token);
+        redisService.deleteByKey(userInfoRequest.getToken());
     }
 
     @Transactional
