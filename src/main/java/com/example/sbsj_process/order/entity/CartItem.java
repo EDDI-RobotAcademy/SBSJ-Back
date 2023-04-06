@@ -1,6 +1,7 @@
 package com.example.sbsj_process.order.entity;
 
 import com.example.sbsj_process.product.entity.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,9 +34,5 @@ public class CartItem {
     private Cart cart;
 
 
-    // 이미 담겨있는 물건 또 담을 경우 수량 증가
-    public void addCount(Long count) {
-        this.count += count;
-    }
 
 }

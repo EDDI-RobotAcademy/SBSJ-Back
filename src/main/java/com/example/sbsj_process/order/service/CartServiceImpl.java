@@ -9,10 +9,13 @@ import com.example.sbsj_process.order.entity.Cart;
 import com.example.sbsj_process.order.entity.CartItem;
 import com.example.sbsj_process.order.repository.CartItemRepository;
 import com.example.sbsj_process.order.repository.CartRepository;
+import com.example.sbsj_process.order.response.CartItemListResponse;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.repository.ProductRepository;
 import com.example.sbsj_process.security.service.RedisService;
 import com.example.sbsj_process.utility.order.validationToken;
+import com.example.sbsj_process.utility.request.TokenRequest;
+import com.example.sbsj_process.utility.request.UserInfoRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,11 +121,38 @@ public class CartServiceImpl implements CartService {
 
     }
 
-    public List<CartItem> returnCartItemList(String userToken){
-        String returnToken = validationToken.validationToken(userToken);
-        Long memberId = redisService.getValueByKey(returnToken);
+    @Transactional
+    @Override
+    public List<CartItemListResponse> returnCartItemList(UserInfoRequest userInfoRequest){
+        Long memberId = userInfoRequest.getMemberId();
 
-        return cartItemRepository.findCartListByMemberId(memberId);
+        // 리포지터리에서 멤버아이디를 기준으로 찾아온 카트리스트 정보를 저장할 새로운 리스트 생성
+        Cart cart = cartRepository.findCartByMemberId(memberId);
+        List<CartItem> cartItemList = cartItemRepository.findCartListByCartId(cart.getCartId());
+
+        log.info("can I pass findCartLIstByMemberId() ?");
+        log.info("cartItemList: " + cartItemList);
+
+        // 리턴을 위해 리스폰스 리스트 생성
+        List<CartItemListResponse> cartItemListResponseList = new ArrayList<>();
+
+        // 정보를 저장하기 위해 돌리는 foreach문...
+        for(CartItem cartItem: cartItemList) {
+            CartItemListResponse cartItemListResponse = new CartItemListResponse(cartItem);
+
+//            log.info("cartItemListResponse: " + cartItemListResponse);
+//
+//            Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
+//            cartItemListResponse.getCart().setMember(maybeMember.get());
+//
+//            log.info("maybeMember.get(): " + maybeMember.get());
+//            log.info("cartItemListResponse.getProduct(): " + cartItemListResponse.getProduct());
+//            log.info("cartItemListResponse.getCart(): " + cartItemListResponse.getCart());
+
+            cartItemListResponseList.add(cartItemListResponse);
+        }
+
+        return cartItemListResponseList;
     }
 
     @Override
