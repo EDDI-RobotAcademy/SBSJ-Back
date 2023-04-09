@@ -10,7 +10,7 @@ import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.account.service.request.MemberCheckPasswordRequest;
 import com.example.sbsj_process.account.service.request.MemberLoginRequest;
 import com.example.sbsj_process.account.service.request.MemberRegisterRequest;
-import com.example.sbsj_process.account.service.request.MyPageUpdateRequest;
+import com.example.sbsj_process.account.service.request.MyPageModifyRequest;
 import com.example.sbsj_process.account.service.response.MemberInfoResponse;
 import com.example.sbsj_process.account.service.response.MemberLoginResponse;
 import com.example.sbsj_process.order.repository.DeliveryRepository;
@@ -166,7 +166,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Boolean updateMemberInfo(Long memberId, MyPageUpdateRequest myPageUpdateRequest) {
+    public Boolean updateMemberInfo(Long memberId, MyPageModifyRequest myPageModifyRequest) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
         Optional<MemberProfile> maybeMemberProfile = memberProfileRepository.findByMember_MemberId(memberId);
         Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_MemberId(memberId);
@@ -178,15 +178,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = maybeMember.get();
         memberRepository.save(member);
 
-        MemberProfile memberProfile = myPageUpdateRequest.toMemberProfile(member);
+        MemberProfile memberProfile = myPageModifyRequest.toMemberProfile(member);
         memberProfile.setMemberProfileId(maybeMemberProfile.get().getMemberProfileId());
         memberProfileRepository.save(memberProfile);
 
-        if(!myPageUpdateRequest.getNewPassword().equals("")) {
+        if(!myPageModifyRequest.getNewPassword().equals("")) {
             final BasicAuthentication authentication = new BasicAuthentication(
                     member,
                     Authentication.BASIC_AUTH,
-                    myPageUpdateRequest.getNewPassword()
+                    myPageModifyRequest.getNewPassword()
             );
 
             authentication.setAuthenticationId(maybeAuthentication.get().getAuthenticationId());
@@ -195,6 +195,5 @@ public class MemberServiceImpl implements MemberService {
 
         return true;
     }
-
 
 }

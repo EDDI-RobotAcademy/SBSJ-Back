@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
-public class MyPageUpdateRequest {
+public class MyPageModifyRequest {
 
     private String name;
     private String email;

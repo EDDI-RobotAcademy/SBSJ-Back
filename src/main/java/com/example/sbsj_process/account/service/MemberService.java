@@ -4,7 +4,7 @@ package com.example.sbsj_process.account.service;
 import com.example.sbsj_process.account.service.request.MemberCheckPasswordRequest;
 import com.example.sbsj_process.account.service.request.MemberLoginRequest;
 import com.example.sbsj_process.account.service.request.MemberRegisterRequest;
-import com.example.sbsj_process.account.service.request.MyPageUpdateRequest;
+import com.example.sbsj_process.account.service.request.MyPageModifyRequest;
 import com.example.sbsj_process.account.service.response.MemberInfoResponse;
 import com.example.sbsj_process.account.service.response.MemberLoginResponse;
 
@@ -26,6 +26,6 @@ public interface MemberService {
 
     MemberInfoResponse getMemberInfo(Long memberId);
 
-    Boolean updateMemberInfo(Long memberId, MyPageUpdateRequest myPageUpdateRequest);
+    Boolean updateMemberInfo(Long memberId, MyPageModifyRequest myPageModifyRequest);
 
 }
