@@ -1,6 +1,6 @@
 package com.example.sbsj_process.product.controller.form;
 
-import com.example.sbsj_process.product.request.ProductRegisterRequest;
+import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
 
 import java.util.List;
 

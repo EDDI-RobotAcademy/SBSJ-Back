@@ -1,4 +1,4 @@
-package com.example.sbsj_process.account.response;
+package com.example.sbsj_process.account.service.response;
 
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.entity.MemberProfile;

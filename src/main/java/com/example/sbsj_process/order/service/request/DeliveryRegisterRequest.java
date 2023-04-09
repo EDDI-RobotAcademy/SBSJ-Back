@@ -1,4 +1,4 @@
-package com.example.sbsj_process.order.request;
+package com.example.sbsj_process.order.service.request;
 
 import com.example.sbsj_process.order.entity.Delivery;
 import lombok.AllArgsConstructor;
