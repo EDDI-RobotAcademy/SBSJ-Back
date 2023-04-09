@@ -3,7 +3,7 @@ package com.example.sbsj_process.account.controller;
 import com.example.sbsj_process.account.controller.form.MemberLoginForm;
 import com.example.sbsj_process.account.controller.form.MemberRegisterForm;
 import com.example.sbsj_process.account.service.request.MemberCheckPasswordRequest;
-import com.example.sbsj_process.account.service.request.MyPageUpdateRequest;
+import com.example.sbsj_process.account.service.request.MyPageModifyRequest;
 import com.example.sbsj_process.account.service.response.MemberInfoResponse;
 import com.example.sbsj_process.account.service.response.MemberLoginResponse;
 import com.example.sbsj_process.account.service.MemberService;
@@ -93,10 +93,10 @@ public class MemberController {
 
     @PostMapping("/mypage/memberInfo/update/{memberId}")
     public Boolean updateMemberInfo(@PathVariable("memberId") Long memberId,
-                                    @RequestBody MyPageUpdateRequest myPageUpdateRequest) {
-        log.info("updateMemberInfo(): "+ memberId +", "+ myPageUpdateRequest);
+                                    @RequestBody MyPageModifyRequest myPageModifyRequest) {
+        log.info("updateMemberInfo(): "+ memberId +", "+ myPageModifyRequest);
 
-        return memberService.updateMemberInfo(memberId, myPageUpdateRequest);
+        return memberService.updateMemberInfo(memberId, myPageModifyRequest);
     }
 
 }
