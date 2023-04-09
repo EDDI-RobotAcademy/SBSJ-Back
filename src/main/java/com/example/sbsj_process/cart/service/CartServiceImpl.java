@@ -1,52 +1,54 @@
-package com.example.sbsj_process.OrderTest;
+package com.example.sbsj_process.cart.service;
+
 
 
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.repository.MemberRepository;
+
 import com.example.sbsj_process.cart.entity.Cart;
 import com.example.sbsj_process.cart.entity.CartItem;
 import com.example.sbsj_process.cart.repository.CartItemRepository;
 import com.example.sbsj_process.cart.repository.CartRepository;
-import com.example.sbsj_process.cart.service.CartService;
 import com.example.sbsj_process.cart.service.request.AddCartRequest;
 import com.example.sbsj_process.cart.service.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.cart.service.request.SelectCartItemRequest;
 import com.example.sbsj_process.cart.service.response.CartItemListResponse;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.repository.ProductRepository;
-import com.example.sbsj_process.utility.request.UserInfoRequest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
+import com.example.sbsj_process.utility.request.UserInfoRequest;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-
-@SpringBootTest
-public class cartTest {
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
-    @Autowired
-    private CartRepository cartRepository;
+@Slf4j
+@Getter
+@Service
+@RequiredArgsConstructor
+public class CartServiceImpl implements CartService {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private final CartRepository cartRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
-    private CartService cartService;
+    private final MemberRepository memberRepository;
 
-    @Test
-    public void 장바구니에_상품_추가_테스트 () {
-        AddCartRequest addCartRequest =
-                new AddCartRequest(2L, 2L, 1L);
+    @Autowired
+    private final ProductRepository productRepository;
 
+
+    @Override
+    public void addCartItem(AddCartRequest addCartRequest) {
+        // @Transaction 달면 cartId가 null이 됨
         Long memberId = addCartRequest.getMemberId();
         Long productId = addCartRequest.getProductId();
         Long count = addCartRequest.getCount();
@@ -70,8 +72,9 @@ public class cartTest {
         //cart.setCartItemList(cartItem);
         System.out.println("cartItem: " + cartItem);
 
+
         cartItem.setCart(cart);
-        cartRepository.save(cart);
+        //cartRepository.save(cart);
         cartItemRepository.save(cartItem);
     }
 
@@ -99,24 +102,45 @@ public class cartTest {
         return cart;
     }
 
-    @Test
-    public void 장바구니에서_상품_삭제_테스트 () {
-        List<Long> selectCartItemId = Arrays.asList(11L); // 원하는 아이템 ID 넣기
-        SelectCartItemRequest selectCartItemRequest = new SelectCartItemRequest(selectCartItemId);
+    @Override
+    public void deleteCartItem(SelectCartItemRequest selectCartItemRequest){
+        List<Long> deleteCartItemId = selectCartItemRequest.getSelectCartItemId();
+        //Cart cart = new Cart();
 
-        cartService.deleteCartItem(selectCartItemRequest);
+        for (int i = 0; i < deleteCartItemId.size() ; i++) {
+            cartItemRepository.deleteById(deleteCartItemId.get(i));
+            //cart.setTotalCount(cart.getTotalCount() - 1);
+        }
 
-        System.out.println("장바구니 아이템 삭제 테스트 완료");
     }
 
-    @Test
-    public void 장바구니_아이템_조회_테스트 () {
-        //UserInfoRequest userInfoRequest = new UserInfoRequest();
-        final Long memberId = 1L;
-        //List<CartItem> cartItemList = cartService.findCartItemByMemberId(memberId);
-        List<CartItem> cartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
-        System.out.println("cartItemList: " + cartItemList);
+    @Override
+    public List<CartItem> returnCartItemList(UserInfoRequest userInfoRequest){
+        Long memberId = userInfoRequest.getMemberId();
+        List<CartItem> myCartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
 
-        //System.out.println("장바구니 아이템 조회 테스트: "+ cartItemList.toString());
+        System.out.println("cartItemList: " + myCartItemList);
+
+        return myCartItemList;
     }
+
+    @Override
+    public String changeCartItemCount(ChangeCartItemCountRequest changeCartItemCountRequest) {
+        CartItem cartItem = cartItemRepository.findCartItemByCartItemId(changeCartItemCountRequest.getCartItemId());
+        cartItem.setCount(changeCartItemCountRequest.getCount());
+        cartItemRepository.save(cartItem);
+
+        return "1";
+    }
+
+//    @Override
+//    public String changeCartItemCount(ChangeCartItemCountRequest changeCartItemCountRequest) {
+////        CartItem cartItem = cartItemRepository.findCartItemByCartItemId(changeCartItemCountRequest.getCartItemId());
+////
+////        //cartItem.setCount(changeCartItemCountRequest.getCount());
+////
+////        cartItemRepository.save(cartItem);
+//        return "1";
+//    }
+
 }
