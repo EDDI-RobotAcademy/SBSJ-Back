@@ -9,4 +9,6 @@ import java.util.List;
 public interface ProductService {
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest);
     public List<ProductListResponse> getDefaultList();
+
+
 }

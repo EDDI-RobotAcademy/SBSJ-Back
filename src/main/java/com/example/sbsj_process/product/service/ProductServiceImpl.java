@@ -1,12 +1,12 @@
 package com.example.sbsj_process.product.service;
 
+import com.example.sbsj_process.Category.entity.Category;
+import com.example.sbsj_process.Category.entity.ProductOption;
+import com.example.sbsj_process.Category.repository.CategoryRepository;
+import com.example.sbsj_process.Category.repository.ProductOptionRepository;
 import com.example.sbsj_process.product.controller.form.ProductListResponse;
-import com.example.sbsj_process.product.entity.Image;
-import com.example.sbsj_process.product.entity.Product;
-import com.example.sbsj_process.product.entity.ProductInfo;
-import com.example.sbsj_process.product.repository.ImageRepository;
-import com.example.sbsj_process.product.repository.ProductInfoRepository;
-import com.example.sbsj_process.product.repository.ProductRepository;
+import com.example.sbsj_process.product.entity.*;
+import com.example.sbsj_process.product.repository.*;
 import com.example.sbsj_process.product.request.ProductRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,10 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;
     private final ImageRepository imageRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductOptionRepository productOptionRepository;
+
+
 
     public List<ProductListResponse> getDefaultList() {
         List<ProductListResponse> productListResponses = new ArrayList<>();
@@ -48,8 +55,21 @@ public class ProductServiceImpl implements ProductService{
     }
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
         Product product = productRegisterRequest.toProduct(); // Create Product
-
         ProductInfo productInfo = productRegisterRequest.toProductInfo(); // Create ProductInfo
+        List<String> categorys = productRegisterRequest.getCategorys();
+
+        List<ProductOption> productOptionList = categorys.stream()
+                .map(name -> categoryRepository.findByCategoryName(name))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(ProductOption::new)
+                .collect(Collectors.toList());
+
+        productOptionList.forEach(productOption -> {
+            productOption.setProduct(product);
+        });
+
+
         productInfo.setProduct(product);
 
         String thumbnail = imageFileList.get(0).getName();
@@ -78,5 +98,6 @@ public class ProductServiceImpl implements ProductService{
         productRepository.save(product);
         imageRepository.save(image);
         productInfoRepository.save(productInfo);
+        productOptionRepository.saveAll(productOptionList);
     }
 }
