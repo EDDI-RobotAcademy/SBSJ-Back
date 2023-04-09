@@ -12,7 +12,6 @@ import com.example.sbsj_process.cart.repository.CartRepository;
 import com.example.sbsj_process.cart.service.request.AddCartRequest;
 import com.example.sbsj_process.cart.service.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.cart.service.request.SelectCartItemRequest;
-import com.example.sbsj_process.cart.service.response.CartItemListResponse;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.repository.ProductRepository;
 
