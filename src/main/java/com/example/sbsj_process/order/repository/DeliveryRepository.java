@@ -12,4 +12,8 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
     List<Delivery> findAllByMember_MemberId(Long memberId);
 
+    void deleteByMember_MemberId(Long memberId);
+
+    Optional<Delivery> findByAddressId(Long addressId);
+
 }

@@ -11,4 +11,6 @@ public interface DeliveryService {
 
     List<DeliveryListResponse> list(Long memberId);
 
+    Boolean delete(Long addressId);
+
 }
