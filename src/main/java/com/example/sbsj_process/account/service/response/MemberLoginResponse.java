@@ -1,4 +1,4 @@
-package com.example.sbsj_process.account.response;
+package com.example.sbsj_process.account.service.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -2,10 +2,10 @@ package com.example.sbsj_process.account.controller;
 
 import com.example.sbsj_process.account.controller.form.MemberLoginForm;
 import com.example.sbsj_process.account.controller.form.MemberRegisterForm;
-import com.example.sbsj_process.account.request.MemberCheckPasswordRequest;
-import com.example.sbsj_process.account.request.MyPageUpdateRequest;
-import com.example.sbsj_process.account.response.MemberInfoResponse;
-import com.example.sbsj_process.account.response.MemberLoginResponse;
+import com.example.sbsj_process.account.service.request.MemberCheckPasswordRequest;
+import com.example.sbsj_process.account.service.request.MyPageUpdateRequest;
+import com.example.sbsj_process.account.service.response.MemberInfoResponse;
+import com.example.sbsj_process.account.service.response.MemberLoginResponse;
 import com.example.sbsj_process.account.service.MemberService;
 import com.example.sbsj_process.security.service.RedisService;
 import com.example.sbsj_process.utility.request.UserInfoRequest;

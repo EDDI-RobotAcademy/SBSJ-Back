@@ -1,4 +1,4 @@
-package com.example.sbsj_process.order.response;
+package com.example.sbsj_process.order.service.response;
 
 import com.example.sbsj_process.order.entity.Delivery;
 import lombok.Getter;

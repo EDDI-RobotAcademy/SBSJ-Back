@@ -1,13 +1,12 @@
 package com.example.sbsj_process.product.service;
 
-import com.example.sbsj_process.Category.entity.Category;
 import com.example.sbsj_process.Category.entity.ProductOption;
 import com.example.sbsj_process.Category.repository.CategoryRepository;
 import com.example.sbsj_process.Category.repository.ProductOptionRepository;
 import com.example.sbsj_process.product.controller.form.ProductListResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
-import com.example.sbsj_process.product.request.ProductRegisterRequest;
+import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
