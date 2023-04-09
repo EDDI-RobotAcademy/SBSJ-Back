@@ -1,21 +1,18 @@
-package com.example.sbsj_process.order.entity;
+package com.example.sbsj_process.cart.entity;
+
 
 import com.example.sbsj_process.product.entity.Product;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@ToString
 @Entity
-@Builder
+@ToString(exclude = "cart")
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CartItem {
 
     @Id
-    @Getter
     @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
@@ -26,16 +23,18 @@ public class CartItem {
 
     @Column(length = 16)
     private Long count;
-    // 상품 개수 (ex. A상품 2개)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-
-    // 이미 담겨있는 물건 또 담을 경우 수량 증가
-    public void addCount(Long count) {
-        this.count += count;
+    public CartItem(Product product, Long count) {
+        this.product = product;
+        this.count = count;
     }
 
+    public void setCart (Cart cart) {
+        this.cart = cart;
+        //cart.setCartItemList(this);
+    }
 }

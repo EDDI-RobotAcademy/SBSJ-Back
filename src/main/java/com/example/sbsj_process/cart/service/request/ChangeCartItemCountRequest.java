@@ -1,4 +1,4 @@
-package com.example.sbsj_process.order.request;
+package com.example.sbsj_process.cart.service.request;
 
 import lombok.Data;
 
