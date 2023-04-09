@@ -14,4 +14,8 @@ public class MemberLoginResponse {
     private Long memberId;
     private String token;
 
+    public MemberLoginResponse(Long memberId) {
+        this.memberId = memberId;
+    }
+
 }

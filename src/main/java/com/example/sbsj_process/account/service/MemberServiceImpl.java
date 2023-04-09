@@ -92,11 +92,9 @@ public class MemberServiceImpl implements MemberService {
     public MemberLoginResponse signIn(MemberLoginRequest memberLoginRequest) {
         Optional<Member> maybeMember = memberRepository.findByUserId(memberLoginRequest.getUserId());
 
-        MemberLoginResponse memberLoginResponse = new MemberLoginResponse();
-
         if(maybeMember.isPresent()) {
             Member member = maybeMember.get();
-            memberLoginResponse.setMemberId(member.getMemberId());
+            MemberLoginResponse memberLoginResponse = new MemberLoginResponse(member.getMemberId());
 
             if(!member.isRightPassword(memberLoginRequest.getPassword())) {
                 memberLoginResponse.setToken("incorrect");
@@ -113,6 +111,7 @@ public class MemberServiceImpl implements MemberService {
             return memberLoginResponse;
         }
 
+        MemberLoginResponse memberLoginResponse = new MemberLoginResponse();
         memberLoginResponse.setToken("no");
         return memberLoginResponse;
     }
