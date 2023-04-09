@@ -13,6 +13,7 @@ import com.example.sbsj_process.account.request.MemberRegisterRequest;
 import com.example.sbsj_process.account.request.MyPageUpdateRequest;
 import com.example.sbsj_process.account.response.MemberInfoResponse;
 import com.example.sbsj_process.account.response.MemberLoginResponse;
+import com.example.sbsj_process.order.repository.DeliveryRepository;
 import com.example.sbsj_process.security.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     final private MemberRepository memberRepository;
     final private MemberProfileRepository memberProfileRepository;
+    final private DeliveryRepository deliveryRepository;
     final private AuthenticationRepository authenticationRepository;
     final private RedisService redisService;
 
@@ -116,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void delete(Long memberId) {
+    public void resign(Long memberId) {
         System.out.println("서비스에서 보는 delete memberNo: "+ memberId);
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
 
@@ -126,12 +128,10 @@ public class MemberServiceImpl implements MemberService {
             return;
         }
 
-        if(maybeMember.isPresent()) {
-            Member member = maybeMember.get();
-            memberProfileRepository.deleteByMember(member);
-            memberRepository.deleteByMemberId(memberId);
-        }
-
+        Member member = maybeMember.get();
+        deliveryRepository.deleteByMember_MemberId(memberId);
+        memberProfileRepository.deleteByMember(member);
+        memberRepository.deleteByMemberId(memberId);
     }
 
     @Override

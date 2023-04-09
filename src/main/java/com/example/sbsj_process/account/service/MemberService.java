@@ -14,7 +14,7 @@ public interface MemberService {
 
     Boolean signUp(MemberRegisterRequest memberRegisterRequest);
 
-    void delete(Long memberId);
+    void resign(Long memberId);
 
     Boolean userIdValidation(String userId);
 

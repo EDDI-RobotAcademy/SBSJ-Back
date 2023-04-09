@@ -31,4 +31,9 @@ public class DeliveryController {
         return deliveryService.list(memberId);
     }
 
+    @GetMapping("/delete/{addressId}")
+    public Boolean deliveryDelete(@PathVariable("addressId") Long addressId) {
+        return deliveryService.delete(addressId);
+    }
+
 }
