@@ -85,3 +85,18 @@ public class ReviewServiceImpl implements ReviewService {
             // 적절한 방법으로 오류 처리를 수행합니다. 예를 들어, 사용자에게 오류 메시지를 반환합니다.
         }
     }
+    // 리뷰 리스트 반환
+
+    public List<ProductReview> list(Long productId) {
+        if (productId == null) {
+            throw new IllegalArgumentException("상품 ID에 오류가 있습니다.");
+        }
+        List<ProductReview> productReviews = reviewRepository.findByProduct_ProductId(productId);
+        for (ProductReview productReview : productReviews) {
+            List<ReviewImage> images = reviewImageRepository.findByProduct_ProductId(productId);
+            productReview.setReviewImageList(images);
+        }
+        return productReviews;
+    }
+
+}

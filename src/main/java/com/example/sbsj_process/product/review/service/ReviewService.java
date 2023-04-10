@@ -11,3 +11,6 @@ import java.util.Map;
 public interface ReviewService {
 
     void reviewRegister(List<MultipartFile> imageFileList, ReviewRegisterRequest reviewRegisterRequest);
+
+    List<ProductReview> list(Long productId);
+

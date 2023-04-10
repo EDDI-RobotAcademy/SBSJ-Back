@@ -34,3 +34,13 @@ public class ReviewController {
         }
     }
 
+    @GetMapping(value = "/list")
+    public ResponseEntity<?> reviewList(@RequestParam(value = "productId") Long productId) {
+        try {
+            List<ProductReview> reviewList = reviewService.list(productId);
+            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
