@@ -99,4 +99,30 @@ public class ReviewServiceImpl implements ReviewService {
         return productReviews;
     }
 
+    // 별점의 총합을 반환
+    public List<Map<String, Object>> StarRateAverage(Long productId) {
+        List<Map<String, Object>> reviewAverages = new ArrayList<>();
+
+        // Look up the review list corresponding to the product ID
+        List<ProductReview> productreviews = reviewRepository.findByProduct_ProductId(productId);
+
+        if (!productreviews.isEmpty()) {
+            // Get the sum of the total number of reviews and the total rating
+            int totalReviews = productreviews.size();
+            int totalStarRates = 0;
+            for (ProductReview productReview : productreviews) {
+                totalStarRates += productReview.getStarRate();
+            }
+
+            // Calculate the average rating, put it in a Map, and add it to the return list
+            double averageStarRate = (double) totalStarRates / totalReviews;
+            Map<String, Object> averageMap = new HashMap<>();
+            averageMap.put("productId", productId);
+            averageMap.put("totalReviews", totalReviews);
+            averageMap.put("averageStarRate", averageStarRate);
+            reviewAverages.add(averageMap);
+        }
+
+        return reviewAverages;
+    }
 }

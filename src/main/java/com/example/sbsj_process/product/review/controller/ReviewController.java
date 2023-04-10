@@ -44,3 +44,13 @@ public class ReviewController {
         }
     }
 
+    @GetMapping(value = "/star-rate-average")
+    public ResponseEntity<?> getStarRateAverage(@RequestParam(value = "productId") Long productId) {
+        try {
+            List<Map<String, Object>> reviewAverages = reviewService.StarRateAverage(productId);
+            return new ResponseEntity<>(reviewAverages, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+}
