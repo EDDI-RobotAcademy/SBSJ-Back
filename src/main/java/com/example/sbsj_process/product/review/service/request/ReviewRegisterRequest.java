@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ReviewRegisterRequest {
-    
+
 
     final private String context;
 

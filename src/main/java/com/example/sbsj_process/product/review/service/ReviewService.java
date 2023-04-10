@@ -15,3 +15,4 @@ public interface ReviewService {
     List<ProductReview> list(Long productId);
 
     List<Map<String, Object>> StarRateAverage(Long productId);
+    }
