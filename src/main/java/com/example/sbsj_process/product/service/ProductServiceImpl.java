@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,9 +79,12 @@ public class ProductServiceImpl implements ProductService{
         image.setProduct(product);
 
         // Deep Copy to Frontend Server File System
-        final String fixedStringPath = "../../SBSJ-Front/sbsj_web/src/assets/productImgs/";
+        final String fixedStringPath = "../SBSJ-Front/sbsj_web/src/assets/productImgs/";
+
         try {
             log.info("requestFileUploadWithText() - Filename: " + thumbnail);
+            Path currentPath = Paths.get("").toAbsolutePath();
+            log.info("Current relative path: {}", currentPath);
             FileOutputStream writer = new FileOutputStream(fixedStringPath + thumbnail);
             writer.write(imageFileList.get(0).getBytes()); // save thumbnail image
 
@@ -90,6 +95,8 @@ public class ProductServiceImpl implements ProductService{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
