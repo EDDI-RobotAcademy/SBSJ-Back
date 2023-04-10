@@ -10,12 +10,12 @@ import java.util.List;
 public class ProductRegisterRequest {
     private final String productName;
     private final Long price;
-    private final List<String> categorys;
+    private final List<String> categories;
 
-    public ProductRegisterRequest(String productName, Long price, List<String> categorys) {
+    public ProductRegisterRequest(String productName, Long price, List<String> categories) {
         this.productName = productName;
         this.price = price;
-        this.categorys = categorys;
+        this.categories = categories;
     }
 
     public Product toProduct() {
