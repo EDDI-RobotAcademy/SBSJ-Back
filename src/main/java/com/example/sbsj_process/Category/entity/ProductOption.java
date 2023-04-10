@@ -1,6 +1,5 @@
-package com.example.sbsj_process.Category.entity;
+package com.example.sbsj_process.category.entity;
 
-import com.example.sbsj_process.Category.entity.Category;
 import com.example.sbsj_process.product.entity.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,7 @@ public class ProductOption {
     private Long productOptionId;
 
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productInfo_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)

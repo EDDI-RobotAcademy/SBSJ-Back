@@ -57,9 +57,9 @@ public class ProductServiceImpl implements ProductService {
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
         Product product = productRegisterRequest.toProduct(); // Create Product
         ProductInfo productInfo = productRegisterRequest.toProductInfo(); // Create ProductInfo
-        List<String> categorys = productRegisterRequest.getCategorys();
+        List<String> categories = productRegisterRequest.getCategories();
 
-        List<ProductOption> productOptionList = categorys.stream()
+        List<ProductOption> productOptionList = categories.stream()
                 .map(name -> categoryRepository.findByCategoryName(name))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
