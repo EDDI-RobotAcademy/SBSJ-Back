@@ -1,9 +1,9 @@
 package com.example.sbsj_process.product.service;
 
-import com.example.sbsj_process.Category.entity.ProductOption;
-import com.example.sbsj_process.Category.repository.CategoryRepository;
-import com.example.sbsj_process.Category.repository.ProductOptionRepository;
-import com.example.sbsj_process.product.controller.form.ProductListResponse;
+import com.example.sbsj_process.category.entity.ProductOption;
+import com.example.sbsj_process.category.repository.CategoryRepository;
+import com.example.sbsj_process.category.repository.ProductOptionRepository;
+import com.example.sbsj_process.category.controller.form.ProductListResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;

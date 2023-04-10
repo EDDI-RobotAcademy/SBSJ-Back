@@ -1,4 +1,4 @@
-package com.example.sbsj_process.Category.entity;
+package com.example.sbsj_process.category.entity;
 
 
 import lombok.NoArgsConstructor;
