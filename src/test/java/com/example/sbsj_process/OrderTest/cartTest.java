@@ -63,6 +63,7 @@ public class cartTest {
 
         System.out.println("product: " + product);
 
+
         CartItem cartItem = new CartItem(product, count);
         //cartItem
         System.out.println("cartItem: " + cartItem);
@@ -111,12 +112,11 @@ public class cartTest {
 
     @Test
     public void 장바구니_아이템_조회_테스트 () {
-        //UserInfoRequest userInfoRequest = new UserInfoRequest();
-        final Long memberId = 1L;
-        //List<CartItem> cartItemList = cartService.findCartItemByMemberId(memberId);
-        List<CartItem> cartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
-        System.out.println("cartItemList: " + cartItemList);
+        UserInfoRequest userInfoRequest = new UserInfoRequest();
+        userInfoRequest.setMemberId(1L);
 
-        //System.out.println("장바구니 아이템 조회 테스트: "+ cartItemList.toString());
+        List<CartItemListResponse> cartItemListResponseList = cartService.returnCartItemList(userInfoRequest);
+
+        System.out.println("카트아이템리스트 리스폰스 조회: " + cartItemListResponseList);
     }
 }

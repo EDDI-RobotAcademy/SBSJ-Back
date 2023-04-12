@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @ToString(exclude = "cart")
+@Getter
 @Setter
 @NoArgsConstructor
 public class CartItem {

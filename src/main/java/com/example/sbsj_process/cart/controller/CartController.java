@@ -7,14 +7,13 @@ import com.example.sbsj_process.cart.service.CartService;
 import com.example.sbsj_process.cart.service.request.AddCartRequest;
 import com.example.sbsj_process.cart.service.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.cart.service.request.SelectCartItemRequest;
+import com.example.sbsj_process.cart.service.response.CartItemListResponse;
 import com.example.sbsj_process.utility.request.UserInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -38,18 +37,14 @@ public class CartController {
         cartService.deleteCartItem(selectCartItemRequest);
     }
 
-
     @PostMapping("/list")
-    public List<CartItem> cartItemList(@RequestBody UserInfoRequest userInfoRequest) {
-        //System.out.println("유저인포: " + userInfoRequest);
+    public List<CartItemListResponse> cartItemListResponseList(@RequestBody UserInfoRequest userInfoRequest) {
+        List<CartItemListResponse> cartItemListResponseList = cartService.returnCartItemList(userInfoRequest);
 
-        List<CartItem> cartItemList = cartService.returnCartItemList(userInfoRequest);
+        System.out.println("after returnCartItemList(): " + cartItemListResponseList);
 
-        System.out.println("after returnCartItemList(): " + cartItemList);
-
-        return cartItemList;
+        return cartItemListResponseList;
     }
-
 
     @PostMapping("/changeCartItemCount")
     public String changeCartItemCount (@RequestBody ChangeCartItemCountRequest changeCartItemCountRequest) {
