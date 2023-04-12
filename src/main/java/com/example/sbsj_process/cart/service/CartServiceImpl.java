@@ -118,12 +118,13 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteCartItem(SelectCartItemRequest selectCartItemRequest){
         List<Long> deleteCartItemId = selectCartItemRequest.getSelectCartItemId();
-        //Cart cart = new Cart();
 
-        for (int i = 0; i < deleteCartItemId.size() ; i++) {
-            cartItemRepository.deleteById(deleteCartItemId.get(i));
-            //cart.setTotalCount(cart.getTotalCount() - 1);
+        if (deleteCartItemId == null || deleteCartItemId.isEmpty()) {
+            // deleteCartItemId가 null 또는 비어있는 경우 예외처리
+            throw new IllegalArgumentException("deleteCartItemId cannot be null or empty");
         }
+
+        cartItemRepository.deleteAllById(deleteCartItemId);
 
     }
 
