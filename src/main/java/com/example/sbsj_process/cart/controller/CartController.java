@@ -34,6 +34,7 @@ public class CartController {
     @PostMapping("/deleteCartItem")
     public void deleteCartItem(@RequestBody SelectCartItemRequest selectCartItemRequest) {
         log.info("회원 카트에서 선택된 아이템 삭제");
+        System.out.println("아이디: " + selectCartItemRequest.getSelectCartItemId());
         cartService.deleteCartItem(selectCartItemRequest);
     }
 
