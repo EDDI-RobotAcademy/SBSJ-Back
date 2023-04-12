@@ -8,15 +8,15 @@ public class ProductRegisterForm {
     private String productName;
     private Long price;
 
-    private List<String> categorys;
+    private List<String> categories;
 
-    public ProductRegisterForm(String productName, Long price, List<String> categorys) {
+    public ProductRegisterForm(String productName, Long price, List<String> categories) {
         this.productName = productName;
         this.price = price;
-        this.categorys = categorys;
+        this.categories = categories;
     }
 
     public ProductRegisterRequest toProductRegisterRequest() {
-        return new ProductRegisterRequest(productName, price, categorys);
+        return new ProductRegisterRequest(productName, price, categories);
     }
 }

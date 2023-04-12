@@ -26,7 +26,7 @@ public class CategoryController {
 
     @GetMapping("/options/{optionName}")
     public List<ProductListResponse> getProductWithOptionList(@PathVariable("optionName") String optionName) {
-        log.info("getProductWithOptionList()");
-        return categoryService.getProductWithOptionList(optionName);
+        log.info("getProductWithOption()");
+        return categoryService.getProductWithOption(optionName);
     }
 }

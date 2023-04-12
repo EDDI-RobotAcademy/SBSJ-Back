@@ -1,11 +1,13 @@
 package com.example.sbsj_process.category.entity;
 
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Data
 @NoArgsConstructor
 public class Category {
     @Id
