@@ -12,7 +12,14 @@ import com.example.sbsj_process.cart.repository.CartRepository;
 import com.example.sbsj_process.cart.service.request.AddCartRequest;
 import com.example.sbsj_process.cart.service.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.cart.service.request.SelectCartItemRequest;
+import com.example.sbsj_process.cart.service.response.CartItemListResponse;
+import com.example.sbsj_process.order.entity.Delivery;
+import com.example.sbsj_process.order.service.response.DeliveryListResponse;
+import com.example.sbsj_process.product.entity.Image;
 import com.example.sbsj_process.product.entity.Product;
+import com.example.sbsj_process.product.entity.ProductInfo;
+import com.example.sbsj_process.product.repository.ImageRepository;
+import com.example.sbsj_process.product.repository.ProductInfoRepository;
 import com.example.sbsj_process.product.repository.ProductRepository;
 
 import com.example.sbsj_process.utility.request.UserInfoRequest;
@@ -23,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +51,12 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private final ProductRepository productRepository;
+
+    @Autowired
+    private final ProductInfoRepository productInfoRepository;
+
+    @Autowired
+    private final ImageRepository imageRepository;
 
 
     @Override
@@ -114,13 +128,32 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartItem> returnCartItemList(UserInfoRequest userInfoRequest){
+    public List<CartItemListResponse> returnCartItemList(UserInfoRequest userInfoRequest){
         Long memberId = userInfoRequest.getMemberId();
-        List<CartItem> myCartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
+        List<CartItem> cartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
 
-        System.out.println("cartItemList: " + myCartItemList);
+        List<CartItemListResponse> cartItemListResponseList = new ArrayList<>();
 
-        return myCartItemList;
+        for(CartItem cartItem: cartItemList) {
+
+            Long cartId = cartItem.getCart().getCartId();
+            Optional<Cart> cart = cartRepository.findById(cartId);
+            Long totalCount = cart.get().getTotalCount();
+
+            Long productId = cartItem.getProduct().getProductId();
+            Optional<ProductInfo> productInfo = productInfoRepository.findByProduct_ProductId(productId);
+            Long price = productInfo.get().getPrice();
+
+            Image image = imageRepository.findByProductId(productId);
+            String thumbnail = image.getThumbnail();
+
+            CartItemListResponse cartItemListResponse = new CartItemListResponse(cartItem, totalCount, price, thumbnail);
+            cartItemListResponseList.add(cartItemListResponse);
+        }
+
+        System.out.println("cartItemListResponseList: " + cartItemListResponseList);
+
+        return cartItemListResponseList;
     }
 
     @Override
@@ -131,15 +164,5 @@ public class CartServiceImpl implements CartService {
 
         return "1";
     }
-
-//    @Override
-//    public String changeCartItemCount(ChangeCartItemCountRequest changeCartItemCountRequest) {
-////        CartItem cartItem = cartItemRepository.findCartItemByCartItemId(changeCartItemCountRequest.getCartItemId());
-////
-////        //cartItem.setCount(changeCartItemCountRequest.getCount());
-////
-////        cartItemRepository.save(cartItem);
-//        return "1";
-//    }
 
 }

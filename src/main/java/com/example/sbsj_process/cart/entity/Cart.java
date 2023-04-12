@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @ToString(exclude = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
