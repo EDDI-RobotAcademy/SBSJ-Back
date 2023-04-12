@@ -34,6 +34,8 @@ public class CategoryServiceImpl implements CategoryService {
         Category productCategory = new Category(category);
         categoryRepository.save(productCategory);
     }
+
+    //callee
     public List<ProductListResponse> getProductList(List<Product> products) {
         List<Product> productList = products;
         List<ProductListResponse> productListResponses = new ArrayList<>();
@@ -60,12 +62,16 @@ public class CategoryServiceImpl implements CategoryService {
         return getProductList(products);
     }
 
-    public List<ProductListResponse> getProductWithOptionList(String optionName) {
-        List<Category> categories = categoryRepository.findByCategoryName(optionName)
-                .stream()
-                .collect(Collectors.toList());
+    public List<ProductListResponse> getProductWithOption(String optionName) throws RuntimeException {
+        Optional<Category> maybeCategory = categoryRepository.findByCategoryName(optionName);
+        Category category;
+        if(maybeCategory.isPresent()) {
+            category = maybeCategory.get();
+        } else {
+            throw new RuntimeException("there is no such optionName");
+        }
 
-        List<Product> productList = productOptionRepository.findByCategoryIn(categories)
+        List<Product> productList = productOptionRepository.findProductOptionListWithCategoryId(category.getCategoryId())
                 .stream()
                 .map(ProductOption::getProduct)
                 .collect(Collectors.toList());

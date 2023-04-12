@@ -10,5 +10,5 @@ public interface CategoryService {
 
     public List<ProductListResponse> getDefaultList();
 
-    public List<ProductListResponse> getProductWithOptionList(String optionName);
+    public List<ProductListResponse> getProductWithOption(String optionName);
 }
