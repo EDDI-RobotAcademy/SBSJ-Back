@@ -24,6 +24,7 @@ public class Delivery {
     @Column(length = 16, nullable = false)
     private String addressName;
 
+    @Setter
     @Column(length = 8, nullable = true)
     private String defaultAddress;
 
