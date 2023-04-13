@@ -60,8 +60,7 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public void addCartItem(AddCartRequest addCartRequest) {
-        // @Transaction 달면 cartId가 null이 됨
+    public void addCartItem(AddCartRequest addCartRequest) { // @Transactional 달면 cartId가 null이 되니 달지 말 것
         Long memberId = addCartRequest.getMemberId();
         Long productId = addCartRequest.getProductId();
         Long count = addCartRequest.getCount();
@@ -74,21 +73,33 @@ public class CartServiceImpl implements CartService {
 
         if(maybeProduct.isPresent()) {
             product = maybeProduct.get();
+
+            // 현재 멤버의 모든 장바구니 아이템 목록을 조회
+            List<CartItem> cartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
+            Long cartItemId = null;
+
+            for (CartItem cartItem : cartItemList) {
+                if (cartItem.getProduct().getProductId().equals(productId)) {
+                    cartItemId = cartItem.getCartItemId();
+                    break;
+                }
+            }
+
+            // 중복 상품이 있는지 확인
+            Optional<CartItem> maybeCartItem = cartItemRepository.findByCartItemIdAndCart_CartId(cartItemId, cart.getCartId());
+
+            if(maybeCartItem.isPresent()) {
+                // 중복 상품이 있다면 해당 상품의 수량을 증가
+                CartItem cartItem = maybeCartItem.get();
+                cartItem.setCount(cartItem.getCount() + count);
+                cartItemRepository.save(cartItem);
+            } else {
+                // 중복 상품이 없다면 새로운 상품을 카트에 추가
+                CartItem cartItem = new CartItem(product, count);
+                cartItem.setCart(cart);
+                cartItemRepository.save(cartItem);
+            }
         }
-
-        System.out.println("product: " + product);
-
-        CartItem cartItem = new CartItem(product, count);
-        //cartItem
-        System.out.println("cartItem: " + cartItem);
-
-        //cart.setCartItemList(cartItem);
-        System.out.println("cartItem: " + cartItem);
-
-
-        cartItem.setCart(cart);
-        //cartRepository.save(cart);
-        cartItemRepository.save(cartItem);
     }
 
     private Cart createCartIfNoCartElseAddCartItem(Long memberId) {
