@@ -64,13 +64,14 @@ public class DeliveryServiceImpl implements DeliveryService{
             return null;
         }
 
-        List<Delivery> deliveryList = deliveryRepository.findAllByMember_MemberId(memberId);
+        List<Delivery> deliveryList = deliveryRepository.findAllByMember_MemberIdOrderByDefaultAddressDesc(memberId);
         List<DeliveryListResponse> deliveryListResponseList = new ArrayList<>();
 
         for(Delivery delivery: deliveryList) {
             DeliveryListResponse deliveryListResponse = new DeliveryListResponse(delivery);
             deliveryListResponseList.add(deliveryListResponse);
         }
+
         return deliveryListResponseList;
     }
 
