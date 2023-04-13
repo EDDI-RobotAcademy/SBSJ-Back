@@ -4,10 +4,7 @@ import com.example.sbsj_process.account.entity.Authentication;
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.entity.MemberProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,6 +24,7 @@ public class Delivery {
     @Column(length = 16, nullable = false)
     private String addressName;
 
+    @Setter
     @Column(length = 8, nullable = true)
     private String defaultAddress;
 
@@ -57,7 +55,7 @@ public class Delivery {
 
     public Delivery(String addressName, String defaultAddress, String addressType,
                     String city, String street, String addressDetail, String zipcode,
-                    String recipientName, String phoneNumber) {
+                    String recipientName, String phoneNumber, Member member) {
         this.addressName = addressName;
         this.defaultAddress = defaultAddress;
         this.addressType = addressType;
@@ -67,9 +65,6 @@ public class Delivery {
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
         this.recipientName = recipientName;
-    }
-
-    public void setMember(Member member) {
         this.member = member;
     }
 
