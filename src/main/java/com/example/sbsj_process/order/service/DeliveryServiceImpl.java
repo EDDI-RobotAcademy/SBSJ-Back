@@ -5,6 +5,7 @@ import com.example.sbsj_process.account.repository.MemberProfileRepository;
 import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.order.entity.Delivery;
 import com.example.sbsj_process.order.repository.DeliveryRepository;
+import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +84,30 @@ public class DeliveryServiceImpl implements DeliveryService{
         }
 
         deliveryRepository.delete(maybeDelivery.get());
+        return true;
+    }
+
+    @Override
+    public Boolean modify(DeliveryModifyRequest deliveryModifyRequest) {
+        Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryModifyRequest.getMemberId());
+
+        if(maybeMember.isEmpty()) {
+            System.out.println("memberId 에 해당하는 회원이 없습니다.");
+            return false;
+        }
+
+        if(deliveryModifyRequest.getDefaultAddress().equals("기본 배송지")) {
+            Delivery isDelivery = defaultAddressValidation(deliveryModifyRequest.getMemberId(), deliveryModifyRequest.getDefaultAddress());
+
+            if(!isDelivery.equals("")) {
+                Delivery updateDelivery = isDelivery;
+                updateDelivery.setDefaultAddress("");
+                deliveryRepository.save(updateDelivery);
+            }
+        }
+        Delivery delivery = deliveryModifyRequest.toDelivery(maybeMember.get());
+
+        deliveryRepository.save(delivery);
         return true;
     }
 
