@@ -9,7 +9,6 @@ import com.example.sbsj_process.cart.repository.CartItemRepository;
 import com.example.sbsj_process.cart.repository.CartRepository;
 import com.example.sbsj_process.cart.service.CartService;
 import com.example.sbsj_process.cart.service.request.AddCartRequest;
-import com.example.sbsj_process.cart.service.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.cart.service.request.SelectCartItemRequest;
 import com.example.sbsj_process.cart.service.response.CartItemListResponse;
 import com.example.sbsj_process.product.entity.Product;
@@ -45,7 +44,7 @@ public class cartTest {
     @Test
     public void 장바구니에_상품_추가_테스트 () {
         AddCartRequest addCartRequest =
-                new AddCartRequest(2L, 2L, 1L);
+                new AddCartRequest(1L, 1L, 1L);
 
         Long memberId = addCartRequest.getMemberId();
         Long productId = addCartRequest.getProductId();
@@ -59,21 +58,33 @@ public class cartTest {
 
         if(maybeProduct.isPresent()) {
             product = maybeProduct.get();
+
+            // 현재 멤버의 모든 장바구니 아이템 목록을 조회
+            List<CartItem> cartItemList = cartItemRepository.findCartItemListWithMemberId(memberId);
+            Long cartItemId = null;
+
+            for (CartItem cartItem : cartItemList) {
+                if (cartItem.getProduct().getProductId().equals(productId)) {
+                    cartItemId = cartItem.getCartItemId();
+                    break;
+                }
+            }
+
+            // 중복 상품이 있는지 확인
+            Optional<CartItem> maybeCartItem = cartItemRepository.findByCartItemIdAndCart_CartId(cartItemId, cart.getCartId());
+
+            if(maybeCartItem.isPresent()) {
+                // 중복 상품이 있다면 해당 상품의 수량을 증가
+                CartItem cartItem = maybeCartItem.get();
+                cartItem.setCount(cartItem.getCount() + count);
+                cartItemRepository.save(cartItem);
+            } else {
+                // 중복 상품이 없다면 새로운 상품을 카트에 추가
+                CartItem cartItem = new CartItem(product, count);
+                cartItem.setCart(cart);
+                cartItemRepository.save(cartItem);
+            }
         }
-
-        System.out.println("product: " + product);
-
-
-        CartItem cartItem = new CartItem(product, count);
-        //cartItem
-        System.out.println("cartItem: " + cartItem);
-
-        //cart.setCartItemList(cartItem);
-        System.out.println("cartItem: " + cartItem);
-
-        cartItem.setCart(cart);
-        cartRepository.save(cart);
-        cartItemRepository.save(cartItem);
     }
 
     private Cart createCartIfNoCartElseAddCartItem(Long memberId) {
@@ -102,7 +113,7 @@ public class cartTest {
 
     @Test
     public void 장바구니에서_상품_삭제_테스트 () {
-        List<Long> selectCartItemId = Arrays.asList(11L); // 원하는 아이템 ID 넣기
+        List<Long> selectCartItemId = Arrays.asList(3L); // 원하는 아이템 ID 넣기
         SelectCartItemRequest selectCartItemRequest = new SelectCartItemRequest(selectCartItemId);
 
         cartService.deleteCartItem(selectCartItemRequest);
