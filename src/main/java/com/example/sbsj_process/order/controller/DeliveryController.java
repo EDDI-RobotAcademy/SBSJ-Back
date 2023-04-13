@@ -2,6 +2,7 @@ package com.example.sbsj_process.order.controller;
 
 import com.example.sbsj_process.order.entity.Delivery;
 import com.example.sbsj_process.order.service.DeliveryService;
+import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,13 @@ public class DeliveryController {
     @GetMapping("/delete/{addressId}")
     public Boolean deliveryDelete(@PathVariable("addressId") Long addressId) {
         return deliveryService.delete(addressId);
+    }
+
+    @PostMapping("/modify")
+    public Boolean deliveryModify(@RequestBody DeliveryModifyRequest deliveryModifyRequest) {
+        log.info("deliveryModify(): "+ deliveryModifyRequest);
+
+        return deliveryService.modify(deliveryModifyRequest);
     }
 
 }
