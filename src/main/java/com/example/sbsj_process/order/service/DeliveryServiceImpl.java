@@ -39,6 +39,15 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
+    public Delivery defaultAddressValidation(Long memberId,String defaultAddress) {
+        Optional<Delivery> maybeDelivery = deliveryRepository.findByMember_MemberIdAndDefaultAddress(memberId, defaultAddress);
+        if(maybeDelivery.isPresent()) {
+            return maybeDelivery.get();
+        }
+        return null;
+    }
+
+    @Override
     public List<DeliveryListResponse> list(Long memberId) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
         if(maybeMember.isEmpty()) {
