@@ -31,11 +31,28 @@ public class DeliveryServiceImpl implements DeliveryService{
             return false;
         }
 
-        Delivery delivery = deliveryRegisterRequest.toDelivery();
-        delivery.setMember(maybeMember.get());
+        if(deliveryRegisterRequest.getDefaultAddress().equals("기본 배송지")) {
+            Delivery isDelivery = defaultAddressValidation(deliveryRegisterRequest.getMemberId(), deliveryRegisterRequest.getDefaultAddress());
+
+            if(!isDelivery.equals("")) {
+                Delivery updateDelivery = isDelivery;
+                updateDelivery.setDefaultAddress("");
+                deliveryRepository.save(updateDelivery);
+            }
+        }
+        Delivery delivery = deliveryRegisterRequest.toDelivery(maybeMember.get());
 
         deliveryRepository.save(delivery);
         return true;
+    }
+
+    @Override
+    public Delivery defaultAddressValidation(Long memberId,String defaultAddress) {
+        Optional<Delivery> maybeDelivery = deliveryRepository.findByMember_MemberIdAndDefaultAddress(memberId, defaultAddress);
+        if(maybeDelivery.isPresent()) {
+            return maybeDelivery.get();
+        }
+        return null;
     }
 
     @Override

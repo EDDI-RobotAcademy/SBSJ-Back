@@ -1,5 +1,6 @@
 package com.example.sbsj_process.order.service.request;
 
+import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.order.entity.Delivery;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,9 @@ public class DeliveryRegisterRequest {
     private String recipientName;
     private String phoneNumber;
 
-    public Delivery toDelivery() {
-        return new Delivery(addressName, defaultAddress, addressType, city, street, addressDetail, zipcode, recipientName, phoneNumber);
+    public Delivery toDelivery(Member member) {
+        return new Delivery(addressName, defaultAddress, addressType,
+                city, street, addressDetail, zipcode, recipientName, phoneNumber, member);
     }
 
 }

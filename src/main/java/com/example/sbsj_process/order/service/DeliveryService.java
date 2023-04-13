@@ -1,5 +1,6 @@
 package com.example.sbsj_process.order.service;
 
+import com.example.sbsj_process.order.entity.Delivery;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
 
@@ -13,4 +14,5 @@ public interface DeliveryService {
 
     Boolean delete(Long addressId);
 
+    Delivery defaultAddressValidation(Long memberId, String defaultAddress);
 }

@@ -16,4 +16,12 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
     Optional<Delivery> findByAddressId(Long addressId);
 
+
+    /**
+     * memberId 와 defaultAddress 에 맞는 주소 가져온다.
+     * @param memberId, defaultAddress
+     * @return
+     */
+    Optional<Delivery> findByMember_MemberIdAndDefaultAddress(Long memberId, String defaultAddress);
+
 }
