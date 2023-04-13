@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query("Select i from Image i join fetch i.product p where p.productId = :productId")
     Image findByProductId(Long productId);
+
+    Optional<Image> findByProduct_ProductId(Long productId);
 }

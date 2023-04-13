@@ -4,6 +4,7 @@ import com.example.sbsj_process.category.entity.ProductOption;
 import com.example.sbsj_process.category.repository.CategoryRepository;
 import com.example.sbsj_process.category.repository.ProductOptionRepository;
 import com.example.sbsj_process.category.controller.form.ProductListResponse;
+import com.example.sbsj_process.product.controller.form.ProductReadResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
@@ -54,6 +55,30 @@ public class ProductServiceImpl implements ProductService {
         }
         return productListResponses;
     }
+
+    @Override
+    public ProductReadResponse read(Long productId) {
+        Optional<Product> maybeProduct = productRepository.findByProductId(productId);
+        Optional<Image> maybeImage = imageRepository.findByProduct_ProductId(productId);
+        Optional<ProductInfo> maybeProductInfo = productInfoRepository.findByProduct_ProductId(productId);
+
+        if (maybeProduct.isEmpty()) {
+            log.info("읽을 수가 없습니다.");
+            return null;
+        }
+
+        Product product = maybeProduct.get();
+        Image image = maybeImage.get();
+        ProductInfo productInfo = maybeProductInfo.get();
+
+        ProductReadResponse productReadResponse = new ProductReadResponse(
+                product.getProductId(), productInfo.getPrice(), productInfo.getWish(), product.getProductName(),
+                image.getThumbnail(), productInfo.getProductSubName(), image.getDetail()
+        );
+
+        return productReadResponse;
+    }
+
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
         Product product = productRegisterRequest.toProduct(); // Create Product
         ProductInfo productInfo = productRegisterRequest.toProductInfo(); // Create ProductInfo

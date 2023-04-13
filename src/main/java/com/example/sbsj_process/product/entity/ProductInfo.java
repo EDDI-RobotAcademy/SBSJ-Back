@@ -26,6 +26,9 @@ public class ProductInfo {
     @Column(length = 16, nullable = false)
     private Long wish;
 
+    @Column(length = 16, nullable = false)
+    private String productSubName;
+
     public ProductInfo(Long price) {
         this.wish = 0L;
         this.price = price;
