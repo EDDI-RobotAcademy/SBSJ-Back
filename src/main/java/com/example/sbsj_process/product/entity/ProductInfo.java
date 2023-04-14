@@ -1,13 +1,10 @@
 package com.example.sbsj_process.product.entity;
 
-import com.example.sbsj_process.account.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,13 +22,12 @@ public class ProductInfo {
 
     @Column(length = 16, nullable = false)
     private Long wish;
-
-    @Column(length = 16, nullable = false)
     private String productSubName;
 
-    public ProductInfo(Long price) {
+    public ProductInfo(Long price, String productSubName) {
         this.wish = 0L;
         this.price = price;
+        this.productSubName = productSubName;
     }
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

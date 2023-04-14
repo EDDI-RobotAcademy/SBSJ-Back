@@ -41,8 +41,8 @@ public class productTest {
     @Test
     public void 상품_등록_테스트() throws Exception {
         File[] files = new File[2];
-        files[0] = new File("/Users/yeng/sbsj_img/nowfood.jpg");
-        files[1] = new File("/Users/yeng/sbsj_img/nowfood_detail.jpg");
+        files[0] = new File("/Users/namgunho/git/sbsj/SBSJ-Back/src/test/java/com/example/sbsj_process/ProductTest/testImage/PERNIT.jpg");
+        files[1] = new File("/Users/namgunho/git/sbsj/SBSJ-Back/src/test/java/com/example/sbsj_process/ProductTest/testImage/PERNIT_Detail.jpg");
 
         List<MultipartFile> multipartFiles = new ArrayList<>();
         System.out.println(files.length);
@@ -62,10 +62,19 @@ public class productTest {
         System.out.println("multipartFiles.get(0).toString(): " + multipartFiles.get(0).toString());
         System.out.println("multipartFiles.get(1).toString(): " + multipartFiles.get(1).toString());
 
-        String productName = "좋은약";
-        Long productPrice = 10000L;
 
-        ProductRegisterForm productRegisterForm = new ProductRegisterForm(productName, productPrice);
+
+//        String productName = "좋은약";
+        String productName = "약약약";
+        String productSubName = "약약약약약";
+        Long productPrice = 10000L;
+        List<String> categorys = new ArrayList<>();
+        categorys.add("EYE");
+//        categorys.add("BONE");
+//        categorys.add("VITAMIN-C");
+        categorys.add("VITAMIN-D");
+        categorys.add("STRESS");
+        ProductRegisterForm productRegisterForm = new ProductRegisterForm(productName, productSubName, productPrice, categorys);
         productService.register(multipartFiles, productRegisterForm.toProductRegisterRequest());
 
         Optional<Product> mayBeProduct = productRepository.findByProductName(productName);
