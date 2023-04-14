@@ -31,4 +31,10 @@ public class ProductController {
 
         return productService.read(productId);
     }
+
+    @GetMapping(value = "/productOptions")
+    public List<String> getCategories() {
+        log.info("getCategories()");
+        return productService.getCategories();
+    }
 }

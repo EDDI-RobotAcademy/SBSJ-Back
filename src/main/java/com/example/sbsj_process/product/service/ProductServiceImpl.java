@@ -1,5 +1,6 @@
 package com.example.sbsj_process.product.service;
 
+import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
 import com.example.sbsj_process.category.repository.CategoryRepository;
 import com.example.sbsj_process.category.repository.ProductOptionRepository;
@@ -54,6 +55,12 @@ public class ProductServiceImpl implements ProductService {
             productListResponses.add(productListResponse);
         }
         return productListResponses;
+    public List<String> getCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(Category::getCategoryName)
+                .map(String::new)
+                .collect(Collectors.toList());
     }
 
     @Override
