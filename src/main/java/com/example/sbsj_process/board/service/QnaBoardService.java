@@ -14,4 +14,7 @@ public interface QnaBoardService {
 
     QnaBoard read(Long qnaBoardId);
 
+
+    void remove(Long qnaBoardId);
+
 }

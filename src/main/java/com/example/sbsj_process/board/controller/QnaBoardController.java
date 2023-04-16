@@ -41,4 +41,12 @@ public class QnaBoardController {
         return qnaBoardService.read(qnaBoardId);
     }
 
+    @Transactional
+    @GetMapping("/delete/{qnaBoardId}")
+    public void qnaBoardDelete(@PathVariable("qnaBoardId") Long qnaBoardId) {
+        log.info("qnaBoardDelete(): "+ qnaBoardId);
+
+        qnaBoardService.remove(qnaBoardId);
+    }
+
 }

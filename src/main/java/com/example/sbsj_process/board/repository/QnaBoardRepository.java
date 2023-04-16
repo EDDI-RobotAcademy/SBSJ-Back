@@ -10,5 +10,6 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoard, Long> {
 
     Optional<QnaBoard> findByQnaBoardId(Long qnaBoardId);
 
+    void deleteByQnaBoardId(Long qnaBoardId);
 
 }
