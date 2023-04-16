@@ -21,11 +21,12 @@ public class ProductInfo {
     private Long price;
 
     @Column(length = 16, nullable = false)
-    private Long wish;
+    private Long wishCount;
+
     private String productSubName;
 
     public ProductInfo(Long price, String productSubName) {
-        this.wish = 0L;
+        this.wishCount = 0L;
         this.price = price;
         this.productSubName = productSubName;
     }
