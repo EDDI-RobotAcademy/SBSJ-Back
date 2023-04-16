@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
             productId = productList.get(i).getProductId();
             thumbnail = imageRepository.findByProductId(productId).getThumbnail();
             price = productInfoRepository.findByProductId(productId).getPrice();
-            wish = productInfoRepository.findByProductId(productId).getWish();
+            wish = productInfoRepository.findByProductId(productId).getWishCount();
 
             ProductListResponse productListResponse = new ProductListResponse(title, thumbnail, price, productId, wish);
             productListResponses.add(productListResponse);
