@@ -1,6 +1,6 @@
 package com.example.sbsj_process.product.service;
 
-import com.example.sbsj_process.product.controller.form.ProductReadResponse;
+import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
 import org.springframework.web.multipart.MultipartFile;
 
