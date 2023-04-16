@@ -38,7 +38,7 @@ public class ProductReview {
     private String context;
 
     @Column(length = 8, nullable = false)
-    private Long starRate;
+    private Double starRate;
 
     @Column(length = 8)
     private Long likeRecommend;

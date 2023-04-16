@@ -1,19 +1,26 @@
 package com.example.sbsj_process.product.review.service.request;
 
 
-import com.example.sbsj_process.account.entity.Member;
-import com.example.sbsj_process.product.entity.Product;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 
-@RequiredArgsConstructor
 public class ReviewRegisterRequest {
 
+    final private Long memberId;
+
+    final private Long productId;
 
     final private String context;
 
-    final private Long starRate;
+    final private Double starRate;
+
+    public ReviewRegisterRequest(Long memberId, Long productId, String context, Double starRate) {
+        this.memberId = memberId;
+        this.productId = productId;
+        this.context = context;
+        this.starRate = starRate;
+    }
 
 }
+
