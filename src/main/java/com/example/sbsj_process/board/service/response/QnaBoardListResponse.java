@@ -17,6 +17,7 @@ public class QnaBoardListResponse {
     private String title;
     private String writer;
     private String password;
+    private Boolean privateCheck;
     private String content;
     private Date regDate;
     private Date upDate;
@@ -26,6 +27,7 @@ public class QnaBoardListResponse {
         this.title = qnaBoard.getTitle();
         this.writer = qnaBoard.getWriter();
         this.password = qnaBoard.getPassword();
+        this.privateCheck = qnaBoard.getPrivateCheck();
         this.content = qnaBoard.getContent();
         this.regDate = qnaBoard.getRegDate();
         this.upDate = qnaBoard.getUpDate();

@@ -12,12 +12,16 @@ public class QnaBoardRegisterRequest {
     private String title;
     private String writer;
     private String content;
+    private String password;
+    private boolean privateCheck;
 
     public QnaBoard toQnaBoard() {
         return new QnaBoard(
                 title,
                 writer,
                 content,
+                password,
+                privateCheck);
     }
 
 }

@@ -39,4 +39,16 @@ public class QnaBoardServiceImpl implements QnaBoardService {
         return qnaBoardListResponseList;
     }
 
+    @Override
+    public QnaBoard read(Long qnaBoardId) {
+        Optional<QnaBoard> maybeQnaBoard = qnaBoardRepository.findByQnaBoardId(qnaBoardId);
+
+        if(maybeQnaBoard.isEmpty()) {
+            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+            return null;
+        }
+
+        return maybeQnaBoard.get();
+    }
+
 }

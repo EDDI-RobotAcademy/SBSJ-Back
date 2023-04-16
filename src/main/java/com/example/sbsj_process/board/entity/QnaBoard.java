@@ -27,6 +27,11 @@ public class QnaBoard {
     @Column(length = 32, nullable = false)
     private String writer;
 
+    @Column(length = 16, nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private Boolean privateCheck;
 
     @Lob
     private String content;
@@ -41,6 +46,8 @@ public class QnaBoard {
         this.title = title;
         this.writer = writer;
         this.content = content;
+        this.password = password;
+        this.privateCheck = privateCheck;
     }
 
 }

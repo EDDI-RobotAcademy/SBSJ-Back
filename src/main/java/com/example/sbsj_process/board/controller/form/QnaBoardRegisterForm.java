@@ -13,6 +13,8 @@ public class QnaBoardRegisterForm {
     private String title;
     private String writer;
     private String content;
+    private String password;
+    private Boolean privateCheck;
 
     public QnaBoardRegisterRequest toQnaBoardRegisterRequest() {
         return new QnaBoardRegisterRequest(title, writer, content, password, privateCheck);

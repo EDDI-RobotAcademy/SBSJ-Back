@@ -12,4 +12,6 @@ public interface QnaBoardService {
 
     List<QnaBoardListResponse> list();
 
+    QnaBoard read(Long qnaBoardId);
+
 }

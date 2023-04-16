@@ -1,5 +1,6 @@
 package com.example.sbsj_process.board.controller;
 
+import com.example.sbsj_process.board.controller.form.QnaBoardModifyForm;
 import com.example.sbsj_process.board.controller.form.QnaBoardRegisterForm;
 import com.example.sbsj_process.board.entity.QnaBoard;
 import com.example.sbsj_process.board.service.QnaBoardService;
@@ -32,4 +33,12 @@ public class QnaBoardController {
 
         return qnaBoardService.list();
     }
+
+    @GetMapping("/read/{qnaBoardId}")
+    public QnaBoard qnaBoardRead(@PathVariable("qnaBoardId") Long qnaBoardId) {
+        log.info("qnaBoardRead(): "+ qnaBoardId);
+
+        return qnaBoardService.read(qnaBoardId);
+    }
+
 }
