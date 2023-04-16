@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     private final ImageRepository imageRepository;
     private final CategoryRepository categoryRepository;
     private final ProductOptionRepository productOptionRepository;
-
+    private final WishRepository wishRepository;
 
     public List<String> getCategories() {
         return categoryRepository.findAll()
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductReadResponse read(Long productId) {
+    public ProductReadResponse read(Long memberId, Long productId) {
         Optional<Product> maybeProduct = productRepository.findByProductId(productId);
         Optional<Image> maybeImage = imageRepository.findByProduct_ProductId(productId);
         Optional<ProductInfo> maybeProductInfo = productInfoRepository.findByProduct_ProductId(productId);
@@ -56,9 +56,20 @@ public class ProductServiceImpl implements ProductService {
         Image image = maybeImage.get();
         ProductInfo productInfo = maybeProductInfo.get();
 
+        List<Wish> wishList = wishRepository.findByProduct_ProductId(productId);
+        Long wishCount = new Long(wishList.size());
+        productInfo.setWishCount(wishCount);
+
+        Optional<Wish> maybeWish = wishRepository.findByMember_MemberIdAndProduct_ProductId(memberId, productId);
+
+        Long wishId = null;
+        if(maybeWish.isPresent()) {
+            wishId = maybeWish.get().getWishId();
+        }
+
         ProductReadResponse productReadResponse = new ProductReadResponse(
-                product.getProductId(), productInfo.getPrice(), productInfo.getWish(), product.getProductName(),
-                image.getThumbnail(), productInfo.getProductSubName(), image.getDetail()
+                product.getProductId(), productInfo.getPrice(), productInfo.getWishCount(), product.getProductName(),
+                image.getThumbnail(), productInfo.getProductSubName(), image.getDetail(), wishId
         );
 
         return productReadResponse;
@@ -112,6 +123,7 @@ public class ProductServiceImpl implements ProductService {
         imageRepository.save(image);
         productInfoRepository.save(productInfo);
         productOptionRepository.saveAll(productOptionList);
-        }
     }
+
+}
 
