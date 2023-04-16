@@ -1,4 +1,6 @@
 package com.example.sbsj_process.board.controller;
+
+import com.example.sbsj_process.board.controller.form.QnaBoardRegisterForm;
 import com.example.sbsj_process.board.entity.QnaBoard;
 import com.example.sbsj_process.board.service.QnaBoardService;
 import com.example.sbsj_process.board.service.response.QnaBoardListResponse;
@@ -14,6 +16,15 @@ import java.util.List;
 @RequestMapping("/qna")
 @RequiredArgsConstructor
 public class QnaBoardController {
+
+    final private QnaBoardService qnaBoardService;
+
+    @PostMapping("/register")
+    public QnaBoard qnaBoardRegister(@RequestBody QnaBoardRegisterForm form) {
+        log.info("qnaBoardRegister(): "+ form);
+
+        return qnaBoardService.register(form.toQnaBoardRegisterRequest());
+    }
 
     @GetMapping("/list")
     public List<QnaBoardListResponse> qnaBoardList() {
