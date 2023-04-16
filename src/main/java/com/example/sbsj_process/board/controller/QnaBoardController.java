@@ -41,6 +41,14 @@ public class QnaBoardController {
         return qnaBoardService.read(qnaBoardId);
     }
 
+    @PostMapping("/modify/{qnaBoardId}")
+    public void qnaBoardModify(@PathVariable("qnaBoardId") Long qnaBoardId, @RequestBody QnaBoardModifyForm form) {
+        log.info("qnaBoardModify(): "+ form +", qnaBoardId: "+ qnaBoardId);
+
+        form.setQnaBoardId(qnaBoardId);
+        qnaBoardService.modify(form.toQnaBoardModifyRequest());
+    }
+
     @Transactional
     @GetMapping("/delete/{qnaBoardId}")
     public void qnaBoardDelete(@PathVariable("qnaBoardId") Long qnaBoardId) {

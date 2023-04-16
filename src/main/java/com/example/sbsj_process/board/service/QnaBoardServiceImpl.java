@@ -2,6 +2,7 @@ package com.example.sbsj_process.board.service;
 
 import com.example.sbsj_process.board.entity.QnaBoard;
 import com.example.sbsj_process.board.repository.QnaBoardRepository;
+import com.example.sbsj_process.board.service.request.QnaBoardModifyRequest;
 import com.example.sbsj_process.board.service.request.QnaBoardRegisterRequest;
 import com.example.sbsj_process.board.service.response.QnaBoardListResponse;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,22 @@ public class QnaBoardServiceImpl implements QnaBoardService {
         }
 
         return maybeQnaBoard.get();
+    }
+
+    @Override
+    public void modify(QnaBoardModifyRequest qnaBoardModifyRequest) {
+        Optional<QnaBoard> maybeQnaBoard = qnaBoardRepository.findByQnaBoardId(qnaBoardModifyRequest.getQnaBoardId());
+
+        if(maybeQnaBoard.isEmpty()) {
+            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+            return;
+        }
+
+        QnaBoard qnaBoard = maybeQnaBoard.get();
+        qnaBoard.setTitle(qnaBoardModifyRequest.getTitle());
+        qnaBoard.setContent(qnaBoardModifyRequest.getContent());
+
+        qnaBoardRepository.save(qnaBoard);
     }
 
     @Override
