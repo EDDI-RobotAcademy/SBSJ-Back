@@ -13,8 +13,6 @@ import com.example.sbsj_process.cart.service.request.AddCartRequest;
 import com.example.sbsj_process.cart.service.request.ChangeCartItemCountRequest;
 import com.example.sbsj_process.cart.service.request.SelectCartItemRequest;
 import com.example.sbsj_process.cart.service.response.CartItemListResponse;
-import com.example.sbsj_process.order.entity.Delivery;
-import com.example.sbsj_process.order.service.response.DeliveryListResponse;
 import com.example.sbsj_process.product.entity.Image;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.entity.ProductInfo;
@@ -29,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
