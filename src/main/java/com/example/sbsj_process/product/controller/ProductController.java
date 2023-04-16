@@ -1,7 +1,7 @@
 package com.example.sbsj_process.product.controller;
 
 
-import com.example.sbsj_process.product.controller.form.ProductReadResponse;
+import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.controller.form.ProductRegisterForm;
 import com.example.sbsj_process.product.service.ProductService;
 import lombok.RequiredArgsConstructor;

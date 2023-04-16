@@ -4,7 +4,7 @@ import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
 import com.example.sbsj_process.category.repository.CategoryRepository;
 import com.example.sbsj_process.category.repository.ProductOptionRepository;
-import com.example.sbsj_process.product.controller.form.ProductReadResponse;
+import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
