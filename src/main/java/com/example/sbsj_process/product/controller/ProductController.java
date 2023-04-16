@@ -25,11 +25,13 @@ public class ProductController {
         log.info("productRegister()");
         productService.register(imageFileList, productRegisterForm.toProductRegisterRequest());
     }
-    @GetMapping("/detail-product-page/{productId}")
-    public ProductReadResponse productRead(@PathVariable("productId") Long productId) {
-        log.info("productRead()");
 
-        return productService.read(productId);
+    @GetMapping("/detail-product-page/{productId}/{memberId}")
+    public ProductReadResponse productRead(@PathVariable("memberId") Long memberId,
+                                           @PathVariable("productId") Long productId) {
+        log.info("productRead(): " + memberId + ", " + productId);
+
+        return productService.read(memberId, productId);
     }
 
     @GetMapping(value = "/productOptions")
