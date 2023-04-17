@@ -12,14 +12,15 @@ public class ProductListResponse {
     final private String thumbnail;
     final private Long price;
     final private Long productId;
-    final private Long wish;
+    final private Long wishCount;
     final private List<String> productOptions;
-    public ProductListResponse(String title, String thumbnail, Long price, Long productId, Long wish, List<String> productOptions) {
+
+    public ProductListResponse(String title, String thumbnail, Long price, Long productId, Long wishCount, List<String> productOptions) {
         this.title = title;
         this.thumbnail = thumbnail;
         this.price = price;
         this.productId = productId;
-        this.wish = wish;
+        this.wishCount = wishCount;
         this.productOptions = productOptions;
     }
 }
