@@ -31,11 +31,8 @@ public class Delivery {
     @Column(length = 8, nullable = false)
     private String addressType;
 
-    @Column(length = 32, nullable = false)
-    private String city;
-
-    @Column(nullable = false)
-    private String street;
+    @Column(length = 128, nullable = false)
+    private String road;
 
     @Column(nullable = false)
     private String addressDetail;
@@ -54,13 +51,12 @@ public class Delivery {
     private Member member;
 
     public Delivery(String addressName, String defaultAddress, String addressType,
-                    String city, String street, String addressDetail, String zipcode,
+                    String road, String addressDetail, String zipcode,
                     String recipientName, String phoneNumber, Member member) {
         this.addressName = addressName;
         this.defaultAddress = defaultAddress;
         this.addressType = addressType;
-        this.city = city;
-        this.street = street;
+        this.road = road;
         this.addressDetail = addressDetail;
         this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;

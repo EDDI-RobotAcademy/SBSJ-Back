@@ -18,8 +18,7 @@ public class DeliveryModifyRequest {
     private String addressName;
     private String defaultAddress;
     private String addressType;
-    private String city;
-    private String street;
+    private String road;
     private String addressDetail;
     private String zipcode;
     private String recipientName;
@@ -27,7 +26,7 @@ public class DeliveryModifyRequest {
 
     public Delivery toDelivery(Member member) {
         return new Delivery(addressId, addressName, defaultAddress, addressType,
-                            city, street, addressDetail, zipcode, recipientName, phoneNumber, member);
+                            road, addressDetail, zipcode, recipientName, phoneNumber, member);
     }
 
 }
