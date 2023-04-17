@@ -6,6 +6,7 @@ import com.example.sbsj_process.category.entity.ProductOption;
 import com.example.sbsj_process.category.repository.CategoryRepository;
 import com.example.sbsj_process.category.repository.ProductOptionRepository;
 import com.example.sbsj_process.product.entity.Product;
+import com.example.sbsj_process.product.entity.ProductInfo;
 import com.example.sbsj_process.product.repository.ImageRepository;
 import com.example.sbsj_process.product.repository.ProductInfoRepository;
 import com.example.sbsj_process.product.repository.ProductRepository;
@@ -41,16 +42,24 @@ public class CategoryServiceImpl implements CategoryService {
         List<ProductListResponse> productListResponses = new ArrayList<>();
 
         String title, thumbnail;
-        Long productId, price, wish;
+        Long productId, price, wishCount;
+        ProductInfo productInfo;
+
 
         for(int i = 0; i < productList.size(); i++) {
             title = productList.get(i).getProductName();
             productId = productList.get(i).getProductId();
             thumbnail = imageRepository.findByProductId(productId).getThumbnail();
-            price = productInfoRepository.findByProductId(productId).getPrice();
-            wish = productInfoRepository.findByProductId(productId).getWishCount();
+            productInfo = productInfoRepository.findByProductId(productId);
+            price = productInfo.getPrice();
+            wishCount = productInfo.getWishCount();
+            List<String> productOptions = productOptions = productOptionRepository.findProductOptionListWithProductId(productId)
+                    .stream()
+                    .map(productOption -> productOption.getCategory())
+                    .map(Category::getCategoryName)
+                    .collect(Collectors.toList());
 
-            ProductListResponse productListResponse = new ProductListResponse(title, thumbnail, price, productId, wish);
+            ProductListResponse productListResponse = new ProductListResponse(title, thumbnail, price, productId, wishCount, productOptions);
             productListResponses.add(productListResponse);
         }
         return productListResponses;
