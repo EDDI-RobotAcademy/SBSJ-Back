@@ -15,7 +15,7 @@ public interface DeliveryService {
 
     Boolean delete(Long addressId);
 
-    Delivery defaultAddressValidation(Long memberId, String defaultAddress);
+    Boolean defaultAddressValidation(Long memberId, String defaultAddress);
 
     Boolean modify(DeliveryModifyRequest deliveryModifyRequest);
 

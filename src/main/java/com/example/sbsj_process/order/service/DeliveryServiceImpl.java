@@ -33,13 +33,7 @@ public class DeliveryServiceImpl implements DeliveryService{
         }
 
         if(deliveryRegisterRequest.getDefaultAddress().equals("기본 배송지")) {
-            Delivery isDelivery = defaultAddressValidation(deliveryRegisterRequest.getMemberId(), deliveryRegisterRequest.getDefaultAddress());
-
-            if(!isDelivery.equals("")) {
-                Delivery updateDelivery = isDelivery;
-                updateDelivery.setDefaultAddress("");
-                deliveryRepository.save(updateDelivery);
-            }
+            defaultAddressValidation(deliveryRegisterRequest.getMemberId(), deliveryRegisterRequest.getDefaultAddress());
         }
         Delivery delivery = deliveryRegisterRequest.toDelivery(maybeMember.get());
 
@@ -48,12 +42,15 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public Delivery defaultAddressValidation(Long memberId,String defaultAddress) {
+    public Boolean defaultAddressValidation(Long memberId,String defaultAddress) {
         Optional<Delivery> maybeDelivery = deliveryRepository.findByMember_MemberIdAndDefaultAddress(memberId, defaultAddress);
         if(maybeDelivery.isPresent()) {
-            return maybeDelivery.get();
+            Delivery updateDelivery = maybeDelivery.get();
+            updateDelivery.setDefaultAddress("");
+            deliveryRepository.save(updateDelivery);
+            return true;
         }
-        return null;
+        return false;
     }
 
     @Override
@@ -98,13 +95,7 @@ public class DeliveryServiceImpl implements DeliveryService{
         }
 
         if(deliveryModifyRequest.getDefaultAddress().equals("기본 배송지")) {
-            Delivery isDelivery = defaultAddressValidation(deliveryModifyRequest.getMemberId(), deliveryModifyRequest.getDefaultAddress());
-
-            if(!isDelivery.equals("")) {
-                Delivery updateDelivery = isDelivery;
-                updateDelivery.setDefaultAddress("");
-                deliveryRepository.save(updateDelivery);
-            }
+            defaultAddressValidation(deliveryModifyRequest.getMemberId(), deliveryModifyRequest.getDefaultAddress());
         }
         Delivery delivery = deliveryModifyRequest.toDelivery(maybeMember.get());
 
