@@ -17,8 +17,7 @@ public class DeliveryRegisterRequest {
     private String addressName;
     private String defaultAddress;
     private String addressType;
-    private String city;
-    private String street;
+    private String road;
     private String addressDetail;
     private String zipcode;
     private String recipientName;
@@ -26,7 +25,7 @@ public class DeliveryRegisterRequest {
 
     public Delivery toDelivery(Member member) {
         return new Delivery(addressName, defaultAddress, addressType,
-                city, street, addressDetail, zipcode, recipientName, phoneNumber, member);
+                            road, addressDetail, zipcode, recipientName, phoneNumber, member);
     }
 
 }

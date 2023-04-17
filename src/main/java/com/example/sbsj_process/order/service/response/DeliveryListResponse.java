@@ -12,8 +12,7 @@ public class DeliveryListResponse {
     private String addressName;
     private String defaultAddress;
     private String addressType;
-    private String city;
-    private String street;
+    private String road;
     private String addressDetail;
     private String zipcode;
     private String recipientName;
@@ -24,8 +23,7 @@ public class DeliveryListResponse {
         this.addressName = delivery.getAddressName();
         this.defaultAddress = delivery.getDefaultAddress();
         this.addressType = delivery.getAddressType();
-        this.city = delivery.getCity();
-        this.street = delivery.getStreet();
+        this.road = delivery.getRoad();
         this.addressDetail = delivery.getAddressDetail();
         this.zipcode = delivery.getZipcode();
         this.recipientName = delivery.getRecipientName();
