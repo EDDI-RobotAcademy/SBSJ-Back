@@ -42,7 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
         List<ProductListResponse> productListResponses = new ArrayList<>();
 
         String title, thumbnail;
-        Long productId, price, wish;
+        Long productId, price, wishCount;
+        ProductInfo productInfo;
+
 
         for(int i = 0; i < productList.size(); i++) {
             title = productList.get(i).getProductName();
