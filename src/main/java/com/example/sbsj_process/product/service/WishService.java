@@ -8,4 +8,6 @@ public interface WishService {
 
     List<WishListResponse> getWishList(Long memberId);
 
+    Long setWish(Long memberId, Long productId);
+
 }

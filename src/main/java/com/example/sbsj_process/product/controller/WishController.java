@@ -26,4 +26,11 @@ public class WishController {
         return wishService.getWishList(memberId);
     }
 
+    @GetMapping("/set/{productId}/{memberId}")
+    public Long setWish(@PathVariable("productId") Long productId, @PathVariable("memberId") Long memberId) {
+        log.info("setWish: " + productId + ", " + memberId);
+
+        return wishService.setWish(memberId, productId);
+    }
+
 }
