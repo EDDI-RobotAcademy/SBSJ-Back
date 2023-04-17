@@ -30,11 +30,7 @@ public class DeliveryController {
     public Boolean defaultAddressValidation(@PathVariable("memberId") Long memberId, @PathVariable("defaultAddress") String defaultAddress) {
         log.info("defaultAddressValidation(): " + memberId + ", " + defaultAddress);
 
-        Delivery delivery = deliveryService.defaultAddressValidation(memberId, defaultAddress);
-        if(delivery == null) {
-            return false;
-        }
-        return true;
+        return deliveryService.defaultAddressValidation(memberId, defaultAddress);
     }
 
     @GetMapping("/list/{memberId}")
