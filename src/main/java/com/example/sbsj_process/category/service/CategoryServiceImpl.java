@@ -1,6 +1,6 @@
 package com.example.sbsj_process.category.service;
 
-import com.example.sbsj_process.category.controller.form.ProductListResponse;
+import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
 import com.example.sbsj_process.category.repository.CategoryRepository;
