@@ -33,6 +33,9 @@ public class QnaBoard {
     @Column(nullable = false)
     private Boolean privateCheck;
 
+    @Column(length = 16, nullable = false)
+    private String inquiryType;
+
     @Lob
     private String content;
 
@@ -42,12 +45,13 @@ public class QnaBoard {
     @UpdateTimestamp
     private Date upDate;
 
-    public QnaBoard(String title, String writer, String content, String password, Boolean privateCheck) {
+    public QnaBoard(String title, String writer, String content, String password, Boolean privateCheck, String inquiryType) {
         this.title = title;
         this.writer = writer;
         this.content = content;
         this.password = password;
         this.privateCheck = privateCheck;
+        this.inquiryType = inquiryType;
     }
 
 }
