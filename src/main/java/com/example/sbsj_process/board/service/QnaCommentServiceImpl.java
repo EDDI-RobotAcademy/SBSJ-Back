@@ -61,4 +61,9 @@ public class QnaCommentServiceImpl implements QnaCommentService{
         qnaCommentRepository.save(qnaComment);
         return qnaComment;
     }
+    
+    @Override
+    public void remove(Long qnaCommentId) {
+        qnaCommentRepository.deleteById(qnaCommentId);
+    }
 }

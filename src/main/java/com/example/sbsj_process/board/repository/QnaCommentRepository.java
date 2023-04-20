@@ -12,3 +12,5 @@ public interface QnaCommentRepository extends JpaRepository<QnaComment,Long> {
     @Query("select qc from QnaComment qc join fetch qc.qnaBoard qb where qb.qnaBoardId = :qnaBoardId")
     List<QnaComment> findAllCommentByQnaBoardId(Long qnaBoardId);
 
+    void deleteAllByQnaBoard(QnaBoard qnaBoard);
+}
