@@ -17,6 +17,13 @@ public class QnaCommentController {
     @Autowired
     QnaCommentService qnaCommentService;
 
+    @GetMapping("/comments/{qnaBoardId}")
+    public List<QnaCommentListResponse> qnaCommentList(@PathVariable("qnaBoardId") Long qnaBoardId) {
+        log.info("qnaCommentList() 동작");
+
+        return qnaCommentService.qnaCommentList(qnaBoardId);
+    }
+
     @PostMapping("/register")
     public void qnaCommentRegister(@RequestBody QnaCommentRequest qnaCommentRequest) {
         log.info("qnaCommentRegister() 해당 게시물 아이디 : " + qnaCommentRequest.getQnaBoardId());

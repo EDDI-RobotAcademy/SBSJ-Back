@@ -25,6 +25,22 @@ public class QnaCommentServiceImpl implements QnaCommentService{
     QnaBoardRepository qnaBoardRepository;
 
     @Override
+    public List<QnaCommentListResponse> qnaCommentList(Long qnaBoardId) {
+        List<QnaComment> QnaCommentList = qnaCommentRepository.findAllCommentByQnaBoardId(qnaBoardId);
+
+        List<QnaCommentListResponse> QnaCommentResponseList = new ArrayList<>();
+
+        for (QnaComment QnaComment : QnaCommentList) {
+            if (QnaComment.getQnaBoard().getQnaBoardId().equals(qnaBoardId)) {
+                QnaCommentResponseList.add(new QnaCommentListResponse(
+                        QnaComment.getQnaCommentId(), QnaComment.getQnaBoard().getQnaBoardId(),
+                        QnaComment.getComment(), QnaComment.getWriter()
+                ));
+            }
+        }
+        return QnaCommentResponseList;
+    }
+    @Override
     public void qnaCommentRegister(QnaCommentRequest commentRequest) {
         Optional<QnaBoard> maybeQnaBoard = qnaBoardRepository.findById(commentRequest.getQnaBoardId());
 
