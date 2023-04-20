@@ -14,6 +14,7 @@ public class QnaBoardRegisterRequest {
     private String content;
     private String password;
     private boolean privateCheck;
+    private String inquiryType;
 
     public QnaBoard toQnaBoard() {
         return new QnaBoard(
@@ -21,7 +22,8 @@ public class QnaBoardRegisterRequest {
                 writer,
                 content,
                 password,
-                privateCheck);
+                privateCheck,
+                inquiryType);
     }
 
 }
