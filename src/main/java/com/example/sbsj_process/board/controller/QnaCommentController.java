@@ -26,4 +26,11 @@ public class QnaCommentController {
         qnaCommentService.qnaCommentRegister(qnaCommentRequest);
     }
 
+    @PutMapping("/{qnaCommentId}")
+    public void qnaCommentModify(@PathVariable("qnaCommentId") Long qnaCommentId,
+                                 @RequestBody QnaCommentRequest qnaCommentRequest) {
+
+        qnaCommentService.modify(qnaCommentId, qnaCommentRequest);
+    }
+
 }

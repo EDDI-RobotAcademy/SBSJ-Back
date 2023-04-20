@@ -25,6 +25,8 @@ public class QnaComment {
     private String writer;
 
 
+    public void update(String comment) {
+        this.comment = comment;
     }
 
 }
