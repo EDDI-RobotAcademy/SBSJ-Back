@@ -1,4 +1,4 @@
-package com.example.sbsj_process.category.controller.form;
+package com.example.sbsj_process.category.service.response;
 
 import lombok.Getter;
 import lombok.ToString;

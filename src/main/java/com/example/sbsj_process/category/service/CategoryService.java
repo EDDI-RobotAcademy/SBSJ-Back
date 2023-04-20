@@ -1,6 +1,6 @@
 package com.example.sbsj_process.category.service;
 
-import com.example.sbsj_process.category.controller.form.ProductListResponse;
+import com.example.sbsj_process.category.service.response.ProductListResponse;
 
 import java.util.List;
 
