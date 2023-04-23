@@ -26,11 +26,13 @@ public class ReviewController {
     private final ReviewService reviewService;
 
 
-    @PostMapping(value = "/review/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public void reviewRegister(@RequestPart(value = "imageFileList", required = false) List<MultipartFile> imageFileList,
-                               @RequestPart(value = "reviewRegisterRequest") ReviewRegisterRequest reviewRegisterRequest) {
+    //하드코딩 풀 떄 mapping 수정
+    @PostMapping(value = "/register")
+    public void reviewRegister(@RequestBody ReviewRegisterRequest reviewRegisterRequest) {
+        log.info("받은 리뷰 정보: " + reviewRegisterRequest);
+
         try {
-            reviewService.reviewRegister(imageFileList, reviewRegisterRequest);
+            reviewService.reviewRegister(null, reviewRegisterRequest);
         } catch (IllegalArgumentException e) {
             throw e;
         } catch (Exception e) {

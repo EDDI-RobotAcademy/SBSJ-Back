@@ -42,16 +42,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void reviewRegister(List<MultipartFile> imageFileList, ReviewRegisterRequest reviewRegisterRequest) {
+
+        log.info("받은 리뷰 정보: " + reviewRegisterRequest);
+
         if (reviewRegisterRequest == null || reviewRegisterRequest.getContext() == null
                 || reviewRegisterRequest.getContext().isEmpty() || reviewRegisterRequest.getStarRate() == null) {
-            throw new IllegalArgumentException("리뷰 등록 내용이 없습니다.");
+            throw new IllegalArgumentException("리뷰 등록 내용이 없습니다. " + reviewRegisterRequest);
         }
-
-        log.info("리뷰 등록 요청을 받았습니다: " + reviewRegisterRequest);
 
         List<ReviewImage> reviewImageList = new ArrayList<>();
         if (imageFileList != null && !imageFileList.isEmpty()) {
-            final String fixedStringPath = "../lecture/reviewImgs";
+            final String fixedStringPath = "C:/lecture/SBSJ-Front/sbsj_web/src/assets/reviewImgs/";
             List<String> imageFileNameList = new ArrayList<>();
 
             for (MultipartFile multipartFile : imageFileList) {
@@ -69,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
                     imageFileNameList.add(multipartFile.getOriginalFilename());
                 } catch (IOException e) {
                     log.error("리뷰등록 중 오류가 발생했습니다: " + e.getMessage());
-                    throw new RuntimeException("리뷰이미지 등록실패했습니다.");
+                    System.out.println("에러 메시지: " + e.getMessage());
 
                 }
             }
@@ -81,21 +82,26 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         ProductReview productReview = new ProductReview();
-
-        Long memberId = reviewRegisterRequest.getMemberId();
-        Long productId = reviewRegisterRequest.getProductId();
+        //하드코딩해제부분
+        Long memberId = 3L; // 임시로 memberId에 3을 할당
+        Long productId = 1L; // 임시로 productId에 1을 할당
 
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
         Optional<Product> maybeProduct = productRepository.findByProductId(productId);
 
-        if (maybeMember.isPresent() && maybeProduct.isPresent()) {
-            productReview.setMember(maybeMember.get());
-            productReview.setProduct(maybeProduct.get());
-            productReview.setContext(reviewRegisterRequest.getContext());
-            productReview.setStarRate(reviewRegisterRequest.getStarRate());
-            productReview.setReviewImageList(reviewImageList);
-        } else {
-            throw new RuntimeException("리뷰를 저장할 정보에 오류가 있습니다.");
+        try {
+            if (maybeMember.isPresent() && maybeProduct.isPresent()) {
+                productReview.setMember(maybeMember.get());
+                productReview.setProduct(maybeProduct.get());
+                productReview.setContext(reviewRegisterRequest.getContext());
+                productReview.setStarRate(reviewRegisterRequest.getStarRate());
+                productReview.setReviewImageList(reviewImageList);
+            } else {
+                throw new Exception("리뷰를 저장할 정보에 오류가 있습니다.");
+            }
+        } catch (Exception e) {
+            System.out.println("리뷰 저장 중 오류가 발생했습니다.");
+            System.out.println("에러 메시지: " + e.getMessage());
         }
 
         try {
@@ -105,7 +111,92 @@ public class ReviewServiceImpl implements ReviewService {
             }
         } catch (Exception e) {
             log.error("리뷰 등록중 오류가 발생했습니다: " + e.getMessage());
+            System.out.println("에러 메시지: " + e.getMessage());
+
+        }
+
+    }
+
+    public void reviewWithImgRegister(List<MultipartFile> imageFileList, ReviewRegisterRequest reviewRegisterRequest) {
+        if (reviewRegisterRequest == null || reviewRegisterRequest.getContext() == null
+                || reviewRegisterRequest.getContext().isEmpty() || reviewRegisterRequest.getStarRate() == null) {
+            throw new IllegalArgumentException("리뷰 등록 내용이 없습니다.");
+        }
+
+        log.info("리뷰 등록 요청을 받았습니다: " + reviewRegisterRequest);
+
+        List<ReviewImage> reviewImageList = new ArrayList<>();
+        if (imageFileList != null && !imageFileList.isEmpty()) {
+            final String fixedStringPath = "../SBSJ-Front/sbsj_web/src/assets/reviewImgs/";
+
+            for (MultipartFile multipartFile : imageFileList) {
+                log.info("파일 업로드 요청을 받았습니다 - 파일 이름: " + multipartFile.getOriginalFilename());
+                if (multipartFile.isEmpty()) {
+                    throw new IllegalArgumentException("업로드된 파일이 비어 있을 수 없습니다.");
+                }
+
+                String fullPath = fixedStringPath + multipartFile.getOriginalFilename();
+                try {
+                    FileOutputStream writer = new FileOutputStream(fullPath);
+                    writer.write(multipartFile.getBytes());
+                    writer.close();
+
+                } catch (IOException e) {
+                    log.error("이미지 저장 중 에러 발생: " + e.getMessage());
+                    log.error("저장 경로: " + fullPath);
+                    throw new RuntimeException("리뷰이미지 등록실패했습니다.");
+                }
+
+                ReviewImage reviewImage = new ReviewImage(multipartFile.getOriginalFilename());
+                reviewImageList.add(reviewImage);
+            }
+        }
+
+        ProductReview productReview = new ProductReview();
+        //하드코딩해제부분
+        Long memberId = 3L; // 임시로 memberId에 3을 할당
+        Long productId = 1L; // 임시로 productId에 1을 할당
+
+        Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
+        Optional<Product> maybeProduct = productRepository.findByProductId(productId);
+
+        try {
+            if (maybeMember.isPresent() && maybeProduct.isPresent()) {
+                productReview.setMember(maybeMember.get());
+                productReview.setProduct(maybeProduct.get());
+                productReview.setContext(reviewRegisterRequest.getContext());
+                productReview.setStarRate(reviewRegisterRequest.getStarRate());
+                productReview.setReviewImageList(reviewImageList);
+
+                for (ReviewImage reviewImage : reviewImageList) {
+                    reviewImage.setProduct(maybeProduct.get());
+                    reviewImage.setProductReview(productReview);
+                }
+
+            } else {
+                throw new Exception("리뷰를 저장할 정보에 오류가 있습니다.");
+            }
+        } catch (Exception e) {
+            System.out.println("리뷰 저장 중 오류가 발생했습니다.");
+            System.out.println("에러 메시지: " + e.getMessage());
+        }
+
+        try {
+            productReview.setReviewImageList(reviewImageList);
+            ProductReview savedProductReview = reviewRepository.save(productReview);
+
+            if (!reviewImageList.isEmpty()) {
+                for (ReviewImage reviewImage : reviewImageList) {
+                    reviewImage.setProductReview(savedProductReview);
+                }
+                reviewImageRepository.saveAll(reviewImageList);
+            }
+        } catch (Exception e) {
+            log.error("리뷰 등록중 오류가 발생했습니다: " + e.getMessage());
             throw new RuntimeException("리뷰 최종등록실패!.");
+        }
+
+    }
 
         }
 

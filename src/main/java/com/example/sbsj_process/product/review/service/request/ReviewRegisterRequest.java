@@ -2,9 +2,12 @@ package com.example.sbsj_process.product.review.service.request;
 
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
-
+@Setter
+@ToString
 public class ReviewRegisterRequest {
 
     final private Long memberId;

@@ -18,6 +18,7 @@ public class ReviewImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
+    @Column(length = 32)
     private String reviewImagePath;
 
     @JsonBackReference
@@ -26,6 +27,7 @@ public class ReviewImage {
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_review_id")
     private ProductReview productReview;
 
     public ReviewImage(String reviewImagePath) {
