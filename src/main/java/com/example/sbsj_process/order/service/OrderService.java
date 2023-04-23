@@ -11,3 +11,5 @@ public interface OrderService {
 
     public Boolean registerOrderInfo(PaymentRegisterRequest paymentRegisterRequest);
 
+    public OrderDetailResponse readDetailOrder(Long orderId);
+}

@@ -2,6 +2,7 @@ package com.example.sbsj_process.order.controller;
 
 import com.example.sbsj_process.order.controller.form.PaymentRegisterForm;
 import com.example.sbsj_process.order.service.OrderService;
+import com.example.sbsj_process.order.service.response.OrderDetailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,3 +23,11 @@ public class OrderController {
         return service.registerOrderInfo(paymentRegisterForm.toOrderRegisterRequest());
     }
 
+    @PostMapping("/read")
+    public OrderDetailResponse readDetailOrder(@RequestBody Long orderId) {
+        System.out.println("컨트롤러에서 오더아이디: " + orderId);
+
+        return service.readDetailOrder(orderId);
+    }
+
+}
