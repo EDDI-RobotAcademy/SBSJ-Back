@@ -17,5 +17,6 @@ public interface FreeBoardService {
 
     void modify(FreeBoardModifyRequest freeBoardModifyRequest);
 
+    void remove(Long freeBoardId);
 
 }

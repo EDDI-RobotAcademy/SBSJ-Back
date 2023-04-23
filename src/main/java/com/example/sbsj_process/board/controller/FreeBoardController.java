@@ -1,5 +1,6 @@
 package com.example.sbsj_process.board.controller;
 
+import com.example.sbsj_process.board.controller.form.freeForm.FreeBoardModifyForm;
 import com.example.sbsj_process.board.controller.form.freeForm.FreeBoardRegisterForm;
 import com.example.sbsj_process.board.entity.free.FreeBoard;
 import com.example.sbsj_process.board.service.freeBoardService.FreeBoardService;
@@ -46,6 +47,14 @@ public class FreeBoardController {
 
         form.setFreeBoardId(freeBoardId);
         freeBoardService.modify(form.toFreeBoardModifyRequest());
+    }
+
+    @Transactional
+    @GetMapping("/delete/{freeBoardId}")
+    public void freeBoardDelete(@PathVariable("freeBoardId") Long freeBoardId) {
+        log.info("freeBoardDelete(): "+ freeBoardId);
+
+        freeBoardService.remove(freeBoardId);
     }
 
 }

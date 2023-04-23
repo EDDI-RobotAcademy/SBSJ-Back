@@ -2,6 +2,7 @@ package com.example.sbsj_process.board.service.freeBoardService;
 
 import com.example.sbsj_process.board.entity.free.FreeBoard;
 import com.example.sbsj_process.board.repository.freeRepository.FreeBoardRepository;
+import com.example.sbsj_process.board.service.request.FreeBoardModifyRequest;
 import com.example.sbsj_process.board.service.request.FreeBoardRegisterRequest;
 import com.example.sbsj_process.board.service.response.FreeBoardListResponse;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +68,18 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         freeBoardRepository.save(freeBoard);
     }
 
+    @Override
+    public void remove(Long freeBoardId) {
+        Optional<FreeBoard> maybeFreeBoard = freeBoardRepository.findByFreeBoardId(freeBoardId);
+
+        if(maybeFreeBoard.isEmpty()) {
+            System.out.println("freeBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+            return;
+        }
+
+        System.out.println("서비스에서 보는 삭제: "+ maybeFreeBoard.get());
+
+        freeBoardRepository.deleteByFreeBoardId(freeBoardId);
+    }
 
 }

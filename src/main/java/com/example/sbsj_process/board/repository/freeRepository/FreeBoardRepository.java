@@ -9,5 +9,6 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
 
     Optional<FreeBoard> findByFreeBoardId(Long freeBoardId);
 
+    void deleteByFreeBoardId(Long freeBoardId);
 
 }
