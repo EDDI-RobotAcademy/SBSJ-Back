@@ -1,0 +1,35 @@
+package com.example.sbsj_process.board.service.freeBoardService;
+
+import com.example.sbsj_process.board.entity.free.FreeBoard;
+import com.example.sbsj_process.board.repository.freeRepository.FreeBoardRepository;
+import com.example.sbsj_process.board.service.response.FreeBoardListResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class FreeBoardServiceImpl implements FreeBoardService {
+
+    final FreeBoardRepository freeBoardRepository;
+
+
+    @Override
+    public List<FreeBoardListResponse> list() {
+        List<FreeBoard> freeBoardList = freeBoardRepository.findAll(Sort.by(Sort.Direction.DESC, "freeBoardId"));
+        List<FreeBoardListResponse> freeBoardListResponseList = new ArrayList<>();
+
+        for(FreeBoard freeBoard: freeBoardList) {
+            FreeBoardListResponse freeBoardListResponse = new FreeBoardListResponse(freeBoard);
+            freeBoardListResponseList.add(freeBoardListResponse);
+        }
+
+        return freeBoardListResponseList;
+    }
+
+
+}
