@@ -13,5 +13,7 @@ public interface FreeBoardService {
 
     FreeBoard read(Long freeBoardId);
 
+    void modify(FreeBoardModifyRequest freeBoardModifyRequest);
+
 
 }

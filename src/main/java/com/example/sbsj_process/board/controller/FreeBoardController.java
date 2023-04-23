@@ -29,4 +29,12 @@ public class FreeBoardController {
         return freeBoardService.read(freeBoardId);
     }
 
+    @PostMapping("/modify/{freeBoardId}")
+    public void freeBoardModify(@PathVariable("freeBoardId") Long freeBoardId, @RequestBody FreeBoardModifyForm form) {
+        log.info("freeBoardModify(): "+ form +", freeBoardId: "+ freeBoardId);
+
+        form.setFreeBoardId(freeBoardId);
+        freeBoardService.modify(form.toFreeBoardModifyRequest());
+    }
+
 }

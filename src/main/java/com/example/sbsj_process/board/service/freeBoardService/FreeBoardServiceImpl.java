@@ -43,5 +43,21 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         return maybeFreeBoard.get();
     }
 
+    @Override
+    public void modify(FreeBoardModifyRequest freeBoardModifyRequest) {
+        Optional<FreeBoard> maybeFreeBoard = freeBoardRepository.findByFreeBoardId(freeBoardModifyRequest.getFreeBoardId());
+
+        if(maybeFreeBoard.isEmpty()) {
+            System.out.println("freeBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+            return;
+        }
+
+        FreeBoard freeBoard = maybeFreeBoard.get();
+        freeBoard.setTitle(freeBoardModifyRequest.getTitle());
+        freeBoard.setContent(freeBoardModifyRequest.getContent());
+
+        freeBoardRepository.save(freeBoard);
+    }
+
 
 }
