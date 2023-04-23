@@ -2,6 +2,7 @@ package com.example.sbsj_process.board.service.freeBoardService;
 
 import com.example.sbsj_process.board.entity.free.FreeBoard;
 import com.example.sbsj_process.board.repository.freeRepository.FreeBoardRepository;
+import com.example.sbsj_process.board.service.request.FreeBoardRegisterRequest;
 import com.example.sbsj_process.board.service.response.FreeBoardListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     final FreeBoardRepository freeBoardRepository;
 
+    @Override
+    public FreeBoard register(FreeBoardRegisterRequest freeBoardRegisterRequest) {
+        FreeBoard freeBoard = freeBoardRegisterRequest.toFreeBoard();
+        freeBoardRepository.save(freeBoard);
+
+        return freeBoard;
+    }
 
     @Override
     public List<FreeBoardListResponse> list() {

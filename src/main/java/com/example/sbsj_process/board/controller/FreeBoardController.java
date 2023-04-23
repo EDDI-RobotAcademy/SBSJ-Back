@@ -1,5 +1,6 @@
 package com.example.sbsj_process.board.controller;
 
+import com.example.sbsj_process.board.controller.form.freeForm.FreeBoardRegisterForm;
 import com.example.sbsj_process.board.entity.free.FreeBoard;
 import com.example.sbsj_process.board.service.freeBoardService.FreeBoardService;
 import com.example.sbsj_process.board.service.response.FreeBoardListResponse;
@@ -15,6 +16,16 @@ import java.util.List;
 @RequestMapping("/free")
 @RequiredArgsConstructor
 public class FreeBoardController {
+
+    final private FreeBoardService freeBoardService;
+
+    @PostMapping("/register")
+    public FreeBoard freeBoardRegister(@RequestBody FreeBoardRegisterForm form) {
+        log.info("freeBoardRegister(): "+ form);
+
+        return freeBoardService.register(form.toFreeBoardRegisterRequest());
+    }
+
     @GetMapping("/list")
     public List<FreeBoardListResponse> freeBoardList() {
         log.info("freeBoardList()");

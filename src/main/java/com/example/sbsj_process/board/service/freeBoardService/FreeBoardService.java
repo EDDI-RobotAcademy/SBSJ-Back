@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface FreeBoardService {
 
+    FreeBoard register(FreeBoardRegisterRequest freeBoardRegisterRequest);
+
     List<FreeBoardListResponse> list();
 
     FreeBoard read(Long freeBoardId);
