@@ -8,6 +8,7 @@ import com.example.sbsj_process.product.repository.ProductRepository;
 import com.example.sbsj_process.product.review.entity.ProductReview;
 import com.example.sbsj_process.product.review.entity.ReviewImage;
 import com.example.sbsj_process.product.review.repository.ProductReviewRepository;
+import com.example.sbsj_process.product.review.service.request.ReviewModifyRequest;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
 import com.example.sbsj_process.product.review.service.response.ReviewListResponse;
 import lombok.RequiredArgsConstructor;
@@ -200,9 +201,72 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
     }
-
+    @Transactional
+    public void reviewModifyWithImage(List<MultipartFile> imageFileList ,ReviewModifyRequest reviewModifyRequest) {
+        if (reviewModifyRequest == null || reviewModifyRequest.getProductReviewId() == null) {
+            throw new IllegalArgumentException("리뷰 수정 요청이 잘못되었습니다.");
         }
 
+        Long productReviewId = reviewModifyRequest.getProductReviewId();
+        log.info("리뷰 수정 요청을 받았습니다: " + reviewModifyRequest);
+
+        Optional<ProductReview> maybeProductReview = reviewRepository.findByProductReviewId(productReviewId);
+
+        if (!maybeProductReview.isPresent()) {
+            throw new IllegalArgumentException("리뷰를 찾을 수 없습니다.");
+        }
+
+        ProductReview productReview = maybeProductReview.get();
+
+        if (reviewModifyRequest.getContext() != null && !reviewModifyRequest.getContext().isEmpty()) {
+            productReview.setContext(reviewModifyRequest.getContext());
+        }
+
+        if (reviewModifyRequest.getStarRate() != null) {
+            productReview.setStarRate(reviewModifyRequest.getStarRate());
+        }
+
+        if (imageFileList != null && !imageFileList.isEmpty()) {
+            final String fixedStringPath = "../SBSJ-Front/sbsj_web/src/assets/reviewImgs/";
+
+            List<ReviewImage> reviewImageList = new ArrayList<>();
+            for (MultipartFile multipartFile : imageFileList) {
+                log.info("파일 업로드 요청을 받았습니다 - 파일 이름: " + multipartFile.getOriginalFilename());
+                if (multipartFile.isEmpty()) {
+                    throw new IllegalArgumentException("업로드된 파일이 비어 있을 수 없습니다.");
+                }
+
+                String fullPath = fixedStringPath + multipartFile.getOriginalFilename();
+                try {
+                    FileOutputStream writer = new FileOutputStream(fullPath);
+                    writer.write(multipartFile.getBytes());
+                    writer.close();
+
+                } catch (IOException e) {
+                    log.error("이미지 저장 중 에러 발생: " + e.getMessage());
+                    log.error("저장 경로: " + fullPath);
+                    throw new RuntimeException("리뷰이미지 등록실패했습니다.");
+                }
+
+                ReviewImage reviewImage = new ReviewImage(multipartFile.getOriginalFilename());
+                reviewImage.setProduct(productReview.getProduct());
+                reviewImage.setProductReview(productReview);
+                reviewImageList.add(reviewImage);
+            }
+
+            if (productReview.getReviewImageList() != null && !productReview.getReviewImageList().isEmpty()) {
+                reviewImageRepository.deleteAll(productReview.getReviewImageList());
+            }
+            productReview.setReviewImageList(reviewImageList);
+            reviewImageRepository.saveAll(reviewImageList);
+        }
+
+        try {
+            reviewRepository.save(productReview);
+        } catch (Exception e) {
+            log.error("리뷰 수정중 오류가 발생했습니다: " + e.getMessage());
+            throw new RuntimeException("리뷰 수정 실패!.");
+        }
     }
 
         }
@@ -268,12 +332,5 @@ public class ReviewServiceImpl implements ReviewService {
             throw new RuntimeException("존재하지 않는 리뷰입니다.");
         }
     }
-//    @Override
-//    public void modifyReview(Long reviewId, List<MultipartFile> imageFileList, ReviewRegisterRequest reviewRegisterRequest) {
-//
-//    }
-//
-
-//
 
 }

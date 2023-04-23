@@ -2,6 +2,7 @@ package com.example.sbsj_process.product.review.controller;
 
 import com.example.sbsj_process.product.review.entity.ProductReview;
 import com.example.sbsj_process.product.review.service.ReviewService;
+import com.example.sbsj_process.product.review.service.request.ReviewModifyRequest;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,33 @@ public class ReviewController {
         }
     }
 
+    @PutMapping(value = "/modify")
+    public void reviewModify(@RequestBody ReviewModifyRequest reviewModifyRequest) {
+        log.info("받은 리뷰 정보: " + reviewModifyRequest);
+
+        try {
+            reviewService.reviewModifyWithImage(null, reviewModifyRequest);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("요청 처리 중 에러가 발생했습니다.", e);
+        }
+    }
+
+    @PutMapping(value = "/modifyWithImg", consumes = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void reviewModifyWithImg(@RequestPart(value = "imageFileList", required = false) List<MultipartFile> imageFileList,
+                                    @RequestPart(value = "reviewModifyRequest") ReviewModifyRequest reviewModifyRequest) {
+        log.info("받은 리뷰 정보: " + reviewModifyRequest);
+        try {
+            reviewService.reviewModifyWithImage(imageFileList, reviewModifyRequest);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
         return reviewService.list(productId);
     }
 

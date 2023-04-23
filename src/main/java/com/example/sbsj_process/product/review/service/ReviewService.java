@@ -1,6 +1,7 @@
 package com.example.sbsj_process.product.review.service;
 
 import com.example.sbsj_process.product.review.entity.ProductReview;
+import com.example.sbsj_process.product.review.service.request.ReviewModifyRequest;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
 import com.example.sbsj_process.product.review.service.response.ReviewListResponse;
 import org.springframework.stereotype.Service;
@@ -21,4 +22,5 @@ public interface ReviewService {
 
     void reviewDelete(Long reviewId);
 
-    }
+    void reviewModifyWithImage(List<MultipartFile> imageFileList, ReviewModifyRequest reviewModifyRequest);
+}
