@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
 //    @Query("select ri from ReviewImage ri join ri.product p where p.productId = : productId")
-    List<ReviewImage> findByProductReview_ReviewId(Long reviewId);
+    List<ReviewImage> findByProductReview_productReviewId(Long productReviewId);
 }

@@ -24,7 +24,7 @@ public class ProductReview {
     @Id
     @Column(length = 16)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    private Long productReviewId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
