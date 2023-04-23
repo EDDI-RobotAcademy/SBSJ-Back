@@ -13,4 +13,6 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
 
      List<ProductReview> findByProduct_ProductId(Long productId);
 
+    Optional<ProductReview> findByProductReviewId(Long productReviewId);
+
 }

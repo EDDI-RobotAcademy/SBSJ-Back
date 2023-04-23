@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +42,22 @@ public class ReviewController {
         }
     }
 
-    @GetMapping(value = "/list")
-    public List<ProductReview> reviewList(@RequestParam(value = "productId") Long productId) {
+    //하드코딩 풀 떄 mapping 수정
+    @PostMapping(value = "/registerWithImg", consumes = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void reviewRegisterWithImg(@RequestPart(value = "imageFileList", required = false) List<MultipartFile> imageFileList,
+                                      @RequestPart(value = "reviewRegisterRequest") ReviewRegisterRequest reviewRegisterRequest) {
+        log.info("reviewRegisterWithImg()");
+        try {
+            reviewService.reviewWithImgRegister(imageFileList, reviewRegisterRequest);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
         return reviewService.list(productId);
     }
 

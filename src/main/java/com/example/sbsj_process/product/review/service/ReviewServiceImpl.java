@@ -9,6 +9,7 @@ import com.example.sbsj_process.product.review.entity.ProductReview;
 import com.example.sbsj_process.product.review.entity.ReviewImage;
 import com.example.sbsj_process.product.review.repository.ProductReviewRepository;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
+import com.example.sbsj_process.product.review.service.response.ReviewListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import java.util.*;
 
 
 import com.example.sbsj_process.product.review.repository.ReviewImageRepository;
+
+import javax.transaction.Transactional;
 
 @Service("reviewServiceImpl")
 @RequiredArgsConstructor
@@ -201,19 +204,27 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
     }
+
+        }
+    }
     // 리뷰 리스트 반환
 
-    public List<ProductReview> list(Long productId) {
-        if (productId == null) {
-            throw new IllegalArgumentException("상품 ID에 오류가 있습니다.");
-        }
+    @Transactional
+    public List<ReviewListResponse> list(Long productId) {
+        // 임시 상품 ID 값 설정
+        productId = 1L;
+
         List<ProductReview> productReviews = reviewRepository.findByProduct_ProductId(productId);
+        List<ReviewListResponse> reviewListResponses = new ArrayList<>();
+
         for (ProductReview productReview : productReviews) {
-            List<ReviewImage> images = reviewImageRepository.findByProductReview_ReviewId(productReview.getReviewId());
-            productReview.setReviewImageList(images);
+            ReviewListResponse reviewListResponse = new ReviewListResponse(productReview);
+            reviewListResponses.add(reviewListResponse);
+            System.out.println("리뷰 정보: " + reviewListResponse);
         }
-        return productReviews;
+        return reviewListResponses;
     }
+
 
     // 별점의 총합을 반환
     public List<Map<String, Object>> starRateAverage(Long productId) {
