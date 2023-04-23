@@ -146,3 +146,12 @@ public class orderTest {
         return savedPayment;
     }
 
+    @Test
+    public void 주문_상세_조회_테스트 () {
+        Long orderId = 3L;
+
+        OrderDetailResponse orderDetailResponse = orderService.readDetailOrder(orderId);
+
+        System.out.println("오더디테일 리스폰스 조회: " + orderDetailResponse);
+    }
+}

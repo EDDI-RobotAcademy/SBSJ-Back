@@ -140,3 +140,23 @@ public class OrderServiceImpl implements OrderService {
         return savedPayment;
     }
 
+    @Override
+    @Transactional
+    public OrderDetailResponse readDetailOrder(Long orderId) {
+
+        // 주문 정보 조회
+        OrderInfo orderInfo = orderRepository.findOrderInfoWithOrderItemListAndProductByOrderId(orderId);
+
+        // 썸네일 이미지 조회
+        Long productId = orderInfo.getOrderItemList().get(0).getProduct().getProductId();
+        Image image = imageRepository.findByProductId(productId);
+        String thumbnail = image.getThumbnail();
+
+        // OrderDetailResponse 객체 생성
+        OrderDetailResponse orderDetailResponse = new OrderDetailResponse(orderInfo, thumbnail);
+
+        return orderDetailResponse;
+    }
+
+}
+
