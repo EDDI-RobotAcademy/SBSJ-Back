@@ -11,5 +11,7 @@ public interface FreeBoardService {
 
     List<FreeBoardListResponse> list();
 
+    FreeBoard read(Long freeBoardId);
+
 
 }

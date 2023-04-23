@@ -31,5 +31,17 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         return freeBoardListResponseList;
     }
 
+    @Override
+    public FreeBoard read(Long freeBoardId) {
+        Optional<FreeBoard> maybeFreeBoard = freeBoardRepository.findByFreeBoardId(freeBoardId);
+
+        if(maybeFreeBoard.isEmpty()) {
+            System.out.println("freeBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+            return null;
+        }
+
+        return maybeFreeBoard.get();
+    }
+
 
 }
