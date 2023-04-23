@@ -269,6 +269,24 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    //리뷰삭제 메서드
+    @Override
+    @Transactional
+    public void reviewDelete(Long productReviewId) {
+        Optional<ProductReview> maybeProductReview = reviewRepository.findByProductReviewId(productReviewId);
+
+        if (maybeProductReview.isPresent()) {
+            ProductReview review = maybeProductReview.get();
+
+            // ReviewImage를 먼저 삭제
+            if (review.getReviewImageList() != null && !review.getReviewImageList().isEmpty()) {
+                reviewImageRepository.deleteAll(review.getReviewImageList());
+            }
+
+            // 이후 ProductReview를 삭제
+            reviewRepository.delete(review);
+        } else {
+            throw new RuntimeException("존재하지 않는 리뷰입니다.");
         }
     }
     // 리뷰 리스트 반환
@@ -318,19 +336,11 @@ public class ReviewServiceImpl implements ReviewService {
             reviewAverages.add(averageMap);
         }
 
-        return reviewAverages;
-    }
-    //리뷰삭제 메서드
-    @Override
-    public void reviewDelete(Long reviewId) {
-        Optional<ProductReview> maybeReview = reviewRepository.findByReviewId(reviewId);
+        // 콘솔에 정보 출력
+        System.out.println("productId: " + productId);
+        System.out.println("reviewAverages: " + reviewAverages);
 
-        if (maybeReview.isPresent()) {
-            ProductReview review = maybeReview.get();
-            reviewRepository.delete(review);
-        } else {
-            throw new RuntimeException("존재하지 않는 리뷰입니다.");
-        }
+        return reviewAverages;
     }
 
 }

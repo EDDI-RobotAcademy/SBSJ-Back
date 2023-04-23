@@ -20,7 +20,7 @@ public interface ReviewService {
 
     List<Map<String, Object>> starRateAverage(Long productId);
 
-    void reviewDelete(Long reviewId);
+    void reviewDelete(Long productReviewId);
 
     void reviewModifyWithImage(List<MultipartFile> imageFileList, ReviewModifyRequest reviewModifyRequest);
 }
