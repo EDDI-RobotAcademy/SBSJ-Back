@@ -1,10 +1,7 @@
 package com.example.sbsj_process.order.entity;
 
 import com.example.sbsj_process.account.entity.Member;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -13,9 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter
+@Data
 @ToString(exclude = "member")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class OrderInfo {
 
     @Id
@@ -36,9 +33,22 @@ public class OrderInfo {
     private Member member;
     // 주문자
 
-    @OneToMany(mappedBy = "orderInfo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderInfo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderItem> orderItemList = new ArrayList<>();
     // 오더아이템 연결
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+    // 결제 연결
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Delivery delivery;
+    // 배송 연결
+
+    @Column(nullable = false)
+    private String selectedDeliveryReq;
+    // 배송요청사항
 
 }
