@@ -230,20 +230,23 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Map<String, Object>> starRateAverage(Long productId) {
         List<Map<String, Object>> reviewAverages = new ArrayList<>();
 
-        // Look up the review list corresponding to the product ID
+        // 임시 상품 ID 값 설정
+        productId = 1L;
+
+        // 상품 ID에 해당하는 리뷰 목록 조회
         List<ProductReview> productreviews = reviewRepository.findByProduct_ProductId(productId);
 
         if (!productreviews.isEmpty()) {
-            // Get the sum of the total number of reviews and the total rating
-            int totalReviews = productreviews.size();
+            // 전체 리뷰 수와 전체 평점 합계 구하기
+            Integer totalReviews = productreviews.size();
             int totalStarRates = 0;
             for (ProductReview productReview : productreviews) {
                 totalStarRates += productReview.getStarRate();
             }
 
-            // Calculate the average rating with one decimal place, put it in a Map, and add it to the return list
-            double averageStarRate = (double) totalStarRates / totalReviews;
-            averageStarRate = Math.round(averageStarRate * 10) / 10.0;
+            // 평균 평점을 소수 첫째 자리까지 계산하고, Map에 넣은 후 반환 목록에 추가
+            Double averageStarRate = Double.valueOf((double) totalStarRates / totalReviews);
+            averageStarRate = Double.valueOf(Math.round(averageStarRate * 10) / 10.0);
             Map<String, Object> averageMap = new HashMap<>();
             averageMap.put("productId", productId);
             averageMap.put("totalReviews", totalReviews);

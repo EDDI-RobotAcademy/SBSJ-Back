@@ -61,14 +61,14 @@ public class ReviewController {
         return reviewService.list(productId);
     }
 
-    @GetMapping(value = "/star-rate-average")
+    @GetMapping(value = "/starRateAverage/{productId}")
     public List<Map<String, Object>> getStarRateAverage(@RequestParam(value = "productId") Long productId) {
         return reviewService.starRateAverage(productId);
     }
 
-    @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
-        reviewService.reviewDelete(reviewId);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/deleteReview/{productReviewId}")
+    public void reviewDelete (@PathVariable("productReviewId") Long productReviewId) {
+        log.info("받은 리뷰 Id: " + productReviewId);
+        reviewService.reviewDelete(productReviewId);
     }
 }
