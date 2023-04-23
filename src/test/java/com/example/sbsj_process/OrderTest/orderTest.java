@@ -147,6 +147,20 @@ public class orderTest {
     }
 
     @Test
+    public void 주문_목록_조회_테스트 () {
+        TokenRequest tokenRequest = new TokenRequest();
+        tokenRequest.setToken("ff23202e-e7cc-4fb9-b7ea-e85fade1f5ac");
+        String token = tokenRequest.getToken();
+
+        Long memberId = redisService.getValueByKey(token);
+        System.out.println("테스트에서도 멤버아이디 잘나오나: " + memberId);
+
+        List<OrderListResponse> orderListResponseList = orderService.readOrderList(tokenRequest);
+
+        System.out.println("오더리스트 리스폰스 조회: " + orderListResponseList);
+    }
+
+    @Test
     public void 주문_상세_조회_테스트 () {
         Long orderId = 3L;
 

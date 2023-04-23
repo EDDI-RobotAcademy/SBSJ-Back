@@ -141,6 +141,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderListResponse> readOrderList(TokenRequest tokenRequest) {
+        String token = tokenRequest.getToken();
+        System.out.println("토큰 잘나오나: " + token);
+        Long memberId = redisService.getValueByKey(token);
+        System.out.println("멤버아이디 잘나오나: " + memberId);
+
+        List<OrderInfo> orderList = orderRepository.findAllByMember_MemberId(memberId);
+        List<OrderListResponse> orderListResponseList = new ArrayList<>();
+
+        for(OrderInfo orderInfo: orderList) {
+            Long paymentId = orderInfo.getPayment().getPaymentId();
+            Payment payment = paymentRepository.findByPaymentId(paymentId);
+            Long amount = payment.getAmount();
+
+            OrderListResponse orderListResponse = new OrderListResponse(orderInfo, amount);
+            orderListResponseList.add(orderListResponse);
+        }
+
+        return orderListResponseList;
+    }
+
+    @Override
     @Transactional
     public OrderDetailResponse readDetailOrder(Long orderId) {
 
