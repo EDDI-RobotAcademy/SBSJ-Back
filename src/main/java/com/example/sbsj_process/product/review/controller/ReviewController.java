@@ -4,6 +4,7 @@ import com.example.sbsj_process.product.review.entity.ProductReview;
 import com.example.sbsj_process.product.review.service.ReviewService;
 import com.example.sbsj_process.product.review.service.request.ReviewModifyRequest;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
+import com.example.sbsj_process.product.review.service.response.ReviewListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 
 import java.util.ArrayList;
@@ -86,6 +88,11 @@ public class ReviewController {
             e.printStackTrace();
         }
     }
+
+
+    @GetMapping(value = "/list/{productId}")
+    @Transactional
+    public List<ReviewListResponse> reviewList(@RequestParam(value = "productId") Long productId) {
         return reviewService.list(productId);
     }
 
