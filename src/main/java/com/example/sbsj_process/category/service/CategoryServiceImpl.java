@@ -1,5 +1,7 @@
 package com.example.sbsj_process.category.service;
 
+import com.example.sbsj_process.category.entity.Brand;
+import com.example.sbsj_process.category.repository.BrandRepository;
 import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
@@ -14,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final ImageRepository imageRepository;
     private final ProductRepository productRepository;
 
+    private final BrandRepository brandRepository;
+
     public void addCategory(String category) {
         Category productCategory = new Category(category);
         categoryRepository.save(productCategory);
@@ -38,7 +40,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     //callee
     public List<ProductListResponse> getProductList(List<Product> products) {
-        List<Product> productList = products;
         List<ProductListResponse> productListResponses = new ArrayList<>();
 
         String title, thumbnail;
@@ -46,20 +47,22 @@ public class CategoryServiceImpl implements CategoryService {
         ProductInfo productInfo;
 
 
-        for(int i = 0; i < productList.size(); i++) {
-            title = productList.get(i).getProductName();
-            productId = productList.get(i).getProductId();
+        for (Product product : products) {
+            title = product.getProductName();
+            productId = product.getProductId();
             thumbnail = imageRepository.findByProductId(productId).getThumbnail();
             productInfo = productInfoRepository.findByProductId(productId);
             price = productInfo.getPrice();
+            Brand brand = productInfo.getBrand();
+            String realBrand = brand.getBrandName();
             wishCount = productInfo.getWishCount();
-            List<String> productOptions = productOptions = productOptionRepository.findProductOptionListWithProductId(productId)
+            List<String> productOptions = productOptionRepository.findProductOptionListWithProductId(productId)
                     .stream()
-                    .map(productOption -> productOption.getCategory())
+                    .map(ProductOption::getCategory)
                     .map(Category::getCategoryName)
                     .collect(Collectors.toList());
 
-            ProductListResponse productListResponse = new ProductListResponse(title, thumbnail, price, productId, wishCount, productOptions);
+            ProductListResponse productListResponse = new ProductListResponse(title, thumbnail, price, productId, wishCount, productOptions, realBrand);
             productListResponses.add(productListResponse);
         }
         return productListResponses;

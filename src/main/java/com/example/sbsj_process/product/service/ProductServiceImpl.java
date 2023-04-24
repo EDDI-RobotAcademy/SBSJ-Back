@@ -1,7 +1,9 @@
 package com.example.sbsj_process.product.service;
 
+import com.example.sbsj_process.category.entity.Brand;
 import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
+import com.example.sbsj_process.category.repository.BrandRepository;
 import com.example.sbsj_process.category.repository.CategoryRepository;
 import com.example.sbsj_process.category.repository.ProductOptionRepository;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
@@ -32,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductOptionRepository productOptionRepository;
     private final WishRepository wishRepository;
+    private final BrandRepository brandRepository;
 
     public List<String> getCategories() {
         return categoryRepository.findAll()
@@ -39,6 +42,24 @@ public class ProductServiceImpl implements ProductService {
                 .map(Category::getCategoryName)
                 .map(String::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getBrands() {
+        return brandRepository.findAll()
+                .stream()
+                .map(Brand::getBrandName)
+                .map(String::new)
+                .collect(Collectors.toList());
+    }
+
+    public void addBrand(String brand) {
+        Optional<Brand> maybeBrand = brandRepository.findByBrandName(brand);
+        if(maybeBrand.isEmpty()) {
+            Brand realBrand = new Brand(brand);
+            brandRepository.save(realBrand);
+        } else {
+            System.out.println("this brand name is already exist");
+        }
     }
 
     @Override
@@ -77,6 +98,14 @@ public class ProductServiceImpl implements ProductService {
 
     public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
         Product product = productRegisterRequest.toProduct(); // Create Product
+        String brand = productRegisterRequest.getBrand();
+        Optional<Brand> maybeBrand = brandRepository.findByBrandName(brand);
+        Brand realBrand;
+        if(maybeBrand.isPresent()) {
+            realBrand = maybeBrand.get();
+        } else {
+            throw new RuntimeException("there is no such brand");
+        }
         ProductInfo productInfo = productRegisterRequest.toProductInfo(); // Create ProductInfo
         List<String> categories = productRegisterRequest.getCategories();
 
@@ -95,6 +124,7 @@ public class ProductServiceImpl implements ProductService {
         });
 
         productInfo.setProduct(product);
+        productInfo.setBrand(realBrand);
 
         String thumbnail = imageFileList.get(0).getOriginalFilename();
         String detail = imageFileList.get(1).getOriginalFilename();

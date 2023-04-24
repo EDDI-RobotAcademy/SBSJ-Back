@@ -1,5 +1,6 @@
 package com.example.sbsj_process.product.entity;
 
+import com.example.sbsj_process.category.entity.Brand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,10 @@ public class ProductInfo {
 
     private String productSubName;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
     public ProductInfo(Long price, String productSubName) {
         this.wishCount = 0L;
         this.price = price;
@@ -40,5 +45,5 @@ public class ProductInfo {
     public void setProduct(Product product) {
         this.product = product;
     }
-
+    public void setBrand(Brand brand) { this.brand = brand;}
 }

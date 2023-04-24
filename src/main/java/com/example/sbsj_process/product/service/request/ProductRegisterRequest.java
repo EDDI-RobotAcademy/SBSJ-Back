@@ -1,5 +1,6 @@
 package com.example.sbsj_process.product.service.request;
 
+import com.example.sbsj_process.category.entity.Brand;
 import com.example.sbsj_process.product.entity.Product;
 import com.example.sbsj_process.product.entity.ProductInfo;
 import lombok.Getter;
@@ -14,11 +15,14 @@ public class ProductRegisterRequest {
     private final String productSubName;
     private final List<String> categories;
 
-    public ProductRegisterRequest(String productName,String productSubName, Long price, List<String> categories) {
+    private final String brand;
+
+    public ProductRegisterRequest(String productName,String productSubName, Long price, List<String> categories, String brand) {
         this.productName = productName;
         this.productSubName = productSubName;
         this.price = price;
         this.categories = categories;
+        this.brand = brand;
     }
 
     public Product toProduct() {
