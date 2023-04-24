@@ -99,7 +99,7 @@ public class cartTest {
             }
 
             System.out.println(member);
-            cart = new Cart(3L, member);
+            cart = new Cart(member);
             cartRepository.save(cart);
         }
 

@@ -111,7 +111,7 @@ public class CartServiceImpl implements CartService {
             }
 
             System.out.println(member);
-            cart = new Cart(3L, member);
+            cart = new Cart(member);
             cartRepository.save(cart);
         }
 
@@ -147,7 +147,7 @@ public class CartServiceImpl implements CartService {
 
             Long cartId = cartItem.getCart().getCartId();
             Optional<Cart> cart = cartRepository.findById(cartId);
-            Long totalCount = cart.get().getTotalCount();
+//            Long totalCount = cart.get().getTotalCount();
 
             Long productId = cartItem.getProduct().getProductId();
             Optional<ProductInfo> productInfo = productInfoRepository.findByProduct_ProductId(productId);
@@ -156,7 +156,7 @@ public class CartServiceImpl implements CartService {
             Image image = imageRepository.findByProductId(productId);
             String thumbnail = image.getThumbnail();
 
-            CartItemListResponse cartItemListResponse = new CartItemListResponse(cartItem, totalCount, price, thumbnail);
+            CartItemListResponse cartItemListResponse = new CartItemListResponse(cartItem, price, thumbnail);
             cartItemListResponseList.add(cartItemListResponse);
         }
 

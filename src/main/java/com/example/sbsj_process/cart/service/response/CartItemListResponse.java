@@ -21,18 +21,17 @@ public class CartItemListResponse {
     private Long count;
     // 상품 개수 (ex. A상품 2개)
 
-    private Long totalCount; // <- cart에서 가져옴
+//    private Long totalCount; // <- cart에서 가져옴
     // 카트에 등록된 총량
 
     private Long price; // <- productInfo에서 가져옴
 
     private String thumbnail; // <- Image에서 가져옴
 
-    public CartItemListResponse(CartItem cartItem, Long totalCount, Long price, String thumbnail) {
+    public CartItemListResponse(CartItem cartItem, Long price, String thumbnail) {
         this.cartItemId = cartItem.getCartItemId();
         this.product = cartItem.getProduct();
         this.count = cartItem.getCount();
-        this.totalCount = totalCount;
         this.price = price;
         this.thumbnail = thumbnail;
     }
