@@ -141,23 +141,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<OrderListResponse> readOrderList(TokenRequest tokenRequest) {
         String token = tokenRequest.getToken();
         System.out.println("토큰 잘나오나: " + token);
         Long memberId = redisService.getValueByKey(token);
         System.out.println("멤버아이디 잘나오나: " + memberId);
 
-        List<OrderInfo> orderList = orderRepository.findAllByMember_MemberId(memberId);
+        List<OrderInfo> orderList = orderRepository.findAllByMember_MemberIdOrderByOrderDateDesc(memberId);
         List<OrderListResponse> orderListResponseList = new ArrayList<>();
+        Set<Long> orderIdSet = new HashSet<>(); // 중복 체크를 위한 Set
 
         for(OrderInfo orderInfo: orderList) {
-            Long paymentId = orderInfo.getPayment().getPaymentId();
-            Payment payment = paymentRepository.findByPaymentId(paymentId);
-            Long amount = payment.getAmount();
-
-            OrderListResponse orderListResponse = new OrderListResponse(orderInfo, amount);
-            orderListResponseList.add(orderListResponse);
+            OrderListResponse orderListResponse = new OrderListResponse(orderInfo, imageRepository);
+            if (orderIdSet.add(orderListResponse.getOrderId())) { // Set에 이미 존재하는 경우는 추가하지 않음
+                orderListResponseList.add(orderListResponse);
+            }
         }
+
+        System.out.println("리스폰스리스트 잘나오나: " + orderListResponseList);
 
         return orderListResponseList;
     }

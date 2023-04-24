@@ -1,42 +1,77 @@
 package com.example.sbsj_process.order.service.response;
 
 import com.example.sbsj_process.order.entity.OrderInfo;
+
 import com.example.sbsj_process.order.entity.OrderItem;
+import com.example.sbsj_process.product.repository.ImageRepository;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
-@ToString(exclude = "orderItemList")
+@ToString
 public class OrderListResponse {
 
-    // 프론트에 '주문 내역 목록' 조회를 위해 반환해줄 것들
-    // 대표 상품명, 주문상품이 몇 종인지, 구매한 상품 갯수, 배송비 포함 총 결제액, 주문번호, 주문날짜
+    // 프론트에 '주문 내역 조회'를 위해 반환해줄 것들
 
-    private Long orderId;
-    // pk (오더인포)
+    private final Long orderId;
+    // pk
 
-    private String orderNo;
-    // 주문 번호 (오더인포)
+    private final String orderNo;
+    // 주문 번호
 
-    private Date orderDate;
-    // 주문 날짜 (오더인포)
+    private final Date orderDate;
+    // 주문 날짜
 
-    private Long amount;
-    // 총 가격 (페이먼트)
+    private final Long orderTotalCount;
+    // 주문 하나당 주문상품 몇 종인지
 
-    private List<OrderItem> orderItemList;
-    // 주문상품 관련 정보들
+    private final String selectedDeliveryReq;
+    // 배송 메시지
 
+    private final String merchant_uid;
+    // 가맹점 고유 주문번호
 
-    public OrderListResponse(OrderInfo orderInfo, Long amount) {
+    private final Long amount;
+    // 결제 총액 (상품 총액 + 배송비)
+
+    private final LocalDateTime regData;
+    // 결제일자
+
+    private final String road;
+    private final String addressDetail;
+    private final String recipientName;
+    private final String phoneNumber;
+    // 배송
+
+    private final List<OrderItemResponse> orderItemList;
+    // 주문 상품 리스트
+
+    public OrderListResponse(OrderInfo orderInfo, ImageRepository imageRepository) {
         this.orderId = orderInfo.getOrderId();
         this.orderNo = orderInfo.getOrderNo();
         this.orderDate = orderInfo.getOrderDate();
-        this.amount = amount;
-        this.orderItemList = orderInfo.getOrderItemList();
+        this.orderTotalCount = orderInfo.getOrderTotalCount();
+        this.selectedDeliveryReq = orderInfo.getSelectedDeliveryReq();
+        this.merchant_uid = orderInfo.getPayment().getMerchant_uid();
+        this.amount = orderInfo.getPayment().getAmount();
+        this.regData = orderInfo.getPayment().getRegData();
+        this.road = orderInfo.getDelivery().getRoad();
+        this.addressDetail = orderInfo.getDelivery().getAddressDetail();
+        this.recipientName = orderInfo.getDelivery().getRecipientName();
+        this.phoneNumber = orderInfo.getDelivery().getPhoneNumber();
+
+        List<OrderItemResponse> orderItemList = new ArrayList<>();
+        for(OrderItem orderItem: orderInfo.getOrderItemList()) {
+            orderItemList.add(new OrderItemResponse(orderItem, imageRepository));
+        }
+        this.orderItemList = orderItemList;
     }
+
+
 
 }

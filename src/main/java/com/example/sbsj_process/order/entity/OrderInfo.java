@@ -37,6 +37,10 @@ public class OrderInfo {
     private List<OrderItem> orderItemList = new ArrayList<>();
     // 오더아이템 연결
 
+    @Column(length = 8, nullable = false)
+    private Long orderTotalCount;
+    // 주문 하나당 주문상품 몇 종인지
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private Payment payment;
@@ -50,5 +54,14 @@ public class OrderInfo {
     @Column(nullable = false)
     private String selectedDeliveryReq;
     // 배송요청사항
+
+
+
+    // OrderItem의 개수를 세어 orderTotalCount 필드에 저장하는 메소드
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
+        this.orderTotalCount = (long) orderItemList.size();
+    }
+
 
 }

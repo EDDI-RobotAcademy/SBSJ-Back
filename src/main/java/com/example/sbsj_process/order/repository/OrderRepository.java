@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderInfo, Long> {
 
-    List<OrderInfo> findAllByMember_MemberId(Long memberId);
+    List<OrderInfo> findAllByMember_MemberIdOrderByOrderDateDesc(Long memberId);
 
     @Query("select oi.orderNo from OrderInfo oi")
     List<String> findFullOrderNumberByOrderNumber();

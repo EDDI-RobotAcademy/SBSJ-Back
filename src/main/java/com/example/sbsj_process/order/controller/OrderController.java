@@ -28,16 +28,16 @@ public class OrderController {
 
     @PostMapping("/list")
     public List<OrderListResponse> readAllOrder(@RequestBody TokenRequest tokenRequest) {
-        System.out.println("컨트롤러에서 토큰 요청: " + tokenRequest);
+        System.out.println("컨트롤러에서 토큰 요청: " + tokenRequest.getToken());
 
         return service.readOrderList(tokenRequest);
     }
 
-    @PostMapping("/read")
-    public OrderDetailResponse readDetailOrder(@RequestBody Long orderId) {
-        System.out.println("컨트롤러에서 오더아이디: " + orderId);
-
-        return service.readDetailOrder(orderId);
-    }
+//    @PostMapping("/read")
+//    public OrderDetailResponse readDetailOrder(@RequestBody Long orderId) {
+//        System.out.println("컨트롤러에서 오더아이디: " + orderId);
+//
+//        return service.readDetailOrder(orderId);
+//    }
 
 }
