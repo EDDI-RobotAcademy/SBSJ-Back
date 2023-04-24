@@ -12,6 +12,10 @@ public interface ProductService {
 
     public List<String> getCategories();
 
+    public List<String> getBrands();
+
+    public void addBrand(String brand);
+
     ProductReadResponse read(Long memberId, Long productId);
 
 }
