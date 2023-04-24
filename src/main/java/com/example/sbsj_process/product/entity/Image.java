@@ -18,10 +18,10 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @Column(length = 32, nullable = false)
+    @Column(nullable = false)
     private String thumbnail;
 
-    @Column(length = 32, nullable = false)
+    @Column(nullable = false)
     private String detail;
 
     @OneToOne(fetch = FetchType.LAZY)
