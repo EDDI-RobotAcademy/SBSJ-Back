@@ -134,4 +134,26 @@ public class CategoryServiceImpl implements CategoryService {
                 }
     }
 
+    public List<ProductListResponse> getProductWithSearchQuery(List<String> query) {
+        log.info("getProductWithSearchQuery()");
+        if (query == null) {
+            return null;
+        }
+        if (query.size() >= 1) {
+            Set<Product> sum = new HashSet<>();
+            for (String s : query) {
+                List<Product> products = productRepository.findByProductNameContaining(s);
+                if (products.size() >= 1) {
+                    sum.addAll(new HashSet<>(products));
+                }
+            }
+            List<Product> productList = new ArrayList<>(sum);
+            if (productList.size() >= 1) {
+                return getProductList(productList);
+            } else {
+                return null; //not found anything
+            }
+        }
+        return null;
+    }
 }
