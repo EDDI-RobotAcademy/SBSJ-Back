@@ -22,14 +22,14 @@ public class Cart {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(length = 16)
-    private Long totalCount;
+//    @Column(length = 16)
+//    private Long totalCount;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
     private List<CartItem> cartItemList = new ArrayList<>();
 
-    public Cart(Long totalCount, Member member) {
-        this.totalCount = totalCount;
+    public Cart(Member member) {
+//        this.totalCount = totalCount;
         this.member = member;
     }
 
