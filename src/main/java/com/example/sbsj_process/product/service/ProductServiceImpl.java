@@ -126,8 +126,8 @@ public class ProductServiceImpl implements ProductService {
         productInfo.setProduct(product);
         productInfo.setBrand(realBrand);
 
-        String thumbnail = imageFileList.get(0).getOriginalFilename();
-        String detail = imageFileList.get(1).getOriginalFilename();
+        String thumbnail = imageFileList.get(0).getOriginalFilename().strip().replaceAll(" ", "_");
+        String detail = imageFileList.get(1).getOriginalFilename().strip().replaceAll(" ", "_");
         Image image = new Image(thumbnail, detail); // Create Image
         image.setProduct(product);
 
@@ -136,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
 
         try {
             for (MultipartFile multipartFile : imageFileList) {
-                String fullPath = fixedStringPath + multipartFile.getOriginalFilename();
+                String fullPath = fixedStringPath + multipartFile.getOriginalFilename().strip().replaceAll(" ", "_");
                 FileOutputStream writer = new FileOutputStream(fullPath);
                 writer.write(multipartFile.getBytes()); // save thumbnail image
                 writer.close();
@@ -149,6 +149,7 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
         // Saving at each Repository
+
         productRepository.save(product);
         imageRepository.save(image);
         productInfoRepository.save(productInfo);
