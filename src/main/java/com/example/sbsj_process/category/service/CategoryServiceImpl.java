@@ -74,13 +74,28 @@ public class CategoryServiceImpl implements CategoryService {
         return getProductList(products);
     }
 
+    public List<ProductListResponse> getDefaultPartialList(int startIndex, int endIndex) {
+
+        List<ProductListResponse> productListResponses = getDefaultList();
+        int size = productListResponses.size();
+        if(size >= endIndex) {
+            return productListResponses.subList(startIndex, endIndex);
+        } else if(size >= startIndex) {
+            return productListResponses.subList(startIndex, size);
+        } else {
+            log.info("index out of bound");
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+    }
+
     public List<ProductListResponse> getProductWithOption(String optionName) throws RuntimeException {
         Optional<Category> maybeCategory = categoryRepository.findByCategoryName(optionName);
         Category category;
         if(maybeCategory.isPresent()) {
             category = maybeCategory.get();
         } else {
-            throw new RuntimeException("there is no such optionName");
+            log.info("there is no such productOption");
+            throw new NullPointerException("there is no such productOption");
         }
 
         List<Product> productList = productOptionRepository.findProductOptionListWithCategoryId(category.getCategoryId())
@@ -89,4 +104,34 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
         return getProductList(productList);
     }
+
+    public List<ProductListResponse> getProductSpecificList(String optionName, int startIndex, int endIndex) {
+        List<ProductListResponse> productListResponse = getProductWithOption(optionName);
+        int size = productListResponse.size();
+        if(size >= endIndex) {
+            return productListResponse.subList(startIndex, endIndex);
+        } else if(size >= startIndex) {
+            return productListResponse.subList(startIndex, size);
+        } else {
+            log.info("index out of bound");
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+    }
+
+    public List<ProductListResponse> getProductSpecificBrandList(String brand, int startIndex, int endIndex) {
+        List<Product> products = productInfoRepository.findByBrandName(brand)
+                                    .stream()
+                                    .map(ProductInfo::getProduct)
+                                    .collect(Collectors.toList());
+                int size = products.size();
+                if(size >= endIndex) {
+                    return getProductList(products.subList(startIndex, endIndex));
+                } else if(size >= startIndex) {
+                    return getProductList(products.subList(startIndex, size));
+                } else {
+                    log.info("index out of bound");
+                    throw new IndexOutOfBoundsException("Index out of bounds");
+                }
+    }
+
 }

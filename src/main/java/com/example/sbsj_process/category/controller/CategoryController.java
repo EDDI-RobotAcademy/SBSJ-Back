@@ -29,4 +29,33 @@ public class CategoryController {
         log.info("getProductWithOption()");
         return categoryService.getProductWithOption(optionName);
     }
+
+    @GetMapping("/{category}/{startIndex}/{endIndex}")
+    public List<ProductListResponse> getProductSpecificPartialList(@PathVariable("category") String optionName,
+                                                            @PathVariable("startIndex") int startIndex,
+                                                            @PathVariable("endIndex") int endIndex) {
+        log.info("getProductSpecificList()");
+        return categoryService.getProductSpecificList(optionName, startIndex, endIndex);
+    }
+
+    @GetMapping("/brand/{brand}/{startIndex}/{endIndex}")
+    public List<ProductListResponse> getProductSpecificBrandPartialList(@PathVariable("brand") String brand,
+                                                                        @PathVariable("startIndex") int startIndex,
+                                                                        @PathVariable("endIndex") int endIndex) {
+        log.info("getProductSpecificBrandPartialList");
+        return categoryService.getProductSpecificBrandList(brand, startIndex, endIndex);
+    }
+
+    @GetMapping("/default/{startIndex}/{endIndex}")
+    public List<ProductListResponse> productDefaultPartialList(@PathVariable("startIndex") int startIndex,
+                                                                @PathVariable("endIndex") int endIndex) {
+        log.info("productDefaultPartialList()");
+        return categoryService.getDefaultPartialList(startIndex, endIndex);
+    }
+
+    @GetMapping("/search/{query}")
+    public List<ProductListResponse> getProductWithSearchQuery(@PathVariable("query") List<String> query ) {
+        log.info("getProductWithSearchQuery(): " + query);
+        return categoryService.getProductWithSearchQuery(query);
+    }
 }
