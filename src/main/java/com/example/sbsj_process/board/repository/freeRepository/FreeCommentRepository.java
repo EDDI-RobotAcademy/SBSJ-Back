@@ -12,4 +12,5 @@ public interface FreeCommentRepository extends JpaRepository<FreeComment,Long> {
     @Query("select qc from FreeComment qc join fetch qc.freeBoard qb where qb.freeBoardId = :freeBoardId")
     List<FreeComment> findAllCommentByFreeBoardId(Long freeBoardId);
 
+    void deleteAllByFreeBoard(FreeBoard freeBoard);
 }

@@ -20,4 +20,11 @@ public class FreeCommentController {
         freeCommentService.modify(freeCommentId, freeCommentRequest);
     }
 
+    @DeleteMapping("/{freeCommentId}")
+    public void freeCommentRemove(@PathVariable("freeCommentId") Long freeCommentId) {
+        log.info("freeCommentRemove() 메소드 동작");
+
+        freeCommentService.remove(freeCommentId);
+    }
+
 }
