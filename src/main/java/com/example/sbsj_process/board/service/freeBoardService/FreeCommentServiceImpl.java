@@ -40,3 +40,18 @@ public class FreeCommentServiceImpl implements FreeCommentService {
         }
         return FreeCommentResponseList;
     }
+    @Override
+    public FreeComment modify(Long freeCommentId, FreeCommentRequest freeCommentRequest) {
+        FreeComment freeComment = freeCommentRepository.findById(freeCommentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글 존재안함." + freeCommentId));
+
+        freeComment.update(freeCommentRequest.getComment());
+
+        freeCommentRepository.save(freeComment);
+        return freeComment;
+    }
+
+    @Override
+    public void remove(Long freeCommentId) {
+        freeCommentRepository.deleteById(freeCommentId);
+    }
+}
