@@ -13,6 +13,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/free/read")
 public class FreeCommentController {
+
+    @Autowired
+    FreeCommentService freeCommentService;
+
+    @GetMapping("/comments/{freeBoardId}")
+    public List<FreeCommentListResponse> freeCommentList(@PathVariable("freeBoardId") Long freeBoardId) {
+        log.info("freeCommentList() 동작");
+
+        return freeCommentService.freeCommentList(freeBoardId);
+    }
+
+    @PostMapping("/register")
+    public void freeCommentRegister(@RequestBody FreeCommentRequest freeCommentRequest) {
+        log.info("freeCommentRegister() 해당 게시물 아이디 : " + freeCommentRequest.getFreeBoardId());
+        log.info(freeCommentRequest.getComment());
+        log.info(freeCommentRequest.getWriter());
+
+        freeCommentService.freeCommentRegister(freeCommentRequest);
+    }
+
     @PutMapping("/{freeCommentId}")
     public void freeCommentModify(@PathVariable("freeCommentId") Long freeCommentId,
                                  @RequestBody FreeCommentRequest freeCommentRequest) {

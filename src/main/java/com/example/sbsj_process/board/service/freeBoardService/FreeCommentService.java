@@ -9,6 +9,8 @@ import java.util.List;
 public interface FreeCommentService {
     List<FreeCommentListResponse> freeCommentList(Long freeBoardId);
 
+    void freeCommentRegister(FreeCommentRequest freeCommentRequest);
+
     FreeComment modify(Long freeCommentId, FreeCommentRequest freeCommentRequest);
 
     void remove(Long freeCommentId);

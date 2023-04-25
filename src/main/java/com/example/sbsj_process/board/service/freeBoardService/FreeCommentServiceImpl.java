@@ -41,6 +41,18 @@ public class FreeCommentServiceImpl implements FreeCommentService {
         return FreeCommentResponseList;
     }
     @Override
+    public void freeCommentRegister(FreeCommentRequest commentRequest) {
+        Optional<FreeBoard> maybeFreeBoard = freeBoardRepository.findById(commentRequest.getFreeBoardId());
+
+        FreeComment freeComment = new FreeComment();
+        freeComment.setFreeBoard(maybeFreeBoard.get());
+        freeComment.setWriter(commentRequest.getWriter());
+        freeComment.setComment(commentRequest.getComment());
+
+        freeCommentRepository.save(freeComment);
+    }
+
+    @Override
     public FreeComment modify(Long freeCommentId, FreeCommentRequest freeCommentRequest) {
         FreeComment freeComment = freeCommentRepository.findById(freeCommentId).orElseThrow(() -> new IllegalArgumentException("해당 댓글 존재안함." + freeCommentId));
 
