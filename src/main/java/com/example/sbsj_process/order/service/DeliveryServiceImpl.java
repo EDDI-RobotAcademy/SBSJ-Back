@@ -13,6 +13,7 @@ import com.example.sbsj_process.order.service.response.DeliveryRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,16 +77,10 @@ public class DeliveryServiceImpl implements DeliveryService{
         return deliveryListResponseList;
     }
 
+    @Transactional
     @Override
     public Boolean delete(Long addressId) {
-        Optional<Delivery> maybeDelivery = deliveryRepository.findByAddressId(addressId);
-
-        if(maybeDelivery.isEmpty()) {
-            System.out.println("addressId 에 해당하는 배송지 정보가 없습니다.");
-            return false;
-        }
-
-        deliveryRepository.delete(maybeDelivery.get());
+        deliveryRepository.deleteByAddressId(addressId);
         return true;
     }
 

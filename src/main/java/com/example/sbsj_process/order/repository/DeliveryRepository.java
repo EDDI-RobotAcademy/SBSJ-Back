@@ -30,4 +30,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
      */
     Optional<Delivery> findByMember_MemberIdAndDefaultAddress(Long memberId, String defaultAddress);
 
+    void deleteByAddressId(Long addressId);
+
 }

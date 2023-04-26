@@ -43,6 +43,8 @@ public class DeliveryController {
 
     @GetMapping("/delete/{addressId}")
     public Boolean deliveryDelete(@PathVariable("addressId") Long addressId) {
+        log.info("deliveryDelete(): "+ addressId);
+
         return deliveryService.delete(addressId);
     }
 
