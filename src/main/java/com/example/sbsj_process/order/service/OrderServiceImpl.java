@@ -84,10 +84,10 @@ public class OrderServiceImpl implements OrderService {
                 orderInfo.setMember(maybeMember.get());
             }
 
-            String defaultAddress = "기본 배송지";
-            Optional<Delivery> defaultDilivery = deliveryRepository.findByMember_MemberIdAndDefaultAddress(memberId, defaultAddress);
-            if (defaultDilivery.isPresent()) {
-                orderInfo.setDelivery(defaultDilivery.get());
+            Long addressId = paymentRegisterRequest.getAddressId();
+            Optional<Delivery> selectDelivery = deliveryRepository.findByAddressId(addressId);
+            if (selectDelivery.isPresent()) {
+                orderInfo.setDelivery(selectDelivery.get());
             }
 
             // 주문 상품 정보 저장
