@@ -78,6 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<ProductListResponse> productListResponses = getDefaultList();
         int size = productListResponses.size();
+        log.info("found product: " + size);
         if(size >= endIndex) {
             return productListResponses.subList(startIndex, endIndex);
         } else if(size >= startIndex) {
@@ -134,7 +135,7 @@ public class CategoryServiceImpl implements CategoryService {
                 }
     }
 
-    public List<ProductListResponse> getProductWithSearchQuery(List<String> query) {
+    public List<ProductListResponse> getProductWithSearchQuery(List<String> query, int startIndex, int endIndex) {
         log.info("getProductWithSearchQuery()");
         if (query == null) {
             return null;
@@ -148,9 +149,14 @@ public class CategoryServiceImpl implements CategoryService {
                 }
             }
             List<Product> productList = new ArrayList<>(sum);
-            if (productList.size() >= 1) {
-                return getProductList(productList);
+            if (productList.size() >= endIndex) {
+                log.info("found product: " + productList.size());
+                return getProductList(productList.subList(startIndex, endIndex));
+            } else if(productList.size() > startIndex) {
+                log.info("found product: " + productList.size());
+                return getProductList(productList.subList(startIndex, productList.size()));
             } else {
+                log.info("not found anything");
                 return null; //not found anything
             }
         }
