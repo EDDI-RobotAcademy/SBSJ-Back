@@ -4,6 +4,7 @@ import com.example.sbsj_process.order.service.DeliveryService;
 import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
+import com.example.sbsj_process.order.service.response.DeliveryModifyResponse;
 import com.example.sbsj_process.order.service.response.DeliveryRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class DeliveryController {
     }
 
     @PostMapping("/modify")
-    public Boolean deliveryModify(@RequestBody DeliveryModifyRequest deliveryModifyRequest) {
+    public DeliveryModifyResponse deliveryModify(@RequestBody DeliveryModifyRequest deliveryModifyRequest) {
         log.info("deliveryModify(): "+ deliveryModifyRequest);
 
         return deliveryService.modify(deliveryModifyRequest);

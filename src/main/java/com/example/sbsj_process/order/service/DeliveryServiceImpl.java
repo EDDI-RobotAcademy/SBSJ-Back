@@ -8,6 +8,7 @@ import com.example.sbsj_process.order.repository.DeliveryRepository;
 import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
+import com.example.sbsj_process.order.service.response.DeliveryModifyResponse;
 import com.example.sbsj_process.order.service.response.DeliveryRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -89,12 +90,12 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public Boolean modify(DeliveryModifyRequest deliveryModifyRequest) {
+    public DeliveryModifyResponse modify(DeliveryModifyRequest deliveryModifyRequest) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryModifyRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
             System.out.println("memberId 에 해당하는 회원이 없습니다.");
-            return false;
+            return null;
         }
 
         if(deliveryModifyRequest.getDefaultAddress().equals("기본 배송지")) {
@@ -103,7 +104,9 @@ public class DeliveryServiceImpl implements DeliveryService{
         Delivery delivery = deliveryModifyRequest.toDelivery(maybeMember.get());
 
         deliveryRepository.save(delivery);
-        return true;
+
+        DeliveryModifyResponse deliveryModifyResponse = new DeliveryModifyResponse(delivery);
+        return deliveryModifyResponse;
     }
 
 }
