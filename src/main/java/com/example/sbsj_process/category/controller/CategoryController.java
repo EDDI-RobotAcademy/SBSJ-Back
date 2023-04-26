@@ -35,6 +35,10 @@ public class CategoryController {
                                                             @PathVariable("startIndex") int startIndex,
                                                             @PathVariable("endIndex") int endIndex) {
         log.info("getProductSpecificList()");
+        if (optionName.equals("TOTAL")) {
+            log.info("productDefaultPartialList()");
+            return categoryService.getDefaultPartialList(startIndex, endIndex);
+        }
         return categoryService.getProductSpecificList(optionName, startIndex, endIndex);
     }
 
