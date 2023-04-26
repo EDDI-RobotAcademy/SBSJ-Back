@@ -18,12 +18,13 @@ public class PaymentRegisterForm {
     private String imp_uid;
     private String phoneNumber;
     private String recipientName;
+    private Long addressId;
     private String road;
     private String addressDetail;
     private String zipcode;
     private String selectedDeliveryReq;
 
     public PaymentRegisterRequest toOrderRegisterRequest () {
-        return new PaymentRegisterRequest(amount, merchant_uid, sendInfo, imp_uid, phoneNumber, recipientName, road, addressDetail, zipcode, selectedDeliveryReq);
+        return new PaymentRegisterRequest(amount, merchant_uid, sendInfo, imp_uid, phoneNumber, recipientName, addressId, road, addressDetail, zipcode, selectedDeliveryReq);
     }
 }
