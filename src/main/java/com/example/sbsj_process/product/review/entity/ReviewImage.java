@@ -16,7 +16,7 @@ public class ReviewImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageId;
+    private Long reviewImageId;
 
     @Column(length = 32)
     private String reviewImagePath;
