@@ -202,7 +202,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
     @Transactional
-    public void reviewModifyWithImage(List<MultipartFile> imageFileList ,ReviewModifyRequest reviewModifyRequest) {
+    public void reviewModifyWithImage(List<MultipartFile> imageFileList, ReviewModifyRequest reviewModifyRequest) {
         if (reviewModifyRequest == null || reviewModifyRequest.getProductReviewId() == null) {
             throw new IllegalArgumentException("리뷰 수정 요청이 잘못되었습니다.");
         }
@@ -255,9 +255,12 @@ public class ReviewServiceImpl implements ReviewService {
             }
 
             if (productReview.getReviewImageList() != null && !productReview.getReviewImageList().isEmpty()) {
-                reviewImageRepository.deleteAll(productReview.getReviewImageList());
+                productReview.getReviewImageList().clear();
+                productReview.getReviewImageList().addAll(reviewImageList);
+            } else {
+                productReview.setReviewImageList(reviewImageList);
             }
-            productReview.setReviewImageList(reviewImageList);
+
             reviewImageRepository.saveAll(reviewImageList);
         }
 
@@ -268,6 +271,8 @@ public class ReviewServiceImpl implements ReviewService {
             throw new RuntimeException("리뷰 수정 실패!.");
         }
     }
+
+
 
     //리뷰삭제 메서드
     @Override
