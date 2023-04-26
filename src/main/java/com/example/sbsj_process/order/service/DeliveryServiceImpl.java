@@ -8,6 +8,7 @@ import com.example.sbsj_process.order.repository.DeliveryRepository;
 import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
+import com.example.sbsj_process.order.service.response.DeliveryRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,21 +25,23 @@ public class DeliveryServiceImpl implements DeliveryService{
     final private DeliveryRepository deliveryRepository;
 
     @Override
-    public Boolean register(DeliveryRegisterRequest deliveryRegisterRequest) {
+    public DeliveryRegisterResponse register(DeliveryRegisterRequest deliveryRegisterRequest) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryRegisterRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
             System.out.println("memberId 에 해당하는 회원이 없습니다.");
-            return false;
+            return null;
         }
 
         if(deliveryRegisterRequest.getDefaultAddress().equals("기본 배송지")) {
             defaultAddressValidation(deliveryRegisterRequest.getMemberId(), deliveryRegisterRequest.getDefaultAddress());
         }
-        Delivery delivery = deliveryRegisterRequest.toDelivery(maybeMember.get());
 
+        Delivery delivery = deliveryRegisterRequest.toDelivery(maybeMember.get());
         deliveryRepository.save(delivery);
-        return true;
+
+        DeliveryRegisterResponse deliveryRegisterResponse = new DeliveryRegisterResponse(delivery);
+        return deliveryRegisterResponse;
     }
 
     @Override
