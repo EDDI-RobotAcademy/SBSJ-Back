@@ -8,9 +8,12 @@ import com.example.sbsj_process.order.repository.DeliveryRepository;
 import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
+import com.example.sbsj_process.order.service.response.DeliveryModifyResponse;
+import com.example.sbsj_process.order.service.response.DeliveryRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,21 +27,23 @@ public class DeliveryServiceImpl implements DeliveryService{
     final private DeliveryRepository deliveryRepository;
 
     @Override
-    public Boolean register(DeliveryRegisterRequest deliveryRegisterRequest) {
+    public DeliveryRegisterResponse register(DeliveryRegisterRequest deliveryRegisterRequest) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryRegisterRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
             System.out.println("memberId 에 해당하는 회원이 없습니다.");
-            return false;
+            return null;
         }
 
         if(deliveryRegisterRequest.getDefaultAddress().equals("기본 배송지")) {
             defaultAddressValidation(deliveryRegisterRequest.getMemberId(), deliveryRegisterRequest.getDefaultAddress());
         }
-        Delivery delivery = deliveryRegisterRequest.toDelivery(maybeMember.get());
 
+        Delivery delivery = deliveryRegisterRequest.toDelivery(maybeMember.get());
         deliveryRepository.save(delivery);
-        return true;
+
+        DeliveryRegisterResponse deliveryRegisterResponse = new DeliveryRegisterResponse(delivery);
+        return deliveryRegisterResponse;
     }
 
     @Override
@@ -72,26 +77,20 @@ public class DeliveryServiceImpl implements DeliveryService{
         return deliveryListResponseList;
     }
 
+    @Transactional
     @Override
     public Boolean delete(Long addressId) {
-        Optional<Delivery> maybeDelivery = deliveryRepository.findByAddressId(addressId);
-
-        if(maybeDelivery.isEmpty()) {
-            System.out.println("addressId 에 해당하는 배송지 정보가 없습니다.");
-            return false;
-        }
-
-        deliveryRepository.delete(maybeDelivery.get());
+        deliveryRepository.deleteByAddressId(addressId);
         return true;
     }
 
     @Override
-    public Boolean modify(DeliveryModifyRequest deliveryModifyRequest) {
+    public DeliveryModifyResponse modify(DeliveryModifyRequest deliveryModifyRequest) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryModifyRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
             System.out.println("memberId 에 해당하는 회원이 없습니다.");
-            return false;
+            return null;
         }
 
         if(deliveryModifyRequest.getDefaultAddress().equals("기본 배송지")) {
@@ -100,7 +99,9 @@ public class DeliveryServiceImpl implements DeliveryService{
         Delivery delivery = deliveryModifyRequest.toDelivery(maybeMember.get());
 
         deliveryRepository.save(delivery);
-        return true;
+
+        DeliveryModifyResponse deliveryModifyResponse = new DeliveryModifyResponse(delivery);
+        return deliveryModifyResponse;
     }
 
 }

@@ -1,10 +1,11 @@
 package com.example.sbsj_process.order.controller;
 
-import com.example.sbsj_process.order.entity.Delivery;
 import com.example.sbsj_process.order.service.DeliveryService;
 import com.example.sbsj_process.order.service.request.DeliveryModifyRequest;
 import com.example.sbsj_process.order.service.request.DeliveryRegisterRequest;
 import com.example.sbsj_process.order.service.response.DeliveryListResponse;
+import com.example.sbsj_process.order.service.response.DeliveryModifyResponse;
+import com.example.sbsj_process.order.service.response.DeliveryRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class DeliveryController {
     final DeliveryService deliveryService;
 
     @PostMapping("/register")
-    public Boolean deliveryRegister(@RequestBody DeliveryRegisterRequest deliveryRegisterRequest) {
+    public DeliveryRegisterResponse deliveryRegister(@RequestBody DeliveryRegisterRequest deliveryRegisterRequest) {
         log.info("deliveryRegister(): "+ deliveryRegisterRequest);
 
         return deliveryService.register(deliveryRegisterRequest);
@@ -42,11 +43,13 @@ public class DeliveryController {
 
     @GetMapping("/delete/{addressId}")
     public Boolean deliveryDelete(@PathVariable("addressId") Long addressId) {
+        log.info("deliveryDelete(): "+ addressId);
+
         return deliveryService.delete(addressId);
     }
 
     @PostMapping("/modify")
-    public Boolean deliveryModify(@RequestBody DeliveryModifyRequest deliveryModifyRequest) {
+    public DeliveryModifyResponse deliveryModify(@RequestBody DeliveryModifyRequest deliveryModifyRequest) {
         log.info("deliveryModify(): "+ deliveryModifyRequest);
 
         return deliveryService.modify(deliveryModifyRequest);
