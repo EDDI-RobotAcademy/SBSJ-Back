@@ -16,6 +16,7 @@ public class PaymentRegisterRequest {
     private final String imp_uid;
     private final String phoneNumber;
     private final String recipientName;
+    private final Long addressId;
     private final String road;
     private final String addressDetail;
     private final String zipcode;
