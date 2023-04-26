@@ -53,9 +53,11 @@ public class CategoryController {
         return categoryService.getDefaultPartialList(startIndex, endIndex);
     }
 
-    @GetMapping("/search/{query}")
-    public List<ProductListResponse> getProductWithSearchQuery(@PathVariable("query") List<String> query ) {
+    @GetMapping("/search/{query}/{startIndex}/{endIndex}")
+    public List<ProductListResponse> getProductWithSearchQuery(@PathVariable("query") List<String> query,
+                                                               @PathVariable("startIndex") int startIndex,
+                                                               @PathVariable("endIndex") int endIndex) {
         log.info("getProductWithSearchQuery(): " + query);
-        return categoryService.getProductWithSearchQuery(query);
+        return categoryService.getProductWithSearchQuery(query, startIndex, endIndex);
     }
 }

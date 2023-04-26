@@ -72,7 +72,11 @@ public class categoryTest {
         List<String> query = new ArrayList<>();
         query.add("VITAMIN-CBONEVI");
         query.add("VITAMIN");
-        List<ProductListResponse> responses = categoryService.getProductWithSearchQuery(query);
+
+        int startIndex = 0;
+        int endIndex = 20;
+
+        List<ProductListResponse> responses = categoryService.getProductWithSearchQuery(query, startIndex, endIndex);
         System.out.println(responses.toString());
 
     }
