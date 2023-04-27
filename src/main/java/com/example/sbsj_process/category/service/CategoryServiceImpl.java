@@ -1,7 +1,6 @@
 package com.example.sbsj_process.category.service;
 
 import com.example.sbsj_process.category.entity.Brand;
-import com.example.sbsj_process.category.repository.BrandRepository;
 import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
@@ -14,6 +13,7 @@ import com.example.sbsj_process.product.repository.ProductInfoRepository;
 import com.example.sbsj_process.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -30,8 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductInfoRepository productInfoRepository;
     private final ImageRepository imageRepository;
     private final ProductRepository productRepository;
-
-    private final BrandRepository brandRepository;
+    private List<ProductListResponse> totalProductCache = new ArrayList<>();
 
     public void addCategory(String category) {
         Category productCategory = new Category(category);
@@ -68,9 +67,15 @@ public class CategoryServiceImpl implements CategoryService {
         return productListResponses;
     }
 
+    @Cacheable(value = "totalProductList")
     public List<ProductListResponse> getDefaultList() {
-
+        if (this.totalProductCache.size() != 0) {
+            log.info("cache used");
+            return this.totalProductCache;
+        }
+        log.info("cache not used");
         List<Product> products = productRepository.findAll();
+        this.totalProductCache = getProductList(products);
         return getProductList(products);
     }
 
@@ -107,12 +112,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public List<ProductListResponse> getProductSpecificList(String optionName, int startIndex, int endIndex) {
-        List<ProductListResponse> productListResponse = getProductWithOption(optionName);
-        int size = productListResponse.size();
+        List<ProductListResponse> productListResponses;
+        if (this.totalProductCache.size() > 0) {
+            productListResponses = getDefaultList()
+                    .stream()
+                    .filter(productResponse -> productResponse.getProductOptions().contains(optionName))
+                    .collect(Collectors.toList());
+        } else {
+            productListResponses = getProductWithOption(optionName);
+        }
+        int size = productListResponses.size();
         if(size >= endIndex) {
-            return productListResponse.subList(startIndex, endIndex);
+            return productListResponses.subList(startIndex, endIndex);
         } else if(size >= startIndex) {
-            return productListResponse.subList(startIndex, size);
+            return productListResponses.subList(startIndex, size);
         } else {
             log.info("index out of bound");
             throw new IndexOutOfBoundsException("Index out of bounds");
@@ -120,19 +133,36 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public List<ProductListResponse> getProductSpecificBrandList(String brand, int startIndex, int endIndex) {
-        List<Product> products = productInfoRepository.findByBrandName(brand)
-                                    .stream()
-                                    .map(ProductInfo::getProduct)
-                                    .collect(Collectors.toList());
-                int size = products.size();
-                if(size >= endIndex) {
-                    return getProductList(products.subList(startIndex, endIndex));
-                } else if(size >= startIndex) {
-                    return getProductList(products.subList(startIndex, size));
-                } else {
-                    log.info("index out of bound");
-                    throw new IndexOutOfBoundsException("Index out of bounds");
-                }
+        List<ProductListResponse> productListResponses;
+        if (this.totalProductCache.size() > 0) {
+            productListResponses = getDefaultList()
+                    .stream()
+                    .filter(productResponse -> productResponse.getBrand().equals(brand))
+                    .collect(Collectors.toList());
+        } else {
+            List<Product> products = productInfoRepository.findByBrandName(brand)
+                                        .stream()
+                                        .map(ProductInfo::getProduct)
+                                        .collect(Collectors.toList());
+            int size = products.size();
+            if(size >= endIndex) {
+                return getProductList(products.subList(startIndex, endIndex));
+            } else if(size >= startIndex) {
+                return getProductList(products.subList(startIndex, size));
+            } else {
+                log.info("index out of bound");
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
+        }
+        int size = productListResponses.size();
+        if(size >= endIndex) {
+            return productListResponses.subList(startIndex, endIndex);
+        } else if(size >= startIndex) {
+            return productListResponses.subList(startIndex, size);
+        } else {
+            log.info("index out of bound");
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
     }
 
     public List<ProductListResponse> getProductWithSearchQuery(List<String> query, int startIndex, int endIndex) {
@@ -142,23 +172,45 @@ public class CategoryServiceImpl implements CategoryService {
         }
         if (query.size() >= 1) {
             Set<Product> sum = new HashSet<>();
+            Set<ProductListResponse> cachedSum = new HashSet<>();
             for (String s : query) {
-                List<Product> products = productRepository.findByProductNameContaining(s);
-                if (products.size() >= 1) {
-                    sum.addAll(new HashSet<>(products));
+                if (this.totalProductCache.size() > 0) {
+                     cachedSum.addAll(getDefaultList()
+                             .stream()
+                             .filter(productResponse -> productResponse.getTitle().contains(s))
+                             .collect(Collectors.toSet()));
+                } else {
+                    List<Product> products = productRepository.findByProductNameContaining(s);
+                    if (products.size() >= 1) {
+                        sum.addAll(new HashSet<>(products));
+                    }
                 }
             }
-            List<Product> productList = new ArrayList<>(sum);
-            if (productList.size() >= endIndex) {
-                log.info("found product: " + productList.size());
-                return getProductList(productList.subList(startIndex, endIndex));
-            } else if(productList.size() > startIndex) {
-                log.info("found product: " + productList.size());
-                return getProductList(productList.subList(startIndex, productList.size()));
+            if (this.totalProductCache.size() > 0) {
+                List<ProductListResponse> productListResponses = new ArrayList<>(cachedSum);
+                int size = productListResponses.size();
+                if (size >= endIndex) {
+                    return productListResponses.subList(startIndex, endIndex);
+                } else if (size >= startIndex) {
+                    return productListResponses.subList(startIndex, size);
+                } else {
+                    log.info("not found anything");
+                    return null; //not found anything
+                }
             } else {
-                log.info("not found anything");
-                return null; //not found anything
+                List<Product> productList = new ArrayList<>(sum);
+                if (productList.size() >= endIndex) {
+                    log.info("found product: " + productList.size());
+                    return getProductList(productList.subList(startIndex, endIndex));
+                } else if(productList.size() > startIndex) {
+                    log.info("found product: " + productList.size());
+                    return getProductList(productList.subList(startIndex, productList.size()));
+                } else {
+                    log.info("not found anything");
+                    return null; //not found anything
+                }
             }
+
         }
         return null;
     }

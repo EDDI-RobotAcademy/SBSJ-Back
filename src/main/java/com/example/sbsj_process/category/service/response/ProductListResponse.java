@@ -1,5 +1,6 @@
 package com.example.sbsj_process.category.service.response;
 
+import com.example.sbsj_process.product.entity.Product;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -24,5 +25,18 @@ public class ProductListResponse {
         this.wishCount = wishCount;
         this.productOptions = productOptions;
         this.brand = brand;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductListResponse that = (ProductListResponse) o;
+        return productId == that.productId;
+    }
+
+    @Override
+    public int hashCode() {
+        return title.hashCode() + productId.intValue();
     }
 }
