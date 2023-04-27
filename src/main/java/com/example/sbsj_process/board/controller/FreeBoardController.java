@@ -27,11 +27,12 @@ public class FreeBoardController {
         return freeBoardService.register(form.toFreeBoardRegisterRequest());
     }
 
-    @GetMapping("/list")
-    public List<FreeBoardListResponse> freeBoardList() {
+    @GetMapping("/list/{startIndex}/{endIndex}")
+    public List<FreeBoardListResponse> freeBoardList(@PathVariable("startIndex") int startIndex,
+                                                     @PathVariable("endIndex") int endIndex) {
         log.info("freeBoardList()");
 
-        return freeBoardService.list();
+        return freeBoardService.list(startIndex, endIndex);
     }
 
     @GetMapping("/read/{freeBoardId}")

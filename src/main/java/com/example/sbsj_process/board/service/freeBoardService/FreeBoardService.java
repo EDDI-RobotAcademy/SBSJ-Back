@@ -11,7 +11,7 @@ public interface FreeBoardService {
 
     FreeBoard register(FreeBoardRegisterRequest freeBoardRegisterRequest);
 
-    List<FreeBoardListResponse> list();
+    List<FreeBoardListResponse> list(int startIndex, int endIndex);
 
     FreeBoard read(Long freeBoardId);
 

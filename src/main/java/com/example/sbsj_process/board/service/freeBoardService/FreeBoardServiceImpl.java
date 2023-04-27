@@ -6,15 +6,18 @@ import com.example.sbsj_process.board.service.request.FreeBoardModifyRequest;
 import com.example.sbsj_process.board.service.request.FreeBoardRegisterRequest;
 import com.example.sbsj_process.board.service.response.FreeBoardListResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FreeBoardServiceImpl implements FreeBoardService {
 
     final FreeBoardRepository freeBoardRepository;
@@ -28,16 +31,20 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     }
 
     @Override
-    public List<FreeBoardListResponse> list() {
-        List<FreeBoard> freeBoardList = freeBoardRepository.findAll(Sort.by(Sort.Direction.DESC, "freeBoardId"));
-        List<FreeBoardListResponse> freeBoardListResponseList = new ArrayList<>();
-
-        for(FreeBoard freeBoard: freeBoardList) {
-            FreeBoardListResponse freeBoardListResponse = new FreeBoardListResponse(freeBoard);
-            freeBoardListResponseList.add(freeBoardListResponse);
+    public List<FreeBoardListResponse> list(int startIndex, int endIndex) {
+        List<FreeBoardListResponse> freeBoardListResponseList = freeBoardRepository.findAll(Sort.by(Sort.Direction.DESC, "freeBoardId"))
+                .stream()
+                .map(FreeBoardListResponse::new)
+                .collect(Collectors.toList());
+        int size = freeBoardListResponseList.size();
+        if (size >= endIndex) {
+            return freeBoardListResponseList.subList(startIndex, endIndex);
+        } else if (size >= startIndex) {
+            return freeBoardListResponseList.subList(startIndex, size);
+        } else {
+            log.info("index out of bound");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
-
-        return freeBoardListResponseList;
     }
 
     @Override

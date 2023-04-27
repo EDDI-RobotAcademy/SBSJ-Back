@@ -6,15 +6,18 @@ import com.example.sbsj_process.board.service.request.QnaBoardModifyRequest;
 import com.example.sbsj_process.board.service.request.QnaBoardRegisterRequest;
 import com.example.sbsj_process.board.service.response.QnaBoardListResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QnaBoardServiceImpl implements QnaBoardService {
 
     final QnaBoardRepository qnaBoardRepository;
@@ -28,16 +31,21 @@ public class QnaBoardServiceImpl implements QnaBoardService {
     }
 
     @Override
-    public List<QnaBoardListResponse> list() {
-        List<QnaBoard> qnaBoardList = qnaBoardRepository.findAll(Sort.by(Sort.Direction.DESC, "qnaBoardId"));
-        List<QnaBoardListResponse> qnaBoardListResponseList = new ArrayList<>();
-
-        for(QnaBoard qnaBoard: qnaBoardList) {
-            QnaBoardListResponse qnaBoardListResponse = new QnaBoardListResponse(qnaBoard);
-            qnaBoardListResponseList.add(qnaBoardListResponse);
+    public List<QnaBoardListResponse> list(int startIndex, int endIndex) {
+        List<QnaBoardListResponse> qnaBoardListResponseList = qnaBoardRepository.findAll(Sort.by(Sort.Direction.DESC, "qnaBoardId"))
+                .stream()
+                .map(QnaBoardListResponse::new)
+                .collect(Collectors.toList());
+        int size = qnaBoardListResponseList.size();
+        log.info("found qnaBoard:" + size);
+        if(size >= endIndex) {
+            return qnaBoardListResponseList.subList(startIndex, endIndex);
+        } else if(size >= startIndex) {
+            return qnaBoardListResponseList.subList(startIndex, size);
+        } else {
+            log.info("index out of bound");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
-
-        return qnaBoardListResponseList;
     }
 
     @Override
