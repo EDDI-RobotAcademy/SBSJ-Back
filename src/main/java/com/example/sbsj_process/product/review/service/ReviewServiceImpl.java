@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 import com.example.sbsj_process.product.review.repository.ReviewImageRepository;
@@ -297,17 +298,21 @@ public class ReviewServiceImpl implements ReviewService {
     // 리뷰 리스트 반환
 
     @Transactional
-    public List<ReviewListResponse> list(Long productId) {
+    public List<ReviewListResponse> list(Long productId, int startIndex, int endIndex) {
 
-        List<ProductReview> productReviews = reviewRepository.findByProduct_ProductId(productId);
-        List<ReviewListResponse> reviewListResponses = new ArrayList<>();
-
-        for (ProductReview productReview : productReviews) {
-            ReviewListResponse reviewListResponse = new ReviewListResponse(productReview);
-            reviewListResponses.add(reviewListResponse);
-            System.out.println("리뷰 정보: " + reviewListResponse);
+        List<ReviewListResponse> reviewListResponses = reviewRepository.findByProduct_ProductId(productId)
+                .stream()
+                .map(ReviewListResponse::new)
+                .collect(Collectors.toList());
+        int size = reviewListResponses.size();
+        if (size >= endIndex) {
+            return reviewListResponses.subList(startIndex, endIndex);
+        } else if (size >= startIndex) {
+            return reviewListResponses.subList(startIndex, size);
+        } else {
+            log.info("index out of bound");
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
-        return reviewListResponses;
     }
 
 

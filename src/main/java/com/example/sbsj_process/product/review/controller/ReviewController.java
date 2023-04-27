@@ -90,10 +90,12 @@ public class ReviewController {
     }
 
 
-    @GetMapping(value = "/list/{productId}")
+    @GetMapping(value = "/list/{productId}/{startIndex}/{endIndex}")
     @Transactional
-    public List<ReviewListResponse> reviewList(@RequestParam(value = "productId") Long productId) {
-        return reviewService.list(productId);
+    public List<ReviewListResponse> reviewList(@RequestParam(value = "productId") Long productId,
+                                               @PathVariable("startIndex") int startIndex,
+                                               @PathVariable("endIndex") int endIndex) {
+        return reviewService.list(productId, startIndex, endIndex);
     }
 
     @GetMapping(value = "/starRateAverage/{productId}")

@@ -16,7 +16,7 @@ public interface ReviewService {
     void reviewRegister(List<MultipartFile> imageFileList, ReviewRegisterRequest reviewRegisterRequest);
 
     void reviewWithImgRegister(List<MultipartFile> imageFileList, ReviewRegisterRequest reviewRegisterRequest);
-    List<ReviewListResponse> list(Long productId);
+    List<ReviewListResponse> list(Long productId, int startIndex, int endIndex);
 
     List<Map<String, Object>> starRateAverage(Long productId);
 
