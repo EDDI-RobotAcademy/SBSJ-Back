@@ -11,7 +11,7 @@ public interface QnaBoardService {
 
     QnaBoard register(QnaBoardRegisterRequest qnaBoardRegisterRequest);
 
-    List<QnaBoardListResponse> list();
+    List<QnaBoardListResponse> list(int startIndex, int endIndex);
 
     QnaBoard read(Long qnaBoardId);
 

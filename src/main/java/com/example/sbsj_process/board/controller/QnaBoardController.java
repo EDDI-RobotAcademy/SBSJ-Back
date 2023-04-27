@@ -27,11 +27,12 @@ public class QnaBoardController {
         return qnaBoardService.register(form.toQnaBoardRegisterRequest());
     }
 
-    @GetMapping("/list")
-    public List<QnaBoardListResponse> qnaBoardList() {
+    @GetMapping("/list/{startIndex}/{endIndex}")
+    public List<QnaBoardListResponse> qnaBoardList(@PathVariable("startIndex") int startIndex,
+                                                   @PathVariable("endIndex") int endIndex) {
         log.info("qnaBoardList()");
 
-        return qnaBoardService.list();
+        return qnaBoardService.list(startIndex, endIndex);
     }
 
     @GetMapping("/read/{qnaBoardId}")
