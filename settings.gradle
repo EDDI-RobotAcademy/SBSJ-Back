@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'sbsj_process'
+rootProject.name = 'SBSJ_Back'

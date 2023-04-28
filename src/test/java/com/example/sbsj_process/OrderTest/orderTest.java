@@ -54,7 +54,7 @@ public class orderTest {
 
         PaymentRegisterRequest paymentRegisterRequest = new PaymentRegisterRequest(
                 10000L,"pay_id", sendInfo, "impid0000", "010-1111-1111", "홍길동",
-                "서울시 강남구 테헤란로 남도빌딩", "3층", "10202", "빨리 와주세요");
+                1L, "서울시 강남구 테헤란로 남도빌딩", "3층", "10202", "빨리 와주세요");
 
         try {
             //결제 정보 저장
