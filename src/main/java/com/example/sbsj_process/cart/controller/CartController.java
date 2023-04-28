@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -49,8 +50,15 @@ public class CartController {
 
     @PostMapping("/changeCartItemCount")
     public String changeCartItemCount (@RequestBody ChangeCartItemCountRequest changeCartItemCountRequest) {
+        log.info("changeCartItemCount(): "+ changeCartItemCountRequest);
         cartService.changeCartItemCount(changeCartItemCountRequest);
         return "1";
     }
+//    @PostMapping("/changeCartItemCount")
+//    public String changeCartItemCount (@RequestBody Map<String, List<Long>> map) {
+//        log.info("changeCartItemCount(): "+ map);
+////        cartService.changeCartItemCount(changeCartItemCountRequest);
+//        return "1";
+//    }
 
 }
