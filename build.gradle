@@ -20,6 +20,10 @@ repositories {
 	maven { url 'https://repo.spring.io/snapshot' }
 }
 
+tasks.named("jar") {
+	enabled = false
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

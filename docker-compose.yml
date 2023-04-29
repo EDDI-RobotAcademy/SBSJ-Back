@@ -31,7 +31,7 @@ services:
     networks:
       - app
   server:
-    image: "sbsj/sbsj-project-server:latest"
+    image: ghcr.io/vceqiv09/backend-server:latest
     build: .
     container_name: sbsj-project-server
     restart: unless-stopped
