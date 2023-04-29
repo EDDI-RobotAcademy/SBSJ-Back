@@ -22,7 +22,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu' # https://github.com/actions/setup-java
-          
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        
       ## gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
