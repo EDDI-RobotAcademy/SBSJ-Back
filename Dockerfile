@@ -1,8 +1,8 @@
 FROM openjdk:17-alpine
 
-ARG JAR_FILE=*.jar
+#ARG JAR_FILE=*.jar
 
-COPY ${JAR_FILE} app.jar
+#COPY ${JAR_FILE} app.jar
 
 RUN apk add --no-cache --update bash
 # 여기서 wait-for-it.sh 를 설치하고 권한을 준다
