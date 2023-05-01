@@ -54,7 +54,7 @@ public class orderTest {
 
         PaymentRegisterRequest paymentRegisterRequest = new PaymentRegisterRequest(
                 10000L,"pay_id", sendInfo, "impid0000", "010-1111-1111", "홍길동",
-                1L, "서울시 강남구 테헤란로 남도빌딩", "3층", "10202", "빨리 와주세요");
+                "서울시 강남구 테헤란로 남도빌딩", "3층", "빨리 와주세요");
 
         try {
             //결제 정보 저장
@@ -81,6 +81,9 @@ public class orderTest {
             orderInfo.setOrderNo(fullOrderNumber);
             orderInfo.setOrderDate(new Date());
             orderInfo.setPayment(payment);
+            orderInfo.setOrderAddress(paymentRegisterRequest.getRoad() + " " + paymentRegisterRequest.getAddressDetail());
+            orderInfo.setOrderRecipient(paymentRegisterRequest.getRecipientName());
+            orderInfo.setOrderPhoneNumber(paymentRegisterRequest.getPhoneNumber());
             orderInfo.setSelectedDeliveryReq(paymentRegisterRequest.getSelectedDeliveryReq());
 //            orderInfo.setOrderStatus(OrderStatus.PAYMENT_COMPLETE);
 
@@ -90,11 +93,11 @@ public class orderTest {
                 orderInfo.setMember(maybeMember.get());
             }
 
-            String defaultAddress = "기본 배송지";
-            Optional<Delivery> defaultDilivery = deliveryRepository.findByMember_MemberIdAndDefaultAddress(memberId, defaultAddress);
-            if (defaultDilivery.isPresent()) {
-                orderInfo.setDelivery(defaultDilivery.get());
-            }
+//            String defaultAddress = "기본 배송지";
+//            Optional<Delivery> defaultDilivery = deliveryRepository.findByMember_MemberIdAndDefaultAddress(memberId, defaultAddress);
+//            if (defaultDilivery.isPresent()) {
+//                orderInfo.setDelivery(defaultDilivery.get());
+//            }
 
             // 주문 상품 정보 저장
             List<OrderItem> orderItemList = new ArrayList<>();

@@ -46,12 +46,22 @@ public class OrderInfo {
     private Payment payment;
     // 결제 연결
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Delivery delivery;
-    // 배송 연결
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "address_id")
+//    private Delivery delivery;
+    @Column(length = 100, nullable = false)
+    private String orderAddress;
+    // 배송지 주소
 
-    @Column(nullable = false)
+    @Column(length = 16, nullable = false)
+    private String orderRecipient;
+    // 수령인
+
+    @Column(length = 16, nullable = false)
+    private String orderPhoneNumber;
+    // 수령인 연락처
+
+    @Column
     private String selectedDeliveryReq;
     // 배송요청사항
 

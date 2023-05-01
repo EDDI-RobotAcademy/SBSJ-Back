@@ -75,6 +75,9 @@ public class OrderServiceImpl implements OrderService {
             orderInfo.setOrderNo(fullOrderNumber);
             orderInfo.setOrderDate(new Date());
             orderInfo.setPayment(payment);
+            orderInfo.setOrderAddress(paymentRegisterRequest.getRoad() + " " + paymentRegisterRequest.getAddressDetail());
+            orderInfo.setOrderRecipient(paymentRegisterRequest.getRecipientName());
+            orderInfo.setOrderPhoneNumber(paymentRegisterRequest.getPhoneNumber());
             orderInfo.setSelectedDeliveryReq(paymentRegisterRequest.getSelectedDeliveryReq());
 //            orderInfo.setOrderStatus(OrderStatus.PAYMENT_COMPLETE);
 
@@ -84,11 +87,11 @@ public class OrderServiceImpl implements OrderService {
                 orderInfo.setMember(maybeMember.get());
             }
 
-            Long addressId = paymentRegisterRequest.getAddressId();
-            Optional<Delivery> selectDelivery = deliveryRepository.findByAddressId(addressId);
-            if (selectDelivery.isPresent()) {
-                orderInfo.setDelivery(selectDelivery.get());
-            }
+//            Long addressId = paymentRegisterRequest.getAddressId();
+//            Optional<Delivery> selectDelivery = deliveryRepository.findByAddressId(addressId);
+//            if (selectDelivery.isPresent()) {
+//                orderInfo.setDelivery(selectDelivery.get());
+//            }
 
             // 주문 상품 정보 저장
             List<OrderItem> orderItemList = new ArrayList<>();
