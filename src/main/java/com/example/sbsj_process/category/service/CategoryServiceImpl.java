@@ -188,6 +188,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
             if (this.totalProductCache.size() > 0) {
                 List<ProductListResponse> productListResponses = new ArrayList<>(cachedSum);
+                log.info("found item: " + productListResponses.size());
                 int size = productListResponses.size();
                 if (size >= endIndex) {
                     return productListResponses.subList(startIndex, endIndex);
