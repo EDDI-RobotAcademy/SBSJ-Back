@@ -28,6 +28,9 @@ jobs:
       - name: print organ repo
         run: echo ${{ env.DOCKER_IMAGE }}
         
+      - name: print repo owner
+        run: echo ${{ github.repository_owner }}
+        
       ## gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
@@ -48,7 +51,7 @@ jobs:
         run: |
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
             docker buildx create --name arm64builder --use
-            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/vceqiv09/backend-server:latest --push .
+            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ${{ env.DOCKER_IMAGE }}:latest --push .
             docker logout
 
   deploy:
