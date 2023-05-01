@@ -6,8 +6,7 @@ on:
       - main
       
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/backend-server
-  VERSION: ${{ github.sha }}
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}
   NAME: backend-server
       
 jobs:
@@ -22,8 +21,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu' # https://github.com/actions/setup-java
+          
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        
+      - name: print organ repo
+        run: echo ${{ env.DOCKER_IMAGE }}
+        
+      - name: print repo owner
+        run: echo ${{ github.repository_owner }}
         
       ## gradle caching
       - name: Gradle Caching
@@ -43,9 +49,9 @@ jobs:
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+            docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GHCR_TOKEN }}
             docker buildx create --name arm64builder --use
-            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/vceqiv09/backend-server:latest --push .
+            docker buildx build --platform linux/x86,linux/x86 -f Dockerfile -t ghcr.io/eddi-robot-academy/sbsj-project:latest --push .
             docker logout
 
   deploy:
@@ -57,7 +63,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
           
       - name: Deploy to prod
@@ -84,7 +90,7 @@ jobs:
             
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             
-            docker pull ghcr.io/vceqiv09/backend-server:latest
+            docker pull ${{ env.DOCKER_IMAGE }}:latest
 
             docker image prune -f
             docker logout
