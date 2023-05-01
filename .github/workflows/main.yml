@@ -6,8 +6,7 @@ on:
       - main
       
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/backend-server
-  VERSION: ${{ github.sha }}
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}
   NAME: backend-server
       
 jobs:
@@ -22,8 +21,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu' # https://github.com/actions/setup-java
+          
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        
+      - name: print organ repo
+        run: echo ${{ env.DOCKER_IMAGE }}
         
       ## gradle caching
       - name: Gradle Caching
