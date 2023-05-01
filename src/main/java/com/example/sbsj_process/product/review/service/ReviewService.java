@@ -1,8 +1,8 @@
 package com.example.sbsj_process.product.review.service;
 
-import com.example.sbsj_process.product.review.entity.ProductReview;
 import com.example.sbsj_process.product.review.service.request.ReviewModifyRequest;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
+import com.example.sbsj_process.product.review.service.response.MemberReviewListResponse;
 import com.example.sbsj_process.product.review.service.response.ReviewListResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,4 +23,6 @@ public interface ReviewService {
     void reviewDelete(Long productReviewId);
 
     void reviewModifyWithImage(List<MultipartFile> imageFileList, ReviewModifyRequest reviewModifyRequest);
+
+    List<MemberReviewListResponse> getMemberReviewList(Long memberId);
 }

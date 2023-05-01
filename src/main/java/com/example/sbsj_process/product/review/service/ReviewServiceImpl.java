@@ -4,12 +4,17 @@ package com.example.sbsj_process.product.review.service;
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.repository.MemberRepository;
 import com.example.sbsj_process.product.entity.Product;
+import com.example.sbsj_process.product.entity.ProductInfo;
+import com.example.sbsj_process.product.entity.Image;
+import com.example.sbsj_process.product.repository.ImageRepository;
+import com.example.sbsj_process.product.repository.ProductInfoRepository;
 import com.example.sbsj_process.product.repository.ProductRepository;
 import com.example.sbsj_process.product.review.entity.ProductReview;
 import com.example.sbsj_process.product.review.entity.ReviewImage;
 import com.example.sbsj_process.product.review.repository.ProductReviewRepository;
 import com.example.sbsj_process.product.review.service.request.ReviewModifyRequest;
 import com.example.sbsj_process.product.review.service.request.ReviewRegisterRequest;
+import com.example.sbsj_process.product.review.service.response.MemberReviewListResponse;
 import com.example.sbsj_process.product.review.service.response.ReviewListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +43,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private final ProductRepository productRepository;
+    @Autowired
+    private final ProductInfoRepository productInfoRepository;
+
+    @Autowired
+    private final ImageRepository imageRepository;
 
     @Autowired
     final private ProductReviewRepository reviewRepository;
@@ -346,6 +356,22 @@ public class ReviewServiceImpl implements ReviewService {
         System.out.println("reviewAverages: " + reviewAverages);
 
         return reviewAverages;
+    }
+
+    public List<MemberReviewListResponse> getMemberReviewList(Long memberId) {
+
+        log.info("getMemberReviewList()");
+        return reviewRepository.findByMember_MemberId(memberId)
+                .stream()
+                .map(productReview -> {
+                    Long productId = productReview.getProduct().getProductId();
+                    return new MemberReviewListResponse(imageRepository.findByProductId(productId),
+                                                        productReview.getProduct(),
+                                                        productInfoRepository.findByProductId(productId),
+                                                        productReview);
+                })
+                .collect(Collectors.toList());
+
     }
 
 }
