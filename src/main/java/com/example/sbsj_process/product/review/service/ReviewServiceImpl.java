@@ -67,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         List<ReviewImage> reviewImageList = new ArrayList<>();
         if (imageFileList != null && !imageFileList.isEmpty()) {
-            final String fixedStringPath = "C:/lecture/SBSJ-Front/sbsj_web/src/assets/reviewImgs/";
+            final String fixedStringPath = "C:/lecture/SBSJ-Front/src/assets/reviewImgs/";
             List<String> imageFileNameList = new ArrayList<>();
 
             for (MultipartFile multipartFile : imageFileList) {
@@ -142,7 +142,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         List<ReviewImage> reviewImageList = new ArrayList<>();
         if (imageFileList != null && !imageFileList.isEmpty()) {
-            final String fixedStringPath = "../SBSJ-Front/sbsj_web/src/assets/reviewImgs/";
+            final String fixedStringPath = "../SBSJ-Front/src/assets/reviewImgs/";
 
             for (MultipartFile multipartFile : imageFileList) {
                 log.info("파일 업로드 요청을 받았습니다 - 파일 이름: " + multipartFile.getOriginalFilename());
@@ -203,6 +203,7 @@ public class ReviewServiceImpl implements ReviewService {
             if (!reviewImageList.isEmpty()) {
                 for (ReviewImage reviewImage : reviewImageList) {
                     reviewImage.setProductReview(savedProductReview);
+                    reviewImage.setProduct(maybeProduct.get());
                 }
                 reviewImageRepository.saveAll(reviewImageList);
             }
@@ -238,7 +239,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         if (imageFileList != null && !imageFileList.isEmpty()) {
-            final String fixedStringPath = "../SBSJ-Front/sbsj_web/src/assets/reviewImgs/";
+            final String fixedStringPath = "../SBSJ-Front/src/assets/reviewImgs/";
 
             List<ReviewImage> reviewImageList = new ArrayList<>();
             for (MultipartFile multipartFile : imageFileList) {

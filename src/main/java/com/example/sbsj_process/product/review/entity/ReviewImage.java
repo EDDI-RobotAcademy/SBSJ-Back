@@ -32,7 +32,13 @@ public class ReviewImage {
 
     public ReviewImage(String reviewImagePath) {
         this.reviewImagePath = reviewImagePath;
-
     }
 
+    public void setProductReview(ProductReview productReview) {
+        this.productReview = productReview;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }
