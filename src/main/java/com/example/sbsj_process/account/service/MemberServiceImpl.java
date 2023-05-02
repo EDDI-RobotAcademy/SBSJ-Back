@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -217,4 +218,57 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    @Transactional
+    public String findUserPwByNameAndPhoneNumber(String name, String phoneNumber) {
+        MemberProfile memberProfile = memberProfileRepository.findByNameAndPhoneNumber(name, phoneNumber);
+
+        System.out.println("입력된 이름: " + name);
+        System.out.println("입력된 전화번호: " + phoneNumber);
+
+        if (memberProfile == null) {
+            System.out.println("일치하는 멤버 프로필이 없습니다.");
+            return null;
+        }
+
+        Member member = memberProfile.getMember();
+
+        if (member == null) {
+            System.out.println("사용자 패스워드를 찾을 수 없습니다.");
+            return null;
+        }
+
+        Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_MemberId(member.getMemberId());
+
+        if (maybeAuthentication.isEmpty()) {
+            System.out.println("사용자 패스워드를 찾을 수 없습니다.");
+            return null;
+        }
+        String tempPassword = generateTemporaryPassword(10);
+
+        BasicAuthentication authentication = new BasicAuthentication(
+                member,
+                Authentication.BASIC_AUTH,
+                tempPassword);
+
+        authentication.setAuthenticationId(maybeAuthentication.get().getAuthenticationId());
+        authenticationRepository.save(authentication);
+
+        System.out.println("생성된 임시 패스워드: " + tempPassword);
+        return tempPassword;
+    }
+
+
+    public String generateTemporaryPassword(int length) {
+        final String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder temporaryPassword = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            temporaryPassword.append(characters.charAt(index));
+        }
+
+        return temporaryPassword.toString();
+    }
 }

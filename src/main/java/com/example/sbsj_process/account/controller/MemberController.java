@@ -103,4 +103,8 @@ public class MemberController {
         return memberService.findUserIdByNameAndPhoneNumber(name, phoneNumber);
     }
 
+    @GetMapping("/findMatchingUserPw/{name}/{phoneNumber}")
+    public String findUserPwByNameAndPhoneNumber(@PathVariable String name, @PathVariable String phoneNumber) {
+        return memberService.findUserPwByNameAndPhoneNumber(name, phoneNumber);
+    }
 }

@@ -29,4 +29,6 @@ public interface MemberService {
     Boolean updateMemberInfo(Long memberId, MyPageModifyRequest myPageModifyRequest);
 
     String findUserIdByNameAndPhoneNumber(String name, String phoneNumber);
+
+    String findUserPwByNameAndPhoneNumber(String name, String phoneNumber);
 }
