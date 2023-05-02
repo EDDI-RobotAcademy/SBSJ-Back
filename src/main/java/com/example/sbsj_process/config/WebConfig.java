@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedOrigins(
                 "http://127.0.0.1:8080",
                 "http://localhost:8080",
-                "http://ec2-13-124-86-198.ap-northeast-2.compute.amazonaws.com"
+                "http://energenie.shop"
         )
         .allowedMethods("GET", "POST", "PUT", "DELETE");
 
