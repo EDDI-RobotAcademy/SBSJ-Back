@@ -1,10 +1,8 @@
 package com.example.sbsj_process.cart.service;
 
 
-
 import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.account.repository.MemberRepository;
-
 import com.example.sbsj_process.cart.entity.Cart;
 import com.example.sbsj_process.cart.entity.CartItem;
 import com.example.sbsj_process.cart.repository.CartItemRepository;
@@ -19,7 +17,6 @@ import com.example.sbsj_process.product.entity.ProductInfo;
 import com.example.sbsj_process.product.repository.ImageRepository;
 import com.example.sbsj_process.product.repository.ProductInfoRepository;
 import com.example.sbsj_process.product.repository.ProductRepository;
-
 import com.example.sbsj_process.utility.request.UserInfoRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -167,9 +164,16 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public String changeCartItemCount(ChangeCartItemCountRequest changeCartItemCountRequest) {
-        CartItem cartItem = cartItemRepository.findCartItemByCartItemId(changeCartItemCountRequest.getCartItemId());
-        cartItem.setCount(changeCartItemCountRequest.getCount());
-        cartItemRepository.save(cartItem);
+        List<Long> cartItemIdList = changeCartItemCountRequest.getCartItemIdList();
+        List<Long> countList = changeCartItemCountRequest.getCountList();
+
+        List<CartItem> cartItemList = new ArrayList<>();
+        for(int i=0; i<cartItemIdList.size(); i++) {
+            CartItem cartItem = cartItemRepository.findCartItemByCartItemId(cartItemIdList.get(i));
+            cartItem.setCount(countList.get(i));
+            cartItemList.add(i, cartItem);
+            cartItemRepository.save(cartItem);
+        }
 
         return "1";
     }
