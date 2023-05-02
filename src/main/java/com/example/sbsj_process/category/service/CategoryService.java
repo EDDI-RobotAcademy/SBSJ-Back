@@ -19,4 +19,6 @@ public interface CategoryService {
     public List<ProductListResponse> getProductSpecificList(String optionName, int startIndex, int endIndex);
 
     public List<ProductListResponse> getProductSpecificBrandList(String brand, int startIndex, int endIndex);
+
+    public List<ProductListResponse> getTotalProductCache();
 }

@@ -1,5 +1,6 @@
 package com.example.sbsj_process.product.service;
 
+import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ public interface ProductService {
     public List<String> getBrands();
 
     public void addBrand(String brand);
+
 
     ProductReadResponse read(Long memberId, Long productId);
 
