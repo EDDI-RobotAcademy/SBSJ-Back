@@ -32,6 +32,11 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductRepository productRepository;
     private List<ProductListResponse> totalProductCache = new ArrayList<>();
 
+    @Override
+    public List<ProductListResponse> getTotalProductCache() {
+        return this.totalProductCache;
+    }
+
     public void addCategory(String category) {
         Category productCategory = new Category(category);
         categoryRepository.save(productCategory);

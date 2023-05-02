@@ -6,6 +6,8 @@ import com.example.sbsj_process.category.entity.ProductOption;
 import com.example.sbsj_process.category.repository.BrandRepository;
 import com.example.sbsj_process.category.repository.CategoryRepository;
 import com.example.sbsj_process.category.repository.ProductOptionRepository;
+import com.example.sbsj_process.category.service.CategoryService;
+import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
@@ -35,6 +37,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductOptionRepository productOptionRepository;
     private final WishRepository wishRepository;
     private final BrandRepository brandRepository;
+
+    private final CategoryService categoryService;
+
 
     public List<String> getCategories() {
         return categoryRepository.findAll()
@@ -132,7 +137,7 @@ public class ProductServiceImpl implements ProductService {
         image.setProduct(product);
 
         // Deep Copy to Frontend Server File System
-        final String fixedStringPath = "../SBSJ-Front/sbsj_web/src/assets/productImgs/";
+        final String fixedStringPath = "../SBSJ-Front/src/assets/productImgs/";
 
         try {
             for (MultipartFile multipartFile : imageFileList) {
@@ -149,11 +154,14 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
         // Saving at each Repository
-
         productRepository.save(product);
         imageRepository.save(image);
         productInfoRepository.save(productInfo);
         productOptionRepository.saveAll(productOptionList);
+        List<String> productOptions = productOptionList.stream().map(ProductOption::getCategory).map(Category::getCategoryName).collect(Collectors.toList());
+        ProductListResponse productListResponse = new ProductListResponse(product.getProductName(), image.getThumbnail(), productInfo.getPrice(), product.getProductId(), productInfo.getWishCount(), productOptions, productInfo.getBrand().getBrandName());
+        categoryService.getTotalProductCache().add(productListResponse);
+        log.info("product added");
     }
 
 }
