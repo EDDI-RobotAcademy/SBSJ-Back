@@ -42,10 +42,9 @@ public class OrderListResponse {
     private final LocalDateTime regData;
     // 결제일자
 
-    private final String road;
-    private final String addressDetail;
-    private final String recipientName;
-    private final String phoneNumber;
+    private final String orderAddress;
+    private final String orderRecipient;
+    private final String orderPhoneNumber;
     // 배송
 
     private final List<OrderItemResponse> orderItemList;
@@ -60,10 +59,9 @@ public class OrderListResponse {
         this.merchant_uid = orderInfo.getPayment().getMerchant_uid();
         this.amount = orderInfo.getPayment().getAmount();
         this.regData = orderInfo.getPayment().getRegData();
-        this.road = orderInfo.getDelivery().getRoad();
-        this.addressDetail = orderInfo.getDelivery().getAddressDetail();
-        this.recipientName = orderInfo.getDelivery().getRecipientName();
-        this.phoneNumber = orderInfo.getDelivery().getPhoneNumber();
+        this.orderAddress = orderInfo.getOrderAddress();
+        this.orderRecipient = orderInfo.getOrderRecipient();
+        this.orderPhoneNumber = orderInfo.getOrderPhoneNumber();
 
         List<OrderItemResponse> orderItemList = new ArrayList<>();
         for(OrderItem orderItem: orderInfo.getOrderItemList()) {

@@ -25,11 +25,9 @@ public class OrderDetailResponse {
 
     private final Payment payment;
 
-    private final String road;
-    private final String addressDetail;
-    private final String zipcode;
-    private final String recipientName;
-    private final String phoneNumber;
+    private final String orderAddress;
+    private final String orderRecipient;
+    private final String orderPhoneNumber;
 
 
     public OrderDetailResponse(OrderInfo orderInfo, String thumbnail) {
@@ -40,10 +38,8 @@ public class OrderDetailResponse {
         this.orderItemList = orderInfo.getOrderItemList();
         this.thumbnail = thumbnail;
         this.payment = orderInfo.getPayment();
-        this.road = orderInfo.getDelivery().getRoad();
-        this.addressDetail = orderInfo.getDelivery().getAddressDetail();
-        this.zipcode = orderInfo.getDelivery().getZipcode();
-        this.recipientName = orderInfo.getDelivery().getRecipientName();
-        this.phoneNumber = orderInfo.getDelivery().getPhoneNumber();
+        this.orderAddress = orderInfo.getOrderAddress();
+        this.orderRecipient = orderInfo.getOrderRecipient();
+        this.orderPhoneNumber = orderInfo.getOrderPhoneNumber();
     }
 }
