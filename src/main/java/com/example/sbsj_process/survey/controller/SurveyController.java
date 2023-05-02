@@ -25,4 +25,13 @@ public class SurveyController {
         return surveyService.register(surveyRegisterRequest);
     }
 
+    @PostMapping("/read")
+    public SurveyReadResponse surveyRead(@RequestBody UserInfoRequest userInfoRequest) {
+        log.info("surveyRead: " + userInfoRequest);
+
+        SurveyReadResponse surveyReadResponse = surveyService.read(userInfoRequest);
+        System.out.println("surveyReadResponse : " + surveyReadResponse);
+        return surveyReadResponse;
+    }
+
 }
