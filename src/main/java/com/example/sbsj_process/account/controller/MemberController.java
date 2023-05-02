@@ -98,5 +98,9 @@ public class MemberController {
 
         return memberService.updateMemberInfo(memberId, myPageModifyRequest);
     }
+    @GetMapping("/findMatchingUserId/{name}/{phoneNumber}")
+    public String findUserIdByNameAndPhoneNumber(@PathVariable String name, @PathVariable String phoneNumber) {
+        return memberService.findUserIdByNameAndPhoneNumber(name, phoneNumber);
+    }
 
 }

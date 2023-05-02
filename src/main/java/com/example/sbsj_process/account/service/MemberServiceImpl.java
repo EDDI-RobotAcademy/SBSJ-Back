@@ -195,4 +195,26 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    @Override
+    @Transactional
+    public String findUserIdByNameAndPhoneNumber(String name, String phoneNumber) {
+        MemberProfile memberProfile = memberProfileRepository.findByNameAndPhoneNumber(name, phoneNumber);
+        System.out.println("입력된 이름: " + name);
+        System.out.println("입력된 전화번호: " + phoneNumber);
+
+        if (memberProfile != null) {
+            Member member = memberProfile.getMember();
+            if (member != null) {
+                System.out.println("찾은 사용자 ID: " + member.getUserId());
+                return member.getUserId();
+            } else {
+                System.out.println("사용자 ID를 찾을 수 없습니다.");
+                return null;
+            }
+        } else {
+            System.out.println("일치하는 멤버 프로필이 없습니다.");
+            return null;
+        }
+    }
+
 }

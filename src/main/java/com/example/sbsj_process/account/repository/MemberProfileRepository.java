@@ -20,4 +20,5 @@ public interface MemberProfileRepository extends JpaRepository<MemberProfile, Lo
 
     Optional<MemberProfile> findByMember_MemberId(Long memberId);
 
+    MemberProfile findByNameAndPhoneNumber(String name, String phoneNumber);
 }
