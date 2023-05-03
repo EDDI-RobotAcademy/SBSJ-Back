@@ -3,6 +3,7 @@ package com.example.sbsj_process.product.entity;
 import com.example.sbsj_process.account.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Getter
+@Setter
 public class Image {
 
     @Id
@@ -37,4 +39,10 @@ public class Image {
         this.detail = detail;
     }
 
+    public void modifyThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+    public void modifyDetail(String detail) {
+        this.detail = detail;
+    }
 }

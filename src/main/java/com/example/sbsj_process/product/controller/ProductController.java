@@ -24,6 +24,19 @@ public class ProductController {
                                 @RequestPart(value = "productInfo") ProductRegisterForm productRegisterForm) { // productName, price
         log.info("productRegister()");
         productService.register(imageFileList, productRegisterForm.toProductRegisterRequest());
+    @PutMapping(value = "/modify/{productId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public void productModify(@RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+                                @RequestPart(value = "detail", required = false) MultipartFile detail,
+                                @RequestPart(value = "productInfo") ProductRegisterForm productRegisterForm,
+                                @PathVariable(value = "productId") Long productId) {
+        log.info("productModify()");
+        productService.modify(productId, thumbnail, detail, productRegisterForm.toProductModifyRequest());
+    }
+
+    @DeleteMapping(value = "/delete/{productId}")
+    public void productDelete(@PathVariable(value = "productId") Long productId) {
+        log.info("productDelete()");
+        productService.delete(productId);
     }
 
     @GetMapping("/detail-product-page/{productId}/{memberId}")

@@ -2,6 +2,7 @@ package com.example.sbsj_process.product.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Getter
+@Setter
 public class Product {
 
     @Id
@@ -30,12 +32,16 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product that = (Product) o;
-        return productId == that.productId;
+        return productId.equals(that.productId);
     }
 
     @Override
     public int hashCode() {
         return productName.hashCode() + productId.intValue();
+    }
+
+    public void modify(Product product) {
+        this.productName = product.getProductName();
     }
 
 }
