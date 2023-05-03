@@ -9,6 +9,7 @@ import com.example.sbsj_process.category.repository.ProductOptionRepository;
 import com.example.sbsj_process.category.service.CategoryService;
 import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.product.service.request.ProductModifyRequest;
+import com.example.sbsj_process.product.service.request.ProductRegisterRequestForTest;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
@@ -164,6 +165,75 @@ public class ProductServiceImpl implements ProductService {
         ProductListResponse productListResponse = new ProductListResponse(product.getProductName(), image.getThumbnail(), productInfo.getPrice(), product.getProductId(), productInfo.getWishCount(), productOptions, productInfo.getBrand().getBrandName());
         categoryService.getTotalProductCache().add(productListResponse);
         log.info("product added");
+    }
+
+    public void registerForTest(ProductRegisterRequestForTest productRegisterRequestForTest) {
+        Product product = productRegisterRequestForTest.toProduct(); // Create Product
+        String brand = productRegisterRequestForTest.getBrand();
+        Optional<Brand> maybeBrand = brandRepository.findByBrandName(brand);
+        Brand realBrand;
+        if(maybeBrand.isPresent()) {
+            realBrand = maybeBrand.get();
+        } else {
+            throw new RuntimeException("No brand was found with that brand");
+        }
+        ProductInfo productInfo = productRegisterRequestForTest.toProductInfo(); // Create ProductInfo
+        List<String> categories = productRegisterRequestForTest.getCategories();
+        Image tempImage = productRegisterRequestForTest.toImage();
+
+
+        List<ProductOption> productOptionList = categories.stream()
+                .map(categoryRepository::findByCategoryName)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(ProductOption::new)
+                .collect(Collectors.toList());
+        if(productOptionList.size() != categories.size()) {
+            throw new RuntimeException("there is something does not match category name in Category database");
+        }
+
+        for (ProductOption productOption : productOptionList) {
+            productOption.setProduct(product);
+        }
+
+        productInfo.setProduct(product);
+        productInfo.setBrand(realBrand);
+
+        String thumbnailImage = Objects.requireNonNull(tempImage.getThumbnail().strip().replaceAll(" ", "_"));
+        String detailImage = Objects.requireNonNull(tempImage.getDetail().strip().replaceAll(" ", "_"));
+        Image image = new Image(thumbnailImage, detailImage); // Create Image
+        image.setProduct(product);
+
+        // Deep Copy to Frontend Server File System
+//        final String fixedStringPath = "../SBSJ-Front/src/assets/productImgs/";
+//
+//        try {
+//            String fullPath = fixedStringPath + thumbnail.getOriginalFilename().strip().replaceAll(" ", "_");
+//            FileOutputStream writer = new FileOutputStream(fullPath);
+//            writer.write(thumbnail.getBytes()); // save thumbnail image
+//
+//            fullPath = fixedStringPath + detail.getOriginalFilename().strip().replaceAll(" ", "_");
+//            writer = new FileOutputStream(fullPath);
+//            writer.write(detail.getBytes()); // save detail image
+//
+//            writer.close();
+//        } catch(IOException e){
+//            e.printStackTrace();
+//        }
+        // Saving at each Repository
+        productRepository.save(product);
+        imageRepository.save(image);
+        productInfoRepository.save(productInfo);
+        productOptionRepository.saveAll(productOptionList);
+//        List<String> productOptions = productOptionList.stream().map(ProductOption::getCategory).map(Category::getCategoryName).collect(Collectors.toList());
+//        ProductListResponse productListResponse = new ProductListResponse(product.getProductName(), thumbnailImage, productInfo.getPrice(), product.getProductId(), productInfo.getWishCount(), productOptions, productInfo.getBrand().getBrandName());
+//        List<ProductListResponse> caching = categoryService.getTotalProductCache();
+//        if (caching.isEmpty()) {
+//            categoryService.getDefaultList();
+//        } else {
+//            caching.add(productListResponse);
+//        }
+//        log.info("product added");
     }
 
     public void modify(Long productId, MultipartFile thumbnail, MultipartFile detail, ProductModifyRequest productModifyRequest) {
