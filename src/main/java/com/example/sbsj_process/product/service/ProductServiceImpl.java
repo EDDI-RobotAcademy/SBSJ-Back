@@ -19,14 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -80,14 +81,25 @@ public class ProductServiceImpl implements ProductService {
             log.info("읽을 수가 없습니다.");
             return null;
         }
-
+        Image image;
         Product product = maybeProduct.get();
-        Image image = maybeImage.get();
-        ProductInfo productInfo = maybeProductInfo.get();
+        if (maybeImage.isPresent()) {
+            image = maybeImage.get();
+        } else {
+            log.info("No image was found with that productId");
+            return null;
+        }
 
         List<Wish> wishList = wishRepository.findByProduct_ProductId(productId);
-        Long wishCount = new Long(wishList.size());
-        productInfo.setWishCount(wishCount);
+        Long wishCount = (long) wishList.size();
+        ProductInfo productInfo;
+        if (maybeProductInfo.isPresent()) {
+            productInfo = maybeProductInfo.get();
+            productInfo.setWishCount(wishCount);
+        } else {
+            log.info("No productInfo was found with that productId");
+            return null;
+        }
 
         Optional<Wish> maybeWish = wishRepository.findByMember_MemberIdAndProduct_ProductId(memberId, productId);
 
@@ -96,15 +108,12 @@ public class ProductServiceImpl implements ProductService {
             wishId = maybeWish.get().getWishId();
         }
 
-        ProductReadResponse productReadResponse = new ProductReadResponse(
+        return new ProductReadResponse(
                 product.getProductId(), productInfo.getPrice(), productInfo.getWishCount(), product.getProductName(),
-                image.getThumbnail(), productInfo.getProductSubName(), image.getDetail(), wishId
-        );
-
-        return productReadResponse;
+                image.getThumbnail(), productInfo.getProductSubName(), image.getDetail(), wishId);
     }
 
-    public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest) {
+    public void register(MultipartFile thumbnail, MultipartFile detail, ProductRegisterRequest productRegisterRequest) {
         Product product = productRegisterRequest.toProduct(); // Create Product
         String brand = productRegisterRequest.getBrand();
         Optional<Brand> maybeBrand = brandRepository.findByBrandName(brand);
@@ -112,13 +121,13 @@ public class ProductServiceImpl implements ProductService {
         if(maybeBrand.isPresent()) {
             realBrand = maybeBrand.get();
         } else {
-            throw new RuntimeException("there is no such brand");
+            throw new RuntimeException("No brand was found with that brand");
         }
         ProductInfo productInfo = productRegisterRequest.toProductInfo(); // Create ProductInfo
         List<String> categories = productRegisterRequest.getCategories();
 
         List<ProductOption> productOptionList = categories.stream()
-                .map(name -> categoryRepository.findByCategoryName(name))
+                .map(categoryRepository::findByCategoryName)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(ProductOption::new)
@@ -127,33 +136,32 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("there is something does not match category name in Category database");
         }
 
-        productOptionList.forEach(productOption -> {
+        for (ProductOption productOption : productOptionList) {
             productOption.setProduct(product);
-        });
+        }
 
         productInfo.setProduct(product);
         productInfo.setBrand(realBrand);
 
-        String thumbnail = imageFileList.get(0).getOriginalFilename().strip().replaceAll(" ", "_");
-        String detail = imageFileList.get(1).getOriginalFilename().strip().replaceAll(" ", "_");
-        Image image = new Image(thumbnail, detail); // Create Image
+        String thumbnailImage = Objects.requireNonNull(thumbnail.getOriginalFilename()).strip().replaceAll(" ", "_");
+        String detailImage = Objects.requireNonNull(detail.getOriginalFilename()).strip().replaceAll(" ", "_");
+        Image image = new Image(thumbnailImage, detailImage); // Create Image
         image.setProduct(product);
 
         // Deep Copy to Frontend Server File System
         final String fixedStringPath = "../SBSJ-Front/src/assets/productImgs/";
 
         try {
-            for (MultipartFile multipartFile : imageFileList) {
-                String fullPath = fixedStringPath + multipartFile.getOriginalFilename().strip().replaceAll(" ", "_");
-                FileOutputStream writer = new FileOutputStream(fullPath);
-                writer.write(multipartFile.getBytes()); // save thumbnail image
-                writer.close();
-            }
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
+            String fullPath = fixedStringPath + thumbnail.getOriginalFilename().strip().replaceAll(" ", "_");
+            FileOutputStream writer = new FileOutputStream(fullPath);
+            writer.write(thumbnail.getBytes()); // save thumbnail image
+
+            fullPath = fixedStringPath + detail.getOriginalFilename().strip().replaceAll(" ", "_");
+            writer = new FileOutputStream(fullPath);
+            writer.write(detail.getBytes()); // save detail image
+
+            writer.close();
         } catch(IOException e){
-            e.printStackTrace();
-        } catch(Exception e){
             e.printStackTrace();
         }
         // Saving at each Repository
@@ -162,8 +170,13 @@ public class ProductServiceImpl implements ProductService {
         productInfoRepository.save(productInfo);
         productOptionRepository.saveAll(productOptionList);
         List<String> productOptions = productOptionList.stream().map(ProductOption::getCategory).map(Category::getCategoryName).collect(Collectors.toList());
-        ProductListResponse productListResponse = new ProductListResponse(product.getProductName(), image.getThumbnail(), productInfo.getPrice(), product.getProductId(), productInfo.getWishCount(), productOptions, productInfo.getBrand().getBrandName());
-        categoryService.getTotalProductCache().add(productListResponse);
+        ProductListResponse productListResponse = new ProductListResponse(product.getProductName(), thumbnailImage, productInfo.getPrice(), product.getProductId(), productInfo.getWishCount(), productOptions, productInfo.getBrand().getBrandName());
+        List<ProductListResponse> caching = categoryService.getTotalProductCache();
+        if (caching.isEmpty()) {
+            categoryService.getDefaultList();
+        } else {
+            caching.add(productListResponse);
+        }
         log.info("product added");
     }
 

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -58,10 +59,11 @@ public class productTest {
 
         List<MultipartFile> multipartFiles = new ArrayList<>();
         System.out.println(files.length);
+        FileInputStream input;
 
         try {
             for(File file : files) {
-                FileInputStream input = new FileInputStream(file);
+                input = new FileInputStream(file);
                 MultipartFile multiPartFile = new MockMultipartFile(file.getName(), input.readAllBytes());
                 multipartFiles.add(multiPartFile);
             }
@@ -88,7 +90,7 @@ public class productTest {
         categorys.add("VITAMIN-D");
         categorys.add("STRESS");
         ProductRegisterForm productRegisterForm = new ProductRegisterForm(productName, productSubName, productPrice, categorys, brand);
-        productService.register(multipartFiles, productRegisterForm.toProductRegisterRequest());
+        productService.register(new MockMultipartFile(files[0].getName(), new FileInputStream(files[0]).readAllBytes()), new MockMultipartFile(files[1].getName(), new FileInputStream(files[1]).readAllBytes()), productRegisterForm.toProductRegisterRequest());
 
         Optional<Product> mayBeProduct = productRepository.findByProductName(productName);
         Assertions.assertTrue(mayBeProduct.isPresent());

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    public void register(List<MultipartFile> imageFileList, ProductRegisterRequest productRegisterRequest);
+    public void register(MultipartFile thumbnail, MultipartFile detail, ProductRegisterRequest productRegisterRequest);
 
     public void registerForTest(ProductRegisterRequestForTest productRegisterRequestForTest);
 

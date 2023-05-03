@@ -21,7 +21,8 @@ public class ProductController {
     final private ProductService productService;
 
     @PostMapping(value = "/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public void productRegister(@RequestPart(value = "imageFileList") List<MultipartFile> imageFileList, // imageList 0: thumbnail 1: detail
+    public void productRegister(@RequestPart(value = "thumbnail") MultipartFile thumbnail,
+                                @RequestPart(value = "detail") MultipartFile detail,
                                 @RequestPart(value = "productInfo") ProductRegisterForm productRegisterForm) { // productName, price
         log.info("productRegister()");
         productService.register(thumbnail, detail, productRegisterForm.toProductRegisterRequest());
