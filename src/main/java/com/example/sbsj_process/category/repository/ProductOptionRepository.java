@@ -12,4 +12,6 @@ public interface ProductOptionRepository extends JpaRepository<ProductOption, Lo
     List<ProductOption> findProductOptionListWithCategoryId(Long categoryId);
     @Query("select po from ProductOption po join fetch po.category c join fetch po.product where po.product.productId = :productId")
     List<ProductOption> findProductOptionListWithProductId(Long productId);
+    @Query("delete from ProductOption po where po.product.productId = :productId")
+    void deleteByProductId(Long productId);
 }

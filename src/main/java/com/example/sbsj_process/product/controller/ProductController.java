@@ -1,6 +1,7 @@
 package com.example.sbsj_process.product.controller;
 
 
+import com.example.sbsj_process.product.controller.form.ProductRegisterFormForTest;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.controller.form.ProductRegisterForm;
 import com.example.sbsj_process.product.service.ProductService;
@@ -20,10 +21,32 @@ public class ProductController {
     final private ProductService productService;
 
     @PostMapping(value = "/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public void productRegister(@RequestPart(value = "imageFileList") List<MultipartFile> imageFileList, // imageList 0: thumbnail 1: detail
+    public void productRegister(@RequestPart(value = "thumbnail") MultipartFile thumbnail,
+                                @RequestPart(value = "detail") MultipartFile detail,
                                 @RequestPart(value = "productInfo") ProductRegisterForm productRegisterForm) { // productName, price
         log.info("productRegister()");
-        productService.register(imageFileList, productRegisterForm.toProductRegisterRequest());
+        productService.register(thumbnail, detail, productRegisterForm.toProductRegisterRequest());
+    }
+
+    @PostMapping(value = "/register/forTest")
+    public void productRegisterTest(@RequestPart(value = "productInfo") ProductRegisterFormForTest productRegisterFormForTest) {
+        log.info("productRegisterTest()");
+        productService.registerForTest(productRegisterFormForTest.toProductRegisterRequestForTest());
+    }
+
+    @PutMapping(value = "/modify/{productId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public void productModify(@RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+                                @RequestPart(value = "detail", required = false) MultipartFile detail,
+                                @RequestPart(value = "productInfo") ProductRegisterForm productRegisterForm,
+                                @PathVariable(value = "productId") Long productId) {
+        log.info("productModify()");
+        productService.modify(productId, thumbnail, detail, productRegisterForm.toProductModifyRequest());
+    }
+
+    @DeleteMapping(value = "/delete/{productId}")
+    public void productDelete(@PathVariable(value = "productId") Long productId) {
+        log.info("productDelete()");
+        productService.delete(productId);
     }
 
     @GetMapping("/detail-product-page/{productId}/{memberId}")

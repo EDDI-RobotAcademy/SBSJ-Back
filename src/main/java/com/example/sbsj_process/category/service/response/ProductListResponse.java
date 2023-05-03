@@ -2,6 +2,7 @@ package com.example.sbsj_process.category.service.response;
 
 import com.example.sbsj_process.product.entity.Product;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;

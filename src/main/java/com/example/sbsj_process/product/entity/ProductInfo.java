@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Getter
+@Setter
 public class ProductInfo {
 
     @Id
@@ -46,4 +47,9 @@ public class ProductInfo {
         this.product = product;
     }
     public void setBrand(Brand brand) { this.brand = brand;}
+
+    public void modify(ProductInfo productInfo) {
+        this.price = productInfo.getPrice();
+        this.productSubName = productInfo.getProductSubName();
+    }
 }
