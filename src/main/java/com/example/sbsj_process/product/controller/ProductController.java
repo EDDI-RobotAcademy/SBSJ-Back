@@ -1,7 +1,9 @@
 package com.example.sbsj_process.product.controller;
 
 
+import com.example.sbsj_process.product.controller.form.ProductModifyForm;
 import com.example.sbsj_process.product.controller.form.ProductRegisterFormForTest;
+import com.example.sbsj_process.product.service.response.ProductModifyFormResponse;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.controller.form.ProductRegisterForm;
 import com.example.sbsj_process.product.service.ProductService;
@@ -34,13 +36,12 @@ public class ProductController {
         productService.registerForTest(productRegisterFormForTest.toProductRegisterRequestForTest());
     }
 
-    @PutMapping(value = "/modify/{productId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @PutMapping(value = "/modify", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public void productModify(@RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
-                                @RequestPart(value = "detail", required = false) MultipartFile detail,
-                                @RequestPart(value = "productInfo") ProductRegisterForm productRegisterForm,
-                                @PathVariable(value = "productId") Long productId) {
+                              @RequestPart(value = "detail", required = false) MultipartFile detail,
+                              @RequestPart(value = "productInfo") ProductModifyForm productModifyForm) {
         log.info("productModify()");
-        productService.modify(productId, thumbnail, detail, productRegisterForm.toProductModifyRequest());
+        productService.modify(productModifyForm.getProductId(), thumbnail, detail, productModifyForm.toProductModifyRequest());
     }
 
     @DeleteMapping(value = "/delete/{productId}")
@@ -55,6 +56,12 @@ public class ProductController {
         log.info("productRead(): " + memberId + ", " + productId);
 
         return productService.read(memberId, productId);
+    }
+
+    @GetMapping("/modifyForm/{productId}")
+    public ProductModifyFormResponse getProductModifyForm(@PathVariable("productId") Long productId) {
+        log.info("getProductModifyForm(): " + productId);
+        return productService.getModifyForm(productId);
     }
 
     @GetMapping(value = "/productOptions")
