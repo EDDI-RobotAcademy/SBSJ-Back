@@ -3,6 +3,7 @@ package com.example.sbsj_process.product.service;
 import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.product.service.request.ProductModifyRequest;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequestForTest;
+import com.example.sbsj_process.product.service.response.ProductModifyFormResponse;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,8 @@ public interface ProductService {
     public void addBrand(String brand);
 
     public void modify(Long productId , MultipartFile thumbnail, MultipartFile detail, ProductModifyRequest productModifyRequest);
+
+    public ProductModifyFormResponse getModifyForm(Long productId);
 
     public void delete(Long productId);
 

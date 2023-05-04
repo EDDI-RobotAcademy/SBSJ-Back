@@ -10,6 +10,7 @@ import com.example.sbsj_process.category.service.CategoryService;
 import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.product.service.request.ProductModifyRequest;
 import com.example.sbsj_process.product.service.request.ProductRegisterRequestForTest;
+import com.example.sbsj_process.product.service.response.ProductModifyFormResponse;
 import com.example.sbsj_process.product.service.response.ProductReadResponse;
 import com.example.sbsj_process.product.entity.*;
 import com.example.sbsj_process.product.repository.*;
@@ -17,6 +18,7 @@ import com.example.sbsj_process.product.service.request.ProductRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -249,6 +251,7 @@ public class ProductServiceImpl implements ProductService {
 //        log.info("product added");
     }
 
+    @Transactional
     public void modify(Long productId, MultipartFile thumbnail, MultipartFile detail, ProductModifyRequest productModifyRequest) {
         Product beforeProduct;
         Optional<Product> maybeProduct = productRepository.findByProductId(productId);
@@ -265,8 +268,10 @@ public class ProductServiceImpl implements ProductService {
         String afterBrand = productModifyRequest.getBrand();
         List<ProductOption> afterProductOptions = productModifyRequest.getCategories() // have to save
                                 .stream()
-                                .map(Category::new)
-                                .map(ProductOption::new)
+                                .map(categoryName -> { // new Category cause error, "object references an unsaved transient instance - save the transient instance before flushing"
+                                    Category category = categoryRepository.findByCategoryName(categoryName).get();
+                                    return new ProductOption(category);
+                                })
                                 .collect(Collectors.toList());
         for (ProductOption productOption : afterProductOptions) {
             productOption.setProduct((beforeProduct));
@@ -286,7 +291,7 @@ public class ProductServiceImpl implements ProductService {
         beforeProductInfo.modify(afterProductInfo); // have to save
         Image image = imageRepository.findByProductId(productId); // have to save
         final String fixedStringPath = "../SBSJ-Front/src/assets/productImgs/";
-        if (!thumbnail.isEmpty()) {
+        if (thumbnail != null) {
             String oldThumbnailName = image.getThumbnail();
             String newThumbnailName = Objects.requireNonNull(thumbnail.getOriginalFilename()).strip().replaceAll(" ", "_");
             image.setThumbnail(newThumbnailName);
@@ -298,14 +303,17 @@ public class ProductServiceImpl implements ProductService {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-            File beforeThumbnail = new File(fixedStringPath + oldThumbnailName);
-            if(beforeThumbnail.delete()) {
-                log.info("thumbnail image deleted");
-            } else {
-                log.info("thumbnail image not deleted");
+            List<Image> thumbnails = imageRepository.findByThumbnail(oldThumbnailName);
+            if (thumbnails.size() <= 1) { // if thumbnail image only referenced by one deleted product
+                File beforeThumbnail = new File(fixedStringPath + oldThumbnailName);
+                if(beforeThumbnail.delete()) {
+                    log.info("thumbnail image deleted");
+                } else {
+                    log.info("thumbnail image not deleted");
+                }
             }
         }
-        if (!detail.isEmpty()) {
+        if (detail != null) {
             String oldDetailName = image.getDetail();
             String newDetailName = Objects.requireNonNull(detail.getOriginalFilename()).strip().replaceAll(" ", "_");
             image.setDetail(newDetailName);
@@ -317,20 +325,22 @@ public class ProductServiceImpl implements ProductService {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-
-            File beforeDetail = new File(fixedStringPath + oldDetailName);
-            if(beforeDetail.delete()) {
-                log.info("detail image deleted");
-            } else {
-                log.info("detail image not deleted");
+            List<Image> details = imageRepository.findByDetail(oldDetailName);
+            if (details.size() <= 1) { // if detail image only referenced by one deleted product
+                File beforeDetail = new File(fixedStringPath + oldDetailName);
+                if(beforeDetail.delete()) {
+                    log.info("detail image deleted");
+                } else {
+                    log.info("detail image not deleted");
+                }
             }
         }
 
         productOptionRepository.deleteByProductId(productId);
-        productOptionRepository.saveAll(afterProductOptions);
         productRepository.save(beforeProduct);
         productInfoRepository.save(beforeProductInfo);
         imageRepository.save(image);
+        productOptionRepository.saveAll(afterProductOptions);
 
         log.info("modify complete and start to change caching data");
         List<ProductListResponse> caching = categoryService.getTotalProductCache();
@@ -358,13 +368,14 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional
     public void delete(Long productId) {
         productOptionRepository.deleteByProductId(productId);
         productInfoRepository.deleteByProductId(productId);
         Image image = imageRepository.findByProductId(productId);
         String thumbnail = image.getThumbnail();
         String detail = image.getDetail();
-
+        wishRepository.deleteByProductId(productId);
         productRepository.deleteByProductId(productId);
 
         // delete image file
@@ -406,5 +417,26 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    public ProductModifyFormResponse getModifyForm(Long productId) {
+        Optional<Product> maybeProduct = productRepository.findByProductId(productId);
+        Product product;
+        if (maybeProduct.isPresent()) {
+            product = maybeProduct.get();
+        } else {
+            log.info("No product was found with that productId");
+            return null;
+        }
+        ProductInfo productInfo = productInfoRepository.findByProductId(productId);
+        Image image = imageRepository.findByProductId(productId);
+        List<ProductOption> productOptionList = productOptionRepository.findProductOptionListWithProductId(productId);
+        return new ProductModifyFormResponse(product.getProductId(),
+                        product.getProductName(),
+                        productInfo.getPrice(),
+                        productInfo.getProductSubName(),
+                        productOptionList.stream().map(ProductOption::getCategory).map(Category::getCategoryName).collect(Collectors.toList()),
+                        productInfo.getBrand().getBrandName(),
+                        image.getThumbnail(),
+                        image.getDetail());
+    }
 }
 
