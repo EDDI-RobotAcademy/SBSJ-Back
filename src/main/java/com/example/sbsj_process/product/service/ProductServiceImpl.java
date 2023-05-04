@@ -268,11 +268,12 @@ public class ProductServiceImpl implements ProductService {
         String afterBrand = productModifyRequest.getBrand();
         List<ProductOption> afterProductOptions = productModifyRequest.getCategories() // have to save
                                 .stream()
-                                .map(categoryName -> { // new Category cause error, "object references an unsaved transient instance - save the transient instance before flushing"
-                                    Category category = categoryRepository.findByCategoryName(categoryName).get();
-                                    return new ProductOption(category);
-                                })
+                                .map(categoryRepository::findByCategoryName)
+                                .filter(Optional::isPresent) // new Category cause error, "object references an unsaved transient instance - save the transient instance before flushing"
+                                .map(Optional::get)
+                                .map(ProductOption::new)
                                 .collect(Collectors.toList());
+
         for (ProductOption productOption : afterProductOptions) {
             productOption.setProduct((beforeProduct));
         }
