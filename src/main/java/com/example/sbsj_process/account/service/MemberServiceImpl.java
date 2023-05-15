@@ -13,13 +13,26 @@ import com.example.sbsj_process.account.service.request.MemberRegisterRequest;
 import com.example.sbsj_process.account.service.request.MyPageModifyRequest;
 import com.example.sbsj_process.account.service.response.MemberInfoResponse;
 import com.example.sbsj_process.account.service.response.MemberLoginResponse;
+import com.example.sbsj_process.cart.entity.Cart;
+import com.example.sbsj_process.cart.repository.CartItemRepository;
+import com.example.sbsj_process.cart.repository.CartRepository;
+import com.example.sbsj_process.order.entity.OrderInfo;
 import com.example.sbsj_process.order.repository.DeliveryRepository;
+import com.example.sbsj_process.order.repository.OrderItemRepository;
+import com.example.sbsj_process.order.repository.OrderRepository;
+import com.example.sbsj_process.product.entity.Wish;
+import com.example.sbsj_process.product.repository.WishRepository;
+import com.example.sbsj_process.product.review.entity.ProductReview;
+import com.example.sbsj_process.product.review.repository.ProductReviewRepository;
+import com.example.sbsj_process.product.review.repository.ReviewImageRepository;
 import com.example.sbsj_process.security.service.RedisService;
+import com.example.sbsj_process.survey.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,6 +45,15 @@ public class MemberServiceImpl implements MemberService {
     final private DeliveryRepository deliveryRepository;
     final private AuthenticationRepository authenticationRepository;
     final private RedisService redisService;
+
+    final private OrderRepository orderRepository;
+    final private OrderItemRepository orderItemRepository;
+    final private SurveyRepository surveyRepository;
+    final private CartRepository cartRepository;
+    final private CartItemRepository cartItemRepository;
+    final private ProductReviewRepository productReviewRepository;
+    final private ReviewImageRepository reviewImageRepository;
+    final private WishRepository wishRepository;
 
     @Override
     public Boolean signUp(MemberRegisterRequest memberRegisterRequest) {
@@ -126,7 +148,36 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = maybeMember.get();
+
+        Optional<OrderInfo> maybeOrderInfo = orderRepository.findByMember(member);
+        if(maybeOrderInfo.isPresent()) {
+            OrderInfo orderInfo = maybeOrderInfo.get();
+            orderItemRepository.deleteByOrderInfo_OrderId(orderInfo.getOrderId());
+            orderRepository.delete(orderInfo);
+        }
+
+        surveyRepository.deleteByMember(member);
         deliveryRepository.deleteByMember_MemberId(memberId);
+
+        Optional<Cart> maybeCart = cartRepository.findByMember_MemberId(memberId);
+        if(maybeCart.isPresent()) {
+            Cart cart = maybeCart.get();
+            cartItemRepository.deleteByCart_CartId(cart.getCartId());
+            cartRepository.delete(cart);
+        }
+
+        List<ProductReview> productReviewList = productReviewRepository.findByMember_MemberId(memberId);
+        if(productReviewList.size() > 0) {
+            for(ProductReview productReview : productReviewList) {
+                reviewImageRepository.deleteByProductReview_ProductReviewId(productReview.getProductReviewId());
+                productReviewRepository.delete(productReview);
+            }
+        }
+
+        List<Wish> wishList = wishRepository.findByMember_MemberId(memberId);
+        if(wishList.size() > 0) {
+            wishRepository.deleteByMember_MemberId(memberId);
+        }
         memberProfileRepository.deleteByMember(member);
         memberRepository.deleteByMemberId(memberId);
     }

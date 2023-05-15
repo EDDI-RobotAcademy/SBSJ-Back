@@ -1,10 +1,12 @@
 package com.example.sbsj_process.order.repository;
 
+import com.example.sbsj_process.account.entity.Member;
 import com.example.sbsj_process.order.entity.OrderInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<OrderInfo, Long> {
 
@@ -15,5 +17,7 @@ public interface OrderRepository extends JpaRepository<OrderInfo, Long> {
 
     @Query("select oi from OrderInfo oi join fetch oi.orderItemList oiList join fetch oiList.product p where oi.orderId = :orderId")
     OrderInfo findOrderInfoWithOrderItemListAndProductByOrderId(Long orderId);
+
+    Optional<OrderInfo> findByMember(Member member);
 
 }
