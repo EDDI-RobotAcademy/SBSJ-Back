@@ -21,4 +21,6 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
     @Query("delete from Wish w where w.product.productId = :productId")
     void deleteByProductId(@Param("productId") Long productId);
 
+    void deleteByMember_MemberId(Long memberId);
+
 }

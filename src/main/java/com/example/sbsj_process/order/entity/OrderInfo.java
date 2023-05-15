@@ -41,7 +41,7 @@ public class OrderInfo {
     private Long orderTotalCount;
     // 주문 하나당 주문상품 몇 종인지
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "payment_id")
     private Payment payment;
     // 결제 연결

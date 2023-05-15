@@ -1,6 +1,6 @@
 package com.example.sbsj_process.cart.repository;
 
-
+import com.example.sbsj_process.cart.entity.Cart;
 import com.example.sbsj_process.cart.entity.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +17,11 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     List<CartItem> findCartItemListWithMemberId(Long memberId);
 
     Optional<CartItem> findByCartItemIdAndCart_CartId(Long cartItemId, Long cartId);
+
+    List<CartItem> findByCart(Cart cart);
+
+    List<CartItem> findByCart_CartId(Long cartId);
+
+    void deleteByCart_CartId(Long cartId);
+
 }

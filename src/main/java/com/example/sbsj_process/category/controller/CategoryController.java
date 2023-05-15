@@ -18,6 +18,12 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
+    @GetMapping("/brand/register/{brandName}")
+    public void brandRegister(@PathVariable("brandName") String brandName) {
+        log.info("brandRegister: "+ brandName);
+        categoryService.brandRegister(brandName);
+    }
+
     @GetMapping("/default")
     public List<ProductListResponse> productDefaultList() {
         log.info("productDefaultList()");

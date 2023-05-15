@@ -21,14 +21,14 @@ public class OrderController {
 
     @PostMapping("/register")
     public Boolean orderRegister(@RequestBody PaymentRegisterForm paymentRegisterForm){
-        System.out.println("프론트에서 잘 받았나: " + paymentRegisterForm);
+//        System.out.println("프론트에서 잘 받았나: " + paymentRegisterForm);
 
         return service.registerOrderInfo(paymentRegisterForm.toOrderRegisterRequest());
     }
 
     @PostMapping("/list")
     public List<OrderListResponse> readAllOrder(@RequestBody TokenRequest tokenRequest) {
-        System.out.println("컨트롤러에서 토큰 요청: " + tokenRequest.getToken());
+//        System.out.println("컨트롤러에서 토큰 요청: " + tokenRequest.getToken());
 
         return service.readOrderList(tokenRequest);
     }

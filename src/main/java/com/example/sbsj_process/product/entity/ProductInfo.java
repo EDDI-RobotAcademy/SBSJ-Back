@@ -27,6 +27,7 @@ public class ProductInfo {
     @Column(length = 16, nullable = false)
     private Long wishCount;
 
+    @Column(length = 64, nullable = false)
     private String productSubName;
 
     @OneToOne(fetch = FetchType.LAZY)

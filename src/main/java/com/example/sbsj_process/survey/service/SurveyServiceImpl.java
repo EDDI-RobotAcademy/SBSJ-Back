@@ -24,7 +24,7 @@ public class SurveyServiceImpl implements SurveyService {
         Long memberId = surveyRegisterRequest.getMemberId();
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
         if(maybeMember.isEmpty()) {
-            System.out.println("멤버가 존재하지 않습니다.");
+//            System.out.println("멤버가 존재하지 않습니다.");
             return false;
         }
 
@@ -45,7 +45,7 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveyReadResponse read(UserInfoRequest userInfoRequest) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(userInfoRequest.getMemberId());
         if(maybeMember.isEmpty()) {
-            System.out.println("멤버가 존재하지 않습니다.");
+//            System.out.println("멤버가 존재하지 않습니다.");
             return null;
         }
 
