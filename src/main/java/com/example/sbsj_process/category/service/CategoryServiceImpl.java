@@ -1,6 +1,7 @@
 package com.example.sbsj_process.category.service;
 
 import com.example.sbsj_process.category.entity.Brand;
+import com.example.sbsj_process.category.repository.BrandRepository;
 import com.example.sbsj_process.category.service.response.ProductListResponse;
 import com.example.sbsj_process.category.entity.Category;
 import com.example.sbsj_process.category.entity.ProductOption;
@@ -31,6 +32,14 @@ public class CategoryServiceImpl implements CategoryService {
     private final ImageRepository imageRepository;
     private final ProductRepository productRepository;
     private List<ProductListResponse> totalProductCache = new ArrayList<>();
+
+
+    private final BrandRepository brandRepository;
+    @Override
+    public void brandRegister(String brandName) {
+        Brand brand = new Brand(brandName);
+        brandRepository.save(brand);
+    }
 
     @Override
     public List<ProductListResponse> getTotalProductCache() {

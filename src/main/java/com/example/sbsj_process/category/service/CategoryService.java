@@ -21,4 +21,7 @@ public interface CategoryService {
     public List<ProductListResponse> getProductSpecificBrandList(String brand, int startIndex, int endIndex);
 
     public List<ProductListResponse> getTotalProductCache();
+
+    void brandRegister(String brandName);
+
 }
