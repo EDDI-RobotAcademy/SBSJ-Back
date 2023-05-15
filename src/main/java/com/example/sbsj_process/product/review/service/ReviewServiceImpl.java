@@ -85,7 +85,7 @@ public class ReviewServiceImpl implements ReviewService {
                     imageFileNameList.add(multipartFile.getOriginalFilename());
                 } catch (IOException e) {
                     log.error("리뷰등록 중 오류가 발생했습니다: " + e.getMessage());
-                    System.out.println("에러 메시지: " + e.getMessage());
+//                    System.out.println("에러 메시지: " + e.getMessage());
 
                 }
             }
@@ -115,8 +115,8 @@ public class ReviewServiceImpl implements ReviewService {
                 throw new Exception("리뷰를 저장할 정보에 오류가 있습니다.");
             }
         } catch (Exception e) {
-            System.out.println("리뷰 저장 중 오류가 발생했습니다.");
-            System.out.println("에러 메시지: " + e.getMessage());
+//            System.out.println("리뷰 저장 중 오류가 발생했습니다.");
+//            System.out.println("에러 메시지: " + e.getMessage());
         }
 
         try {
@@ -126,7 +126,7 @@ public class ReviewServiceImpl implements ReviewService {
             }
         } catch (Exception e) {
             log.error("리뷰 등록중 오류가 발생했습니다: " + e.getMessage());
-            System.out.println("에러 메시지: " + e.getMessage());
+//            System.out.println("에러 메시지: " + e.getMessage());
 
         }
 
@@ -192,8 +192,8 @@ public class ReviewServiceImpl implements ReviewService {
                 throw new Exception("리뷰를 저장할 정보에 오류가 있습니다.");
             }
         } catch (Exception e) {
-            System.out.println("리뷰 저장 중 오류가 발생했습니다.");
-            System.out.println("에러 메시지: " + e.getMessage());
+//            System.out.println("리뷰 저장 중 오류가 발생했습니다.");
+//            System.out.println("에러 메시지: " + e.getMessage());
         }
 
         try {
@@ -353,8 +353,8 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         // 콘솔에 정보 출력
-        System.out.println("productId: " + productId);
-        System.out.println("reviewAverages: " + reviewAverages);
+//        System.out.println("productId: " + productId);
+//        System.out.println("reviewAverages: " + reviewAverages);
 
         return reviewAverages;
     }

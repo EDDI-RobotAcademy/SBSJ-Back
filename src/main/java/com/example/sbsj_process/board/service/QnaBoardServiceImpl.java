@@ -53,7 +53,7 @@ public class QnaBoardServiceImpl implements QnaBoardService {
         Optional<QnaBoard> maybeQnaBoard = qnaBoardRepository.findByQnaBoardId(qnaBoardId);
 
         if(maybeQnaBoard.isEmpty()) {
-            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+//            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
             return null;
         }
 
@@ -65,7 +65,7 @@ public class QnaBoardServiceImpl implements QnaBoardService {
         Optional<QnaBoard> maybeQnaBoard = qnaBoardRepository.findByQnaBoardId(qnaBoardModifyRequest.getQnaBoardId());
 
         if(maybeQnaBoard.isEmpty()) {
-            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+//            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
             return;
         }
 
@@ -81,11 +81,11 @@ public class QnaBoardServiceImpl implements QnaBoardService {
         Optional<QnaBoard> maybeQnaBoard = qnaBoardRepository.findByQnaBoardId(qnaBoardId);
 
         if(maybeQnaBoard.isEmpty()) {
-            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
+//            System.out.println("qnaBoardId 에 해당하는 게시물이 존재하지 않습니다.");
             return;
         }
 
-        System.out.println("서비스에서 보는 삭제: "+ maybeQnaBoard.get());
+//        System.out.println("서비스에서 보는 삭제: "+ maybeQnaBoard.get());
 
         qnaBoardRepository.deleteByQnaBoardId(qnaBoardId);
     }

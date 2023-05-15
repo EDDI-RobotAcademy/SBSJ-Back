@@ -107,7 +107,7 @@ public class CartServiceImpl implements CartService {
                 member = maybeMember.get();
             }
 
-            System.out.println(member);
+//            System.out.println(member);
             cart = new Cart(member);
             cartRepository.save(cart);
         }
@@ -157,7 +157,7 @@ public class CartServiceImpl implements CartService {
             cartItemListResponseList.add(cartItemListResponse);
         }
 
-        System.out.println("cartItemListResponseList: " + cartItemListResponseList);
+//        System.out.println("cartItemListResponseList: " + cartItemListResponseList);
 
         return cartItemListResponseList;
     }

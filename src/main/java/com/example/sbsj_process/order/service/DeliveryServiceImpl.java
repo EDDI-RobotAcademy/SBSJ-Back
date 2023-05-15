@@ -31,7 +31,7 @@ public class DeliveryServiceImpl implements DeliveryService{
         Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryRegisterRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
-            System.out.println("memberId 에 해당하는 회원이 없습니다.");
+//            System.out.println("memberId 에 해당하는 회원이 없습니다.");
             return null;
         }
 
@@ -62,7 +62,7 @@ public class DeliveryServiceImpl implements DeliveryService{
     public List<DeliveryListResponse> list(Long memberId) {
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
         if(maybeMember.isEmpty()) {
-            System.out.println("memberNo 에 해당하는 회원이 없습니다.");
+//            System.out.println("memberNo 에 해당하는 회원이 없습니다.");
             return null;
         }
 
@@ -89,7 +89,7 @@ public class DeliveryServiceImpl implements DeliveryService{
         Optional<Member> maybeMember = memberRepository.findByMemberId(deliveryModifyRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
-            System.out.println("memberId 에 해당하는 회원이 없습니다.");
+//            System.out.println("memberId 에 해당하는 회원이 없습니다.");
             return null;
         }
 

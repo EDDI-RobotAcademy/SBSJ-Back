@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
             return true;
 
         } catch (Exception e) {
-            System.out.println("오류 발생" + e);
+//            System.out.println("오류 발생" + e);
             return false;
         }
     }
@@ -147,9 +147,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public List<OrderListResponse> readOrderList(TokenRequest tokenRequest) {
         String token = tokenRequest.getToken();
-        System.out.println("토큰 잘나오나: " + token);
+//        System.out.println("토큰 잘나오나: " + token);
         Long memberId = redisService.getValueByKey(token);
-        System.out.println("멤버아이디 잘나오나: " + memberId);
+//        System.out.println("멤버아이디 잘나오나: " + memberId);
 
         List<OrderInfo> orderList = orderRepository.findAllByMember_MemberIdOrderByOrderDateDesc(memberId);
         List<OrderListResponse> orderListResponseList = new ArrayList<>();
@@ -162,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        System.out.println("리스폰스리스트 잘나오나: " + orderListResponseList);
+//        System.out.println("리스폰스리스트 잘나오나: " + orderListResponseList);
 
         return orderListResponseList;
     }

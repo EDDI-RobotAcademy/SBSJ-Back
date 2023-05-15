@@ -30,7 +30,7 @@ public class SurveyController {
         log.info("surveyRead: " + userInfoRequest);
 
         SurveyReadResponse surveyReadResponse = surveyService.read(userInfoRequest);
-        System.out.println("surveyReadResponse : " + surveyReadResponse);
+//        System.out.println("surveyReadResponse : " + surveyReadResponse);
         return surveyReadResponse;
     }
 

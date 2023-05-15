@@ -119,12 +119,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void resign(Long memberId) {
-        System.out.println("서비스에서 보는 delete memberNo: "+ memberId);
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberId);
-
         if(maybeMember.isEmpty()) {
-//            System.out.println("서비스에서 보는 delete: "+ maybeMember.get());
-            System.out.println("서비스에서 없어 그냥 없어.");
+//            System.out.println("서비스에서 없어 그냥 없어.");
             return;
         }
 
@@ -140,7 +137,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> maybeMember = memberRepository.findByMemberId(memberRequest.getMemberId());
 
         if(maybeMember.isEmpty()) {
-            System.out.println("memberId 에 해당하는 계정이 없습니다.");
+//            System.out.println("memberId 에 해당하는 계정이 없습니다.");
             return null;
         }
 
@@ -200,20 +197,20 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public String findUserIdByNameAndPhoneNumber(String name, String phoneNumber) {
         MemberProfile memberProfile = memberProfileRepository.findByNameAndPhoneNumber(name, phoneNumber);
-        System.out.println("입력된 이름: " + name);
-        System.out.println("입력된 전화번호: " + phoneNumber);
+//        System.out.println("입력된 이름: " + name);
+//        System.out.println("입력된 전화번호: " + phoneNumber);
 
         if (memberProfile != null) {
             Member member = memberProfile.getMember();
             if (member != null) {
-                System.out.println("찾은 사용자 ID: " + member.getUserId());
+//                System.out.println("찾은 사용자 ID: " + member.getUserId());
                 return member.getUserId();
             } else {
-                System.out.println("사용자 ID를 찾을 수 없습니다.");
+//                System.out.println("사용자 ID를 찾을 수 없습니다.");
                 return null;
             }
         } else {
-            System.out.println("일치하는 멤버 프로필이 없습니다.");
+//            System.out.println("일치하는 멤버 프로필이 없습니다.");
             return null;
         }
     }
@@ -223,25 +220,25 @@ public class MemberServiceImpl implements MemberService {
     public String findUserPwByNameAndPhoneNumber(String name, String phoneNumber) {
         MemberProfile memberProfile = memberProfileRepository.findByNameAndPhoneNumber(name, phoneNumber);
 
-        System.out.println("입력된 이름: " + name);
-        System.out.println("입력된 전화번호: " + phoneNumber);
+//        System.out.println("입력된 이름: " + name);
+//        System.out.println("입력된 전화번호: " + phoneNumber);
 
         if (memberProfile == null) {
-            System.out.println("일치하는 멤버 프로필이 없습니다.");
+//            System.out.println("일치하는 멤버 프로필이 없습니다.");
             return null;
         }
 
         Member member = memberProfile.getMember();
 
         if (member == null) {
-            System.out.println("사용자 패스워드를 찾을 수 없습니다.");
+//            System.out.println("사용자 패스워드를 찾을 수 없습니다.");
             return null;
         }
 
         Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_MemberId(member.getMemberId());
 
         if (maybeAuthentication.isEmpty()) {
-            System.out.println("사용자 패스워드를 찾을 수 없습니다.");
+//            System.out.println("사용자 패스워드를 찾을 수 없습니다.");
             return null;
         }
         String tempPassword = generateTemporaryPassword(10);
@@ -254,7 +251,7 @@ public class MemberServiceImpl implements MemberService {
         authentication.setAuthenticationId(maybeAuthentication.get().getAuthenticationId());
         authenticationRepository.save(authentication);
 
-        System.out.println("생성된 임시 패스워드: " + tempPassword);
+//        System.out.println("생성된 임시 패스워드: " + tempPassword);
         return tempPassword;
     }
 
